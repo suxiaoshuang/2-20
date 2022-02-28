@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-yhai$w56)c!d#2+*2b7vc5jsj12z9(r0cu%0twe*rpn$wqf)l#
 DEBUG = True
 
 ALLOWED_HOSTS = []
-IMG_UPLOAD = [os.path.join(BASE_DIR,'upload_file')]
+IMG_UPLOAD = [os.path.join(BASE_DIR,'static','upload_images')]
+FILE_UPLOAD = [os.path.join(BASE_DIR,'static','upload_file')]
 
 # Application definition
 

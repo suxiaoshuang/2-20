@@ -11,8 +11,8 @@ class Middleware(object):
 
     def __call__(self, request):
         path = request.path
-        if re.match(r'/[admin|student|teacher].+',path):
-            print(re.match(r'/[admin|student|teacher].+',path))
+        if re.match(r'[/admin|/student|/teacher]{5,10}.+',path):
+            print(re.match(r'[/admin|/student|/teacher]{5,10}.+',path))
             if not request.session.get('is_login',None):
                 return redirect(reverse('login'))
 

@@ -60,11 +60,14 @@
                       <span style="color:green">进行中</span>
                     {% elif vo.contest_status == 0 %}
                       <span style="color:red">已结束</span>
+                    {% elif vo.contest_status == 2 %}
+                       <span style="color:blue">报名中</span>
                     {% endif %}
                   </td>
 
 
                   <td width="22%">
+                      {% if vo.contest_status > 0 %}
                     <a href="{% url 'admin_contest_update' vo.id %}" class="btn btn-success btn-xs">
                       <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 编辑
                     </a>
@@ -77,9 +80,23 @@
                       <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 查看
                     </a>
 
-                    <a  href="{% url 'admin_contest_close' vo.id %}" class="btn btn-info btn-xs">
+                    <a  href="{% url 'admin_contest_close' vo.id %}?pIndex={{ pIndex }}" class="btn btn-info btn-xs">
                       <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> 结束竞赛
                     </a>
+
+                    {% elif vo.contest_status == 0 %}
+
+                    <a  href="{% url 'admin_contest_delete' vo.id %}" class="btn btn-danger btn-xs">
+                      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 删除
+                    </a>
+
+                    <a  href="{% url 'admin_contest_info' vo.id %}" class="btn btn-info btn-xs">
+                      <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 查看
+                    </a>
+
+                    {% endif %}
+
+
 
 
                   </td>

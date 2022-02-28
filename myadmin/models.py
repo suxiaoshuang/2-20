@@ -47,7 +47,7 @@ class Contest(models.Model):
     contest_name = models.CharField(max_length=200)
     contest_type = models.CharField(max_length=30)
     contest_info = models.TextField()
-    contest_status = models.BooleanField(default=True)
+    contest_status = models.CharField(max_length=10,default=1)
     contest_organizer = models.CharField(max_length=100)
     contest_time = models.CharField(max_length=50)
     contest_stage = models.CharField(max_length=20)
