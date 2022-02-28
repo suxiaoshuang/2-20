@@ -1,0 +1,111 @@
+{% extends "admin/base.html" %}
+
+{% block main_body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        竞赛管理
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="{% url 'admin_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li class="active">添加竞赛</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+                <h2 class="box-title"><span class="glyphicon glyphicon-calendar" aria-hidden="true"/>添加竞赛信息</h2>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" action="{% url 'admin_contest_add' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">竞赛名称：</label>
+
+                  <div class="col-sm-4">
+                    <input type="text" name="contest_name" class="form-control" id="inputText1" placeholder="竞赛名称" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">类别：</label>
+                  <div class="col-sm-4">
+                    <input type="text" name="contest_type" class="form-control" id="inputText2" placeholder="类别" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputEmail3"  class="col-sm-2 control-label">举办方：</label>
+                  <div class="col-sm-4">
+                    <input type="text" name="contest_organizer" class="form-control"  />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">时间：</label>
+                  <div class="col-sm-4">
+                    <input type="text" name="contest_time" class="form-control" placeholder="2020.9.10--2020.10.12" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">赛段：</label>
+                  <div class="col-sm-4">
+                    <input type="text" name="contest_stage" class="form-control"  />
+                  </div>
+                </div>
+
+                 <div class="form-group" >
+                  <label for="inputEmail3" class="col-sm-2 control-label">封面图片：</label>
+                    <input type="file" name="contest_img" accept="image/png | image/jpg|imge/jpeg" />
+                </div>
+
+
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">竞赛信息：</label>
+                  <div class="col-sm-4">
+                   <text name="contest_info" id="detail" aria-label="detail" >
+                    {{ form1 }}
+                   </text>
+                  </div>
+                </div>
+
+
+                 <div class="form-group" >
+                  <label for="inputEmail3" class="col-sm-2 control-label">上传附件：</label>
+                    <input type="file" name="files"  multiple="multiple"/>
+                </div>
+
+              </div>
+
+
+
+
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <div class="col-sm-offset-2 col-sm-10">
+
+                  <button type="submit" class="btn btn-primary">提交</button> &nbsp;
+                  <button type="reset" class="btn btn-default">重置</button>
+
+              </div>
+              </div>
+              <!-- /.box-footer -->
+            </form>
+
+
+
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+{% endblock %}
