@@ -17,6 +17,7 @@ class User(models.Model):
     grade = models.CharField(max_length=15,default='2018')  #年级
     c_time = models.DateTimeField(auto_now_add=True)      #注册时间
     has_confirmed = models.BooleanField(default=False)    #认证状态
+    permissions = models.CharField(max_length=5,default=0)  #权限
 
     def __str__(self):
         return self.name

@@ -230,14 +230,14 @@
 
 
         <li class="treeview">
-          <a href="category.html"><i class="fa fa-cutlery"></i> <span>菜品管理</span>
+          <a href="category.html"><i class="fa fa-cutlery"></i> <span>人员组织</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="category.html"> <i class="fa fa-circle-o"></i> 菜品分类</a></li>
-            <li><a href="product.html"> <i class="fa fa-circle-o"></i> 菜品信息</a></li>
+            <li><a href="{% url 'admin_stu_show' 1%}"> <i class="fa fa-circle-o"></i> 学生管理</a></li>
+            <li><a href="product.html"> <i class="fa fa-circle-o"></i> 教师管理</a></li>
           </ul>
         </li>
         <li><a href="orders.html"><i class="fa fa-shopping-cart"></i> <span>订单管理</span></a></li>

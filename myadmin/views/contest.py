@@ -26,11 +26,11 @@ def contest_show(request,pIndex=1):
         status = 'status='+status
 
     if kw:
-        list = list.filter(Q(contest_name__contains=kw)|Q(contest_organizer__contains=kw))
+        list = list.filter(Q(contest_name__icontains=kw)|Q(contest_organizer__icontains=kw))
         mywhere.append("keyword="+kw)
 
     pIndex = int(pIndex)
-    page = Paginator(list,2)
+    page = Paginator(list,10)
 
     maxpages = page.num_pages
 
@@ -51,8 +51,14 @@ def contest_show(request,pIndex=1):
 
 def con_open(request,pIndex=1):
     c = Contest.objects.filter(contest_status__gte=1)
+    mywhere = []
+    keyword = request.GET.get('keyword',None)
+    if keyword:
+        c = c.filter(Q(contest_name__icontains=keyword))
+        mywhere.append("keyword="+keyword)
+
     pIndex = int(pIndex)
-    page = Paginator.page(c,5)
+    page = Paginator(c,5)
     maxpages = page.num_pages
 
     if pIndex < 1:
@@ -63,9 +69,36 @@ def con_open(request,pIndex=1):
 
     list2 = page.page(pIndex)
     plist = page.page_range
-    context = {'conlist':list2,'plist':plist,'pIndex':pIndex,'maxpages':maxpages}
-
+    context = {'conlist':list2,'plist':plist,'pIndex':pIndex,'maxpages':maxpages,'mywhere':mywhere}
+    # print(context)
     return render(request,'admin/contest_registration.html',context)
+
+
+def con_on(request,id):
+    c = Contest.objects.get(id=id)
+    c.contest_status = 2
+    pIndex = request.GET.get('pIndex')
+    c.save()
+
+    return redirect(reverse('admin_contest_registration',args=(pIndex)))
+
+
+
+
+def con_off(request,id):
+    c = Contest.objects.get(id=id)
+    c.contest_status = 1
+    pIndex = request.GET.get('pIndex')
+    c.save()
+
+    return redirect(reverse('admin_contest_registration',args=(pIndex)))
+
+
+
+
+
+
+
 
 
 def con_add(request):
