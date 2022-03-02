@@ -8,7 +8,7 @@ class User(models.Model):
     gender = (('male', '男'), ('female', '女'),)
     name = models.CharField(max_length=20, unique=False)      #名字
     user_id = models.CharField(max_length=20, unique=True)    #学工号
-    password = models.CharField(max_length=100)
+    password = models.CharField(max_length=100,default='123456')
     email = models.EmailField(unique=True)
     sex = models.CharField(max_length=20, choices=gender, default='男')
     identify = models.CharField(max_length=30, choices=identifies, default='学生')
@@ -68,3 +68,49 @@ class File(models.Model):
 
     class Meta:
         db_table = "file"
+
+
+class Specialty(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'specialty'
+
+class Tyep(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'type'
+
+class Stage(models.Model):
+    stage = models.CharField(max_length=10)
+
+    class Meta:
+        db_table = 'stage'
+
+class Academy(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'academy'
+
+class Registration(models.Model):
+    t_id = models.CharField(max_length=50)
+    t_name = models.CharField(max_length=50)
+    c_name = models.CharField(max_length=50)
+    type = models.CharField(max_length=20)
+    status = models.CharField(max_length=10,default=0)
+    teacher = models.CharField(max_length=30)
+
+
+    class Meta:
+        db_table = 'registration'
+
+
+class Team(models.Model):
+    t_name = models.CharField(max_length=50)
+    u_name = models.CharField(max_length=50)
+    u_id = models.CharField(max_length=30)
+    head = models.BooleanField(default=False)
+    c_id = models.CharField(max_length=20)
+    c_name = models.CharField(max_length=50)

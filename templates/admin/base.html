@@ -1,6 +1,6 @@
 {% load static  %}
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -237,7 +237,8 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{% url 'admin_stu_show' 1%}"> <i class="fa fa-circle-o"></i> 学生管理</a></li>
-            <li><a href="product.html"> <i class="fa fa-circle-o"></i> 教师管理</a></li>
+            <li><a href="{% url 'admin_tea_show' 1%}"> <i class="fa fa-circle-o"></i> 教师管理</a></li>
+            <li><a href="{% url 'admin_admin_show' 1%}"> <i class="fa fa-circle-o"></i> 下级管理员</a></li>
           </ul>
         </li>
         <li><a href="orders.html"><i class="fa fa-shopping-cart"></i> <span>订单管理</span></a></li>

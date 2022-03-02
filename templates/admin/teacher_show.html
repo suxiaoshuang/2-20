@@ -1,0 +1,245 @@
+
+{% extends "admin/base.html" %}
+{% load static %}
+{% block main_body %}
+    <!-- Content Header (Page header) -->
+    <script src="{% static 'myadmin/bower_components/dropzone/min/dropzone.min.js'%}"></script>
+      <script src="{% static 'myadmin/bower_components/dropzone/dropzone.js'%}"></script>
+    <script src="{% static 'myadmin/bower_components/fontawesome-free/css/all.min.css' %}"></script>
+    <section class="content-header">
+      <h1>
+        人员组织
+
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="{% url 'admin_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
+          <li><a href="{% url 'admin_contest_show' 1 %}">竞赛信息</a> </li>
+        <li class="active">竞赛报名</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h4 class="box-title"><i class="fa fa-calendar"></i> 竞赛报名</h4>
+
+              <div class="box-tools">
+                <form action="{% url 'admin_tea_show'  1%}" method="get">
+                <div class="input-group input-group-sm" style="width:150px;">
+                  <input type="text" name="keyword" class="form-control pull-right" placeholder="名称/">
+
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+                </form>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tr>
+                  <th>ID</th>
+                  <th>学工号</th>
+                  <th>姓名</th>
+                  <th>专业</th>
+                    <th>邮箱</th>
+                  <th>操作</th>
+                </tr>
+                {% for vo in conlist %}
+                <tr>
+                  <td>{{ vo.id }}</td>
+                  <td>{{ vo.user_id }}</td>
+                  <td>{{ vo.name }}</td>
+                  <td >{{ vo.specialty }}</td>
+                    <td>{{ vo.email }}</td>
+
+                  <td width="22%">
+
+                    <a href="{% url 'admin_tea_update' vo.id %}?pIndex={{ pIndex }}" class="btn btn-success btn-xs">
+                      <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 编辑
+                    </a>
+
+                    <a  href="{% url 'admin_tea_delete' vo.id %}?pIndex={{ pIndex }}" class="btn btn-danger btn-xs">
+                      <span class="glyphicon " aria-hidden="true"></span> 删除
+                    </a>
+
+
+                  </td>
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+
+{#              <a role="button" href="{% url 'admin_stu_add' %}" class="btn btn-primary btn-xs">#}
+{#                      <span class="glyphicon glyphicon-plus" aria-hidden="true">#}
+{##}
+{#                      </span> 新增#}
+{#              </a>#}
+
+{#            <form class="dropzone" action="{% url 'admin_stu_add' %}" method="post" enctype="multipart/form-data">#}
+{#                {% csrf_token %}#}
+{#                <div class="btn-group w-100">#}
+{#                <div class="fallback">#}
+{##}
+{##}
+{#               <input type="file"  name="file" accept="text/csv"/>#}
+{#                </div>#}
+{#                </div>#}
+{##}
+{##}
+{#            </form>#}
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-default">
+
+              <div class="card-body">
+                <div id="actions" class="row">
+                  <div class="col-lg-6">
+                    <div class="btn-group w-100">
+
+                      <span class="btn btn-success col fileinput-button">
+                        <i class="fas fa-plus"></i>
+                        <span>Add教师名单excel文件</span>
+                      </span>
+                      <button type="submit" class="btn btn-primary col start">
+                        <i class="fas fa-upload"></i>
+                        <span>Start upload</span>
+                      </button>
+                      <button type="reset" class="btn btn-warning col cancel">
+                        <i class="fas fa-times-circle"></i>
+                        <span>Cancel upload</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 d-flex align-items-center">
+                    <div class="fileupload-process w-100">
+                      <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="table table-striped files" id="previews">
+                  <div id="template" class="row mt-2">
+                    <div class="col-auto">
+                        <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                    </div>
+                    <div class="col d-flex align-items-center">
+                        <p class="mb-0">
+                          <span class="lead" data-dz-name></span>
+                          (<span data-dz-size></span>)
+                        </p>
+                        <strong class="error text-danger" data-dz-errormessage></strong>
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                        <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                        </div>
+                    </div>
+                    <div class="col-auto d-flex align-items-center">
+                      <div class="btn-group">
+                        <button class="btn btn-primary start">
+                          <i class="fas fa-upload"></i>
+                          <span>Start</span>
+                        </button>
+                        <button data-dz-remove class="btn btn-warning cancel">
+                          <i class="fas fa-times-circle"></i>
+                          <span>Cancel</span>
+                        </button>
+                        <button data-dz-remove class="btn btn-danger delete">
+                          <i class="fas fa-trash"></i>
+                          <span>Delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+
+            <!-- /.card -->
+          </div>
+        </div>
+<script>
+  // DropzoneJS Demo Code Start
+  Dropzone.autoDiscover = false
+
+  // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+  var previewNode = document.querySelector("#template")
+  previewNode.id = ""
+  var previewTemplate = previewNode.parentNode.innerHTML
+  previewNode.parentNode.removeChild(previewNode)
+
+  var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+    url: "{% url 'admin_tea_add' %}", // Set the url
+    thumbnailWidth: 80,
+    thumbnailHeight: 80,
+    parallelUploads: 20,
+    previewTemplate: previewTemplate,
+    dictInvalidInputType:"文件类型不正确",
+    autoQueue: false, // Make sure the files aren't queued until manually added
+    previewsContainer: "#previews", // Define the container to display the previews
+    acceptedFiles: '.csv,.xlsx,.xls',
+    clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+  })
+
+  myDropzone.on("addedfile", function(file) {
+    // Hookup the start button
+    file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file) }
+  })
+
+  // Update the total progress bar
+  myDropzone.on("totaluploadprogress", function(progress) {
+    document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+  })
+
+  myDropzone.on("sending", function(file) {
+    // Show the total progress bar when upload starts
+    document.querySelector("#total-progress").style.opacity = "1"
+    // And disable the start button
+    file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
+  })
+
+  // Hide the total progress bar when nothing's uploading anymore
+  myDropzone.on("queuecomplete", function(progress) {
+    document.querySelector("#total-progress").style.opacity = "0"
+  })
+
+  // Setup the buttons for all transfers
+  // The "add files" button doesn't need to be setup because the config
+  // `clickable` has already been specified.
+  document.querySelector("#actions .start").onclick = function() {
+    myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
+  }
+  document.querySelector("#actions .cancel").onclick = function() {
+    myDropzone.removeAllFiles(true)
+  }
+  // DropzoneJS Demo Code End
+
+
+</script>
+              <ul class="pagination pagination-sm no-margin pull-right">
+                <li><a href="{% url 'admin_tea_show' pIndex|add:-1 %}?{{ mywhere |join:'&' }}">&laquo;</a></li>
+                {% for p in plist %}
+                  <li {% if p == pIndex %}class="active"{% endif %}><a href="{% url 'admin_tea_show' p %}?{{ mywhere |join:'&' }}">{{p}}</a></li>
+                {% endfor %}
+                <li><a href="{% url 'admin_tea_show' pIndex|add:1 %}?{{ mywhere |join:'&' }}">&raquo;</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+{% endblock %}
