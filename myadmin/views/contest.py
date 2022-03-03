@@ -21,7 +21,7 @@ def contest_show(request,pIndex=1):
 
 
     if  status:
-        list = con.filter(contest_status=0)
+        list = con.filter(contest_status = 0)
         mywhere.append('status='+status)
         status = 'status='+status
 
@@ -153,10 +153,12 @@ def con_add(request):
                 print(file_name)
                 file.file_path = os.path.join('upload_file/',file_name)          #相对路径
 
+
                 with open(os.path.join(settings.FILE_UPLOAD[0],file_name),'ab') as f:
                     for chunk in i.chunks():
                         f.write(chunk)
                     f.close()
+                file.file_size = str(size_format(os.path.getsize(os.path.join(settings.FILE_UPLOAD[0],file_name))))
                 file.save()
 
         return redirect(reverse('admin_contest_show',args=(1,)))
@@ -174,60 +176,67 @@ def con_delete(request,id):
     con = Contest.objects.get(id=id)
     con_time = con.contest_ctime
     file = File.objects.filter(file_ctime=con_time)
+    pIndex = request.GET.get('pIndex')
     if file:                #如果有附件,就把附件delete。
-        file.delete()
+        for i in file:
+            url = os.path.join(settings.FILE_UPLOAD[0],i.file_path.replace('upload_file/',''))
+            os.remove(url)
+            i.delete()
     con.delete()
-
-    return redirect(request,reverse('admin_contest_show',args=(1)))
-
-
+    status = request.GET.get('mywhere')
+    return redirect(reverse('admin_contest_show',args=(1,)),locals())
 
 
-def con_update(request,id):
+
+
+def con_info(request,id):
     if request.method == "GET":
         form1 = PostForm()
 
         con = Contest.objects.get(id=id)
         c_name = con.contest_name
         c_type = con.contest_type
-        c_info = con.contest_info
+        form1 = con.contest_info
         c_organizer = con.contest_organizer
         c_stage = con.contest_stage
         c_time = con.contest_time
         c_img = con.contest_img_path
         c_id = id
-        return render(request,'admin/contest_update.html',locals())
+        c_status = con.contest_status
+        try:
+            f_time = con.contest_ctime
+
+            f = File.objects.filter(file_ctime=f_time)
 
 
-    elif request.method=="POST":
-        con = Contest.objects.get(id=id)
-        data = request.POST
-        con.contest_time = data.get('c_time')
-        con.contest_stage = data.get('c_stage')
-        con.contest_name = data.get('c_name')
-        con.contest_organizer = data.get('c_organizer')
-        con.contest_info = data.get('content')
-        con.contest_type = data.get('c_type')
-
-        c_time = con.contest_ctime
-
-        file(request,c_time)
-        img_path = img(request)
-        if img_path:
-            con.contest_img_path = img_path
-
-        return redirect(request,reverse('admin_contest_update',args=(id)))
+        except:
+            print('error')
 
 
-def con_info(request,id):
-    return render(request,'admin/contest_info.html')
+
+        return render(request,'admin/contest_info.html',locals())
+
+
+def size_format(size):
+    if size < 1000:
+        return '%i' % size + 'size'
+    elif 1000 <= size < 1000000:
+        return '%.1f' % float(size/1000) + 'KB'
+    elif 1000000 <= size < 1000000000:
+        return '%.1f' % float(size/1000000) + 'MB'
+    elif 1000000000 <= size < 1000000000000:
+        return '%.1f' % float(size/1000000000) + 'GB'
+    elif 1000000000000 <= size:
+        return '%.1f' % float(size/1000000000000) + 'TB'
+
+
 
 def con_close(request,id):
     con = Contest.objects.get(id=id)
     con.contest_status = 0
     con.save()
     pIndex = request.GET.get('pIndex')
-    return redirect(reverse('admin_contest_show',args=(pIndex)))
+    return redirect(reverse('admin_contest_show',args=(pIndex,)))
 
 def img(request):
     if request.FILES.get('img', None):

@@ -5,8 +5,11 @@
     <section class="content-header">
       <h1>
         竞赛管理
-      </h1>
+      </h1><script src="{% static 'myadmin/base.css '%}"></script>
+<script src="{% static 'myadmin/con_info.css '%}"></script>
 
+        <script src="{% static 'myadmin/combo.select.css '%}"></script>
+        <script src="{% static 'myadmin/normalize.css '%}"></script>
       <ol class="breadcrumb">
         <li><a href="{% url 'admin_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
         <li class="active">更新竞赛信息</li>
@@ -28,8 +31,11 @@
               <div class="image">
 
                   <span style="width: 469px ;display:block ;margin: auto;padding-bottom: 30px">
-                      <img src="{% static  c_img%}" style="width: 450px; height: 250px">
-                  </span>
+                      <img src="{% static  c_img%}" style="width: 450px; height: 250px" />
+
+                    </span>
+
+
               </div>
             <!-- form start -->
             <form class="form-horizontal" action="{% url 'admin_contest_update' c_id%}" method="post" enctype="multipart/form-data">
@@ -80,7 +86,9 @@
                   <label for="inputEmail3" class="col-sm-2 control-label">竞赛信息：</label>
                   <div class="col-sm-4">
                    <text name="contest_info" id="detail" aria-label="detail"  >
-                    {{ form1}}
+
+                    {{ form1 | safe}}
+
                    </text>
                   </div>
                 </div>
@@ -109,7 +117,22 @@
               <!-- /.box-footer -->
             </form>
 
+            <div class="Download clearfix">
 
+                {% for i in f %}
+                <span style="
+                        display:block;
+                        width:743px;
+                        border:1px dashed #d9d9d9;
+                        background:#f7f7f7;
+                        position:relative;
+                        margin-bottom:5px;
+                        z-index:777;">
+                    <p>{{ i.file_name }}</p>
+
+                </span>
+                {% endfor %}
+            </div>
 
           </div>
           <!-- /.box -->

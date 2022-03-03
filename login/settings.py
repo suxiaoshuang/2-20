@@ -29,6 +29,9 @@ ALLOWED_HOSTS = []
 IMG_UPLOAD = [os.path.join(BASE_DIR,'static','upload_images')]
 FILE_UPLOAD = [os.path.join(BASE_DIR,'static','upload_file')]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 # Application definition
 
 INSTALLED_APPS = [

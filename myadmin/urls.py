@@ -1,6 +1,6 @@
 from django.urls import path
 from login_register.views.views import index
-from .views.contest import con_open,contest_show,con_add,con_delete,con_update,img,con_info,con_close,con_off,con_on
+from .views.contest import con_open,contest_show,con_add,con_delete,img,con_info,con_close,con_off,con_on
 from .views.student import stu_show,stu_add,stu_delete,stu_update
 from .views.teacher import tea_add,tea_show,tea_update,tea_delete
 from .views.admins import admin_show
@@ -14,7 +14,7 @@ urlpatterns = [
     path('contest_off/<int:id>',con_off,name="admin_contest_off"),
     path('contest_delete/<int:id>',con_delete,name="admin_contest_delete"),
     path('contest_close/<int:id>',con_close,name="admin_contest_close"),
-    path('contest_update/<int:id>',con_update,name="admin_contest_update"),
+
 
 
     path('student_delete/<int:id>',stu_delete,name="admin_stu_delete"),
@@ -29,6 +29,8 @@ urlpatterns = [
 
 
     path('admin_show/<int:pIndex>',admin_show,name="admin_admin_show"),
+
+
 
     path('img/',img,name="img"),
 

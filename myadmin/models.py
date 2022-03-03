@@ -1,7 +1,57 @@
 from django.db import models
 
 # Create your models here.
+class Specialty(models.Model):
+    name = models.CharField(max_length=50)
 
+    class Meta:
+        db_table = 'specialty'
+
+
+class Tyep(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'type'
+
+
+class Stage(models.Model):
+    stage = models.CharField(max_length=10)
+
+    class Meta:
+        db_table = 'stage'
+
+
+class Registration(models.Model):
+    t_id = models.CharField(max_length=50)
+    t_name = models.CharField(max_length=50)
+    c_name = models.CharField(max_length=50)
+    type = models.CharField(max_length=20)
+    status = models.CharField(max_length=10, default=0)
+    teacher = models.CharField(max_length=30)
+
+    class Meta:
+        db_table = 'registration'
+
+
+class Team(models.Model):
+    t_name = models.CharField(max_length=50)
+    u_name = models.CharField(max_length=50)
+    u_id = models.CharField(max_length=30)
+    head = models.BooleanField(default=False)
+    c_id = models.CharField(max_length=20)
+    c_name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'team'
+
+
+
+class Academy(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'academy'
 
 class User(models.Model):
     identifies = (('student','学生'),('teacher','教师'),('admin','管理员'),)
@@ -65,52 +115,9 @@ class File(models.Model):
     file_user_id = models.CharField(max_length=30)
     file_ctime = models.CharField(max_length=30)
     file_user_name = models.CharField(max_length=100)
+    file_size = models.CharField(max_length=20,default='0KB')
 
     class Meta:
         db_table = "file"
 
 
-class Specialty(models.Model):
-    name = models.CharField(max_length=50)
-
-    class Meta:
-        db_table = 'specialty'
-
-class Tyep(models.Model):
-    name = models.CharField(max_length=50)
-
-    class Meta:
-        db_table = 'type'
-
-class Stage(models.Model):
-    stage = models.CharField(max_length=10)
-
-    class Meta:
-        db_table = 'stage'
-
-class Academy(models.Model):
-    name = models.CharField(max_length=50)
-
-    class Meta:
-        db_table = 'academy'
-
-class Registration(models.Model):
-    t_id = models.CharField(max_length=50)
-    t_name = models.CharField(max_length=50)
-    c_name = models.CharField(max_length=50)
-    type = models.CharField(max_length=20)
-    status = models.CharField(max_length=10,default=0)
-    teacher = models.CharField(max_length=30)
-
-
-    class Meta:
-        db_table = 'registration'
-
-
-class Team(models.Model):
-    t_name = models.CharField(max_length=50)
-    u_name = models.CharField(max_length=50)
-    u_id = models.CharField(max_length=30)
-    head = models.BooleanField(default=False)
-    c_id = models.CharField(max_length=20)
-    c_name = models.CharField(max_length=50)

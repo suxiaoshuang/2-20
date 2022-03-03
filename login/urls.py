@@ -15,7 +15,8 @@ Including another URLconf
 """
 from login_register.views.views import index, login, register, logout, user_confirm
 from django.urls import path, include
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('login/', login, name='login'),
@@ -32,3 +33,5 @@ urlpatterns = [
 
 
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

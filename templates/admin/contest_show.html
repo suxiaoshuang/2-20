@@ -68,11 +68,9 @@
 
                   <td width="22%">
                       {% if vo.contest_status > 0 %}
-                    <a href="{% url 'admin_contest_update' vo.id %}" class="btn btn-success btn-xs">
-                      <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 编辑
-                    </a>
 
-                    <a  href="{% url 'admin_contest_delete' vo.id %}" class="btn btn-danger btn-xs">
+
+                    <a onclick="return del();" href="{% url 'admin_contest_delete' vo.id %}?pIndex={{ pIndex }}" class="btn btn-danger btn-xs">
                       <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 删除
                     </a>
 
@@ -80,13 +78,13 @@
                       <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 查看
                     </a>
 
-                    <a  href="{% url 'admin_contest_close' vo.id %}?pIndex={{ pIndex }}" class="btn btn-info btn-xs">
+                    <a  onclick="return clo();" href="{% url 'admin_contest_close' vo.id %}?pIndex={{ pIndex }}"  class="btn btn-info btn-xs">
                       <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> 结束竞赛
                     </a>
 
                     {% elif vo.contest_status == 0 %}
 
-                    <a  href="{% url 'admin_contest_delete' vo.id %}" class="btn btn-danger btn-xs">
+                    <a  onclick="return del();" href="{% url 'admin_contest_delete' vo.id %}?pIndex={{ pIndex }}?{{ mywhere |join:'&' }}"  class="btn btn-danger btn-xs">
                       <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 删除
                     </a>
 
@@ -95,13 +93,33 @@
                     </a>
 
                     {% endif %}
-
-
-
-
                   </td>
                 </tr>
                 {% endfor %}
+<script type="text/javascript" language="JavaScript">
+		function del()
+		{
+		     if(confirm("确定要删除吗?"))
+		     {
+		         return true;
+		     }else{
+		         return false;
+			 }
+		}
+
+    </script>
+ <script>
+    function clo()
+		{
+		     if(confirm("确定要结束吗?"))
+		     {
+		         return true;
+		     }else{
+		         return false;
+			 }
+		}
+ </script>
+
               </table>
             </div>
             <!-- /.box-body -->
@@ -114,8 +132,12 @@
 
               <a role="button" href="{% url 'admin_contest_show' 1%}?status=0" class="btn btn-primary btn-xs">
                       <span  aria-hidden="true">
-
                       </span> 已结束
+              </a>
+
+              <a role="button" href="{% url 'admin_contest_show' 1%}" class="btn btn-primary btn-xs">
+                      <span  aria-hidden="true">
+                      </span> 进行中
               </a>
 
               <ul class="pagination pagination-sm no-margin pull-right">
