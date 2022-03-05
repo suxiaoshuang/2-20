@@ -36,14 +36,22 @@
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">类别：</label>
                   <div class="col-sm-4">
-                    <input type="text" name="contest_type" class="form-control" id="inputText2" placeholder="类别" />
+                    <select name="contest_type" class="form-control">
+                        {% for i in type %}
+                            <option value="{{ i.name }}">{{ i.name }}</option>
+                        {% endfor %}
+                    </select>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label for="inputEmail3"  class="col-sm-2 control-label">举办方：</label>
                   <div class="col-sm-4">
-                    <input type="text" name="contest_organizer" class="form-control"  />
+                    <select name="contest_organizer" class="form-control">
+                        {% for i in organizer %}
+                            <option value="{{ i.name }}">{{ i.name }}</option>
+                        {% endfor %}
+                    </select>
                   </div>
                 </div>
 
@@ -57,13 +65,17 @@
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">赛段：</label>
                   <div class="col-sm-4">
-                    <input type="text" name="contest_stage" class="form-control"  />
+                    <select name="contest_stage" class="form-control">
+                        {% for i in stage %}
+                            <option value="{{ i.stage }}">{{ i.stage }}</option>
+                        {% endfor %}
+                    </select>
                   </div>
                 </div>
 
                  <div class="form-group" >
                   <label for="inputEmail3" class="col-sm-2 control-label">封面图片：</label>
-                    <input type="file" name="contest_img" accept="image/png | image/jpg|imge/jpeg" />
+                    <input type="file" name="contest_img" accept="image/*" />
                 </div>
 
 

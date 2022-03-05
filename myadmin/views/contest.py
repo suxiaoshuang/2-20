@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from ..models import Contest,File
+from ..models import Contest, File, Stage, Tyep, Organizer
 from django.shortcuts import render,HttpResponse,redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -165,6 +165,9 @@ def con_add(request):
 
     else:
         form1 = PostForm()
+        type = Tyep.objects.filter()
+        stage = Stage.objects.filter()
+        organizer = Organizer.objects.filter()
         return render(request, 'admin/contest_add.html', locals())
 
 

@@ -1,10 +1,22 @@
 {% extends "admin/base.html" %}
-
+import React, { Component } from 'react';
+import Slider from 'react-slider-light';
+{% load static %}
 {% block main_body %}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         竞赛信息管理
+		<link rel="stylesheet" type="text/css" href="{% static 'myadmin/index/index.css' %}"/>
+		<script src="{% static 'myadmin/index/animate.js' %}"></script>
+		<script src="{% static 'myadmin/index/index.js' %}"></script>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'myadmin/index.css' %}">
+{##}
+<!-- {#        <script src="{% static 'myadmin/jquery.js' %}"></script>#}
+{#          <script src="{% static 'myadmin/MxSlider.js' %}"></script>#} -->
+      <!-- <link href="https://951565664.github.io/react-slider-light/index.js">
+   <link href="https://951565664.github.io/react-slider-light/index.css"  -->
 
       </h1>
       <ol class="breadcrumb">
@@ -14,6 +26,78 @@
     </section>
 
     <!-- Main content -->
+
+<div class="mainBody">
+
+<div class="page">
+  <div class="ma">
+    <a href="javascript:;" class="left">&lt;</a>
+    <!-- 右按钮 -->
+    <a href="javascript:;" class="right">&gt;</a>
+    <!-- 滚动区 -->
+    <ul>
+                      {% for i in con %}
+      <li>
+                  <a href="{% url 'admin_contest_info' i.id %}" style="color: #fff" >
+
+                      <h1 style=" width: 1000px; height: 500px ;background-size:1000px 500px;background-image:url('{% static i.contest_img_path %}')">{{ i.contest_name }}</h1>
+                  </a>
+      </li>
+
+                      {% endfor %}
+    </ul>
+    <!-- 小圆 -->
+          <ol class="circle">
+
+          </ol>
+
+  </div>
+</div>
+
+    <div class="indexFloor">
+  
+  <div class="iBoxA" >
+    <div class="box-title">
+      <a href="" class="more">更多</a>
+      <h2>新闻</h2>
+    </div>
+
+    <div class="box-body">
+      {%for i in con%}
+      <ul>
+        <li>
+          <a href="{%url 'admin_contest_info' i.id %}">{{i.contest_name}}</a>
+        </li>
+      </ul>
+      {%endfor%}
+    </div>
+  </div>
+
+  <div class="iboxB" style="width: 45%; float:right;">
+        <div class="box-title"><strong><b>学科竞赛</b></strong><a href="" class="more">更多</a></div>
+        <div class="box-body">
+          <div class="list">
+            <ul>
+              {%for i in con%}
+              <li >
+                <a href="">{{i.contest_name}}</a>
+              </li>
+              {%endfor%}
+            </ul>
+          </div>
+
+        </div>
+  </div>
+
+</div>  
+
+  <div style="height:450px;">
+
+
+  </div>
+
+</div> 
+
 
     <!-- /.content -->
 {% endblock %}

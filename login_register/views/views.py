@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from myadmin.models import User,ConfirmString
+from myadmin.models import User,ConfirmString,Contest
 import hashlib
 import datetime
 import base64
@@ -120,7 +120,8 @@ def index(request):
 
     identify = request.session.get('identify')
     dic = {'学生':'student','教师':'teacher','管理员':'admin'}
-    return render(request, dic.get(identify)+'/index.html')
+    con = Contest.objects.filter().order_by('id')[:5]
+    return render(request, dic.get(identify)+'/index.html',locals())
 
 
 def login(request):

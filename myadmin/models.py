@@ -1,6 +1,23 @@
 from django.db import models
 
 # Create your models here.
+from django_summernote.fields import SummernoteTextFormField
+
+
+class Organizer(models.Model):
+    name = models.CharField(max_length=20)
+    class Meta:
+        db_table = 'organizer'
+
+
+class Info(models.Model):
+    title = models.CharField(max_length=100)
+    time = models.DateTimeField(auto_now_add=True)
+    text = SummernoteTextFormField()
+    ctime = models.CharField(max_length=30)
+    class Meta:
+        db_table = 'info'
+
 class Specialty(models.Model):
     name = models.CharField(max_length=50)
 
