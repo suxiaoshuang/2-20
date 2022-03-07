@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('',login,name='login'),
     path('login/', login, name='login'),
     path('register/', register, name='register'),
     path('logout/', logout, name='logout'),

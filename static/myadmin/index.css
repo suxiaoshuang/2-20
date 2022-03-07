@@ -19,7 +19,9 @@
     padding:10px 10px 10px ;
     height: 340px;
 }
-.iBoxA { float:left; width:45%;
+.iBoxA { 
+    float:left; 
+    width:47%;
 }
 .iBoxA .box-title{ height:54px; line-height:54px; background:#3d95d5;}
 .iBoxA .box-title .more{ float:right; margin-right:16px; color:#fff;}
@@ -39,6 +41,11 @@
     text-overflow: ellipsis; 
     overflow: hidden;
 }
+.iBoxA .box-body a{
+    color: #404040;
+}
+
+
 .iboxB .box-title {
     line-height: 49px;
     height: 54px;
@@ -63,7 +70,23 @@
     border-top: 0px;
     padding-top: 0px;
 }
-.iboxB .list li{ font-size:16px; line-height:28px; padding:5px 20px 5px 35px; background:url(icon001.png) no-repeat 16px 16px;white-space:nowrap;text-overflow:ellipsis; overflow:hidden;}
+.iboxB .list li{ 
+     font-size:16px;
+     line-height:28px; 
+     padding:5px 20px 5px 35px; 
+     background:url(icon001.png) no-repeat 16px 16px;
+     white-space:nowrap;
+     text-overflow:ellipsis; 
+     overflow:hidden;
+    }
 .iboxB .list a {
     color: #404040;
+}
+.iboxB .hot{ width:440px; height:115px; margin:0px auto 0px; padding:30px 0px 0px; overflow:hidden;}
+.iboxB .hot a{ display:block;}
+.iboxB .hot .pic {
+    float: left;
+    height: 94px;
+    width: 142px;
+    margin: 0px 18px 15px 0px;
 }

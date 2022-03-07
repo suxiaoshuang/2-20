@@ -73,7 +73,7 @@ import Slider from 'react-slider-light';
     </div>
   </div>
 
-  <div class="iboxB" style="width: 45%; float:right;">
+  <div class="iboxB" style="width: 47%; float:right;">
         <div class="box-title"><strong><b>学科竞赛</b></strong><a href="" class="more">更多</a></div>
         <div class="box-body">
           <div class="list">
@@ -91,8 +91,58 @@ import Slider from 'react-slider-light';
 
 </div>  
 
-  <div style="height:450px;">
+  <div class="indexFloor">
 
+    <div class="iboxB" style="width: 47%; float:right;">
+      <div class="box-title"><strong><b>文件下载</b></strong><a href="" class="more">更多</a></div>
+      <div class="hot">
+        <a href="">
+          <div class="pic">
+            <img style="    float: left;
+            height: 94px;
+            width: 142px;
+            margin: 0px 18px 15px 0px;" src="{% static 'myadmin/20220303165610_5343.png' %}">
+          </div>
+        </a>
+      </div>
+        <div class="list">
+          <ul>
+            {%for i in con%}
+            <li >
+              <a href="">{{i.contest_name}}</a>
+            </li>
+            {%endfor%}
+          </ul>
+        </div>
+
+
+  </div>
+
+  <div class="iboxB" style="width: 47%; float:left;">
+    <div class="box-title"><strong><b>通知</b></strong><a href="" class="more">更多</a></div>
+    <div class="hot">
+        <a href="">
+          <div class="pic">
+            <img style="    float: left;
+            height: 94px;
+            width: 142px;
+            margin: 0px 18px 15px 0px;" src="{% static 'myadmin/20220304130701_0933.png' %}" >
+          </div>
+          <div class="title"></div>
+        </a>
+    </div>
+
+      <div class="list">
+  <ul>
+    {%for i in con%}
+    <li >
+      <a href="">{{i.contest_name}}</a>
+    </li>
+    {%endfor%}
+  </ul>
+      </div>
+
+  </div>
 
   </div>
 
