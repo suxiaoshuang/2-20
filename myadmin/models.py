@@ -10,7 +10,7 @@ class Organizer(models.Model):
         db_table = 'organizer'
 
 
-class Info(models.Model):
+class Info(models.Model):   #新闻
     title = models.CharField(max_length=100)
     time = models.DateTimeField(auto_now_add=True)
     text = SummernoteTextFormField()
