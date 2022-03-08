@@ -26,7 +26,7 @@ def contest_show(request,pIndex=1):
         status = 'status='+status
 
     if kw:
-        list = list.filter(Q(contest_name__icontains=kw)|Q(contest_organizer__icontains=kw))
+        list = list.filter(Q(contest_name__icontains=kw)|Q(contest_type__icontains=kw))
         mywhere.append("keyword="+kw)
 
     pIndex = int(pIndex)

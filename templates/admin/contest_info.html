@@ -13,17 +13,17 @@
         <li class="active">更新竞赛信息</li>
       </ol>
     </section>
-{#<link rel="stylesheet" href="{% static 'myadmin/font-awesome-4.7.0/css/font-awesome.min.css' %}">#}
+<link rel="stylesheet" href="{% static 'myadmin/css/con_info.css' %}">
     <!-- Main content -->
     <section class="content container-fluid">
 
 <div class="PageBox" style="margin-bottom: 50px;display: flex;background: #f9f9f9;">
     <div class="ComDeBox" style=" margin:0px auto;padding-top: 10px; width: 1200px; font-family:'微软雅黑'">
 
-        <div class="ComDeLBox" style="    width:65%; float:left; margin-left: 15%;">
+        <div class="ComDeLBox" style=" float:left; margin-left: 15%;">
 
 
-            <div class="Com_info" style="width: 845px;background: white;padding: 40px 0px;height: 180px">
+            <div class="Com_info" style="width: 845px;background: white;padding: 40px 0px;">
 
 
                 <div class="info_title clearfix" style="width: 744px;margin: 0px auto;padding-bottom: 15px;">
@@ -32,25 +32,16 @@
                 </div>
 
 
-
-
-
-                <div style="width: 744px;margin: 0px auto;">
-                   <div   style="width: 700px;line-height:28px; font-family:'微软雅黑';">
-
-                        <p class="fa fa-user " style="color: #439ff6;width: 700px;padding-left:24px;" >
+                <div class="dog" >
+                   <div class="dog-a"  >
+                        <p class="dog-aa "  >
                            {{ c_organizer }}
                         </p>
-
-                        <div class="fa fa-user" style="width: 700px;line-height: 28px;padding-left: 24px;font-family:'微软雅黑';">比赛时间：{{ c_time }}</div>
-                        <a class="btn" style="background-color: #8d98a2;cursor: no-drop">已结束</a>
-
-
-
-
                     </div>
 
-
+                    <div class="dog-b" >比赛时间：{{ c_time }}</div>
+                    <a class="btn" style="background-color: #8d98a2;cursor: no-drop;display: inline;float: right;">已结束</a>
+               
 
                 </div>
 
@@ -69,7 +60,7 @@
 
 
 
-            <div class="ComDetailBox" style="width: 845px;">
+            <div class="ComDetailBox" style="width: 845px; padding-top: 15px;">
                 <div class="ComDetailBoxA" id="Detail" style="overflow: hidden;width:845px; background:#fff;padding: 20px 0px;margin-top:10px;">
 
 

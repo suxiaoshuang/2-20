@@ -13,8 +13,9 @@ class Organizer(models.Model):
 class Info(models.Model):   #新闻
     title = models.CharField(max_length=100)
     time = models.DateTimeField(auto_now_add=True)
-    text = SummernoteTextFormField()
+    text = models.TextField()
     ctime = models.CharField(max_length=30)
+    come_from = models.CharField(max_length=50,null=True,blank=True)
     class Meta:
         db_table = 'info'
 

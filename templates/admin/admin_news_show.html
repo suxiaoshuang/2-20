@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+{%load static%}
+{% block main_body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        信息管理
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="{% url 'admin_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
+        <li class="active">添加新闻资讯</li>
+        <link rel="stylesheet" type="text/css" href="{% static 'myadmin/css/news_add.css' %}">
+      </ol>
+    </section>
+
+    <!-- Main content -->
+
+        <section class="content container-fluid">
+
+          <div class="mainBody">
+            <div class="sidL" style="width:100%;">
+              <div class="place">
+                <h2 class="f1">新闻资讯</h2>
+                <div class="fr">                 
+            	当前位置：   
+              <a href="/">首页</a>  ">"     
+              <a href="">新闻资讯</a>      
+                </div>
+              </div>
+            </div>
+
+            <div class="Art">
+              <h1 class="art-title">{{info.title}}</h1>
+              <div></div>
+              <div class="art-body">
+                {{info.text|safe}}
+              </div>
+            </div>
+
+            <div class=""
+
+          </div>
+          </section>
+
+
+
+
+    <!-- /.content -->
+{% endblock %}

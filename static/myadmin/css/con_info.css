@@ -1,0 +1,26 @@
+.dog{
+    width: 744px;
+    margin: 0px auto;
+    padding-top:30px;
+}
+.dog .dog-a{
+    width: 597px;
+    line-height: 28px;
+    font-family: "微软雅黑";
+    background: url(icon-sponsor-01.png) no-repeat;
+    background-position: left 5px;
+    padding-left: 24px;
+}
+.dog .dog-aa{
+    text-decoration: none;
+    cursor: pointer;
+}
+.dog-b{
+    width: 598px;
+    line-height: 28px;
+    font-family: "微软雅黑";
+    background: url(icon-time-02.png) no-repeat;
+    background-position: left 6px;
+    padding-left: 24px;
+    display: inline;
+}
