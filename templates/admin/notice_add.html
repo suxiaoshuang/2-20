@@ -8,7 +8,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="{% url 'admin_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li class="active">添加新闻资讯</li>
+        <li class="active">添加公告</li>
       </ol>
     </section>
     <!-- Main content -->
@@ -20,7 +20,7 @@
       
                   <!-- /.box-header -->
                   <!-- form start -->
-                  <form class="form-horizontal" action="{% url 'admin_news_add' %}" method="post" enctype="multipart/form-data">
+                  <form class="form-horizontal" action="{% url 'notice_add' %}" method="post" enctype="multipart/form-data">
                       {% csrf_token %}
                     <div class="box-body">
                       <div class="form-group">
@@ -43,7 +43,7 @@
                       </div>
                             
                       <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">新闻信息：</label>
+                        <label for="inputEmail3" class="col-sm-2 control-label">公告信息：</label>
                         <div class="col-sm-4">
                          <text name="information" id="detail" aria-label="detail" >
                           {{information.content }}

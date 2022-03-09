@@ -121,6 +121,7 @@ def index(request):
     identify = request.session.get('identify')
     dic = {'学生':'student','教师':'teacher','管理员':'admin'}
     con = Contest.objects.filter().order_by('id')[:5]
+    sessions = request.session
     return render(request, dic.get(identify)+'/index.html',locals())
 
 

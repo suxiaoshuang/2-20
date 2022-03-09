@@ -6,17 +6,12 @@ import Slider from 'react-slider-light';
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        竞赛信息管理
 <link rel="stylesheet" type="text/css" href="{% static 'myadmin/index/index.css' %}"/>
-		<script src="{% static 'myadmin/index/animate.js' %}"></script>
-		<script src="{% static 'myadmin/index/index.js' %}"></script>
+<script src="{% static 'myadmin/index/animate.js' %}"></script>
+<script src="{% static 'myadmin/index/index.js' %}"></script>
 
-  <link rel="stylesheet" type="text/css" href="{% static 'myadmin/index/index2.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'myadmin/index/index2.css' %}">    
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li class="active">竞赛信息</li>
-      </ol>
     </section>
 
     <!-- Main content -->
@@ -52,7 +47,11 @@ import Slider from 'react-slider-light';
   
   <div class="iBoxA" >
     <div class="box-title">
+      {% if sessions.identify == '管理员'%}
+      <a href="{%url 'admin_news_list' 1%}" class="more">更多</a>
+      {%elif sessions.identify == '学生'%}
       <a href="" class="more">更多</a>
+      {%endif%}
       <h2>新闻</h2>
     </div>
 
@@ -95,7 +94,7 @@ import Slider from 'react-slider-light';
             <img style="    float: left;
             height: 94px;
             width: 142px;
-            margin: 0px 18px 15px 0px;" src="{% static 'myadmin/20220303165610_5343.png' %}">
+            margin: 0px 18px 15px 0px;" src="{% static 'myadmin/index/20220303165610_5343.png' %}">
           </div>
         </a>
       </div>
@@ -113,14 +112,20 @@ import Slider from 'react-slider-light';
   </div>
 
   <div class="iboxB" style="width: 47%; float:left;">
-    <div class="box-title"><strong><b>通知</b></strong><a href="" class="more">更多</a></div>
+    <div class="box-title"><strong><b>通知</b></strong>
+      {% if sessions.identify == '管理员' %}
+      <a href="{%url 'notice_list' 1 %}" class="more">更多</a>
+      {%elif sessions.identify == '学生'%}
+      <a href="" class="more">更多</a>
+      {%endif%}
+    </div>
     <div class="hot">
         <a href="">
           <div class="pic">
             <img style="    float: left;
             height: 94px;
             width: 142px;
-            margin: 0px 18px 15px 0px;" src="{% static 'myadmin/20220304130701_0933.png' %}" >
+            margin: 0px 18px 15px 0px;" src="{% static 'myadmin/index/20220304130701_0933.png' %}" >
           </div>
           <div class="title"></div>
         </a>

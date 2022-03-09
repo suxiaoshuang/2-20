@@ -5,7 +5,7 @@ from .views.student import stu_show,stu_add,stu_delete,stu_update
 from .views.teacher import tea_add,tea_show,tea_update,tea_delete
 from .views.admins import admin_show
 from .views.news import admin_news_add,admin_news_show,admin_news_list,admin_news_delete
-
+from .views.notice import n_list,n_show,n_add,n_delete
 
 urlpatterns = [
     path('index/',index,name='admin_index'),
@@ -37,6 +37,11 @@ urlpatterns = [
     path('admin_news_show/<int:id>',admin_news_show,name="admin_news_show"),
     path('admin_news_list/<int:pIndex>',admin_news_list,name="admin_news_list"),
     path('admin_news_delete/<int:id>',admin_news_delete,name="admin_news_delete"),
+
+    path('admin_notice_add/',n_add,name="notice_add"),
+    path('admin_notice_list/<int:pIndex>',n_list,name="notice_list"),
+    path('admin_notice_delete/<int:id>',n_delete,name="notice_delete"),
+    path('admin_notice_show/<int:id>',n_show,name="notice_show"),
 
     path('img/',img,name="img"),
 

@@ -11,6 +11,7 @@ class Organizer(models.Model):
 
 
 class Info(models.Model):   #新闻
+    type = models.CharField(max_length=20,default='news')
     title = models.CharField(max_length=100)
     time = models.DateTimeField(auto_now_add=True)
     text = models.TextField()

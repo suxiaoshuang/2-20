@@ -1,28 +1,59 @@
-.dog{
-    width: 744px;
-    margin: 0px auto;
-    padding-top:30px;
+.mainBody {
+    width: 996px;
+    margin: 0px auto 15px;
+    padding: 14px;
+    background: #fff;
+    box-shadow: 0px 0px 10px #f4f4f4;
+    /* height: 600px; */
 }
-.dog .dog-a{
-    width: 597px;
-    line-height: 28px;
-    font-family: "微软雅黑";
-    background: url(icon-sponsor-01.png) no-repeat;
-    background-position: left 5px;
-    padding-left: 24px;
+.sidL{
+    float: left;
 }
-.dog .dog-aa{
-    text-decoration: none;
-    cursor: pointer;
+.place {
+    line-height: 33px;
+    height: 53px;
+    background: url(place-bg.png) repeat;
+    padding: 10px 20px;
+    color: #FFFFFF;
+    margin-bottom: 15px;
 }
-.dog-b{
-    width: 598px;
-    line-height: 28px;
-    font-family: "微软雅黑";
-    background: url(icon-time-02.png) no-repeat;
-    background-position: left 6px;
-    padding-left: 24px;
+.place h2 {
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
     display: inline;
+}
+.fr{ 
+    display: inline ;
+    float:right;
+}
+.place a {
+    color: #FFFFFF;
+}
+.Art{
+    padding: 20px;
+    padding-top: 70px;
+    display: block;
+
+}
+.Art .art-title {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+}
+.Art .art-body {
+    margin-bottom: 40px;
+    line-height: 1.8;
+    color: #444444;
+}
+.Art .art-note{
+    font-size: 14px;
+    color: #666666;
+    text-align: center;
+    margin-bottom: 25px;
 }
 
 

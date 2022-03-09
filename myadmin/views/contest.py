@@ -177,6 +177,9 @@ def con_add(request):
 
 def con_delete(request,id):
     con = Contest.objects.get(id=id)
+    if con.contest_status == 2:
+        message = '报名进行中无法删除竞赛！'
+        return render(request,'admin/info.html',locals())
     con_time = con.contest_ctime
     file = File.objects.filter(file_ctime=con_time)
     pIndex = request.GET.get('pIndex')
@@ -236,6 +239,9 @@ def size_format(size):
 
 def con_close(request,id):
     con = Contest.objects.get(id=id)
+    if con.contest_status == 2:
+        message = '报名进行中无法结束竞赛！'
+        return render(request,'admin/info.html',locals())
     con.contest_status = 0
     con.save()
     pIndex = request.GET.get('pIndex')
@@ -267,7 +273,7 @@ def file(request,date_time):
         files = request.FILES.getlist('files')
         for i in files:
             file = File()
-            file.file_name = os.path.splitext(i.name)[0]  # 文件名
+            file.file_name = i.name  # 文件名
             print(file.file_name)
             file_tail = os.path.splitext(i.name)[1]  # 文件后缀
             file.file_ctime = date_time
@@ -281,5 +287,7 @@ def file(request,date_time):
                 for chunk in i.chunks():
                     f.write(chunk)
                 f.close()
+
+            file.file_size = str(size_format(os.path.getsize(os.path.join(settings.FILE_UPLOAD[0], file_name))))
             file.save()
 
