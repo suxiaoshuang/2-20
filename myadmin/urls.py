@@ -38,10 +38,12 @@ urlpatterns = [
     path('admin_news_list/<int:pIndex>',admin_news_list,name="admin_news_list"),
     path('admin_news_delete/<int:id>',admin_news_delete,name="admin_news_delete"),
 
+
     path('admin_notice_add/', n_add, name="notice_add"),
     path('admin_notice_list/<int:pIndex>', n_list, name="notice_list"),
     path('admin_notice_delete/<int:id>', n_delete, name="notice_delete"),
     path('admin_notice_show/<int:id>', n_show, name="notice_show"),
+
 
     path('img/',img,name="img"),
 

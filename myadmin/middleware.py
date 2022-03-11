@@ -1,4 +1,7 @@
+
 from django.shortcuts import redirect, render
+
+
 from django.urls import reverse
 
 import re
@@ -7,11 +10,11 @@ import re
 class Middleware(object):
     def __init__(self,get_response):
         self.get_response = get_response
-        print("Middleware")
 
     def __call__(self, request):
         path = request.path
         if re.match(r'[/admin|/student|/teacher]{5,10}.+',path):
+
             url = re.match(r'[/admin|/student|/teacher]{5,10}.+',path)[0]
             str = re.findall(r'/(.{5,7})/',url)[0]
             print(str)
@@ -24,6 +27,7 @@ class Middleware(object):
             if str in list:
                 if str not in identify:
                     return redirect(reverse(identify+"_index"))
+
 
         response = self.get_response(request)
         return response
