@@ -37,21 +37,28 @@
                   <td>{{ vo.contest_name }}</td>
                   <td>{{vo.contest_organizer}}</td>
                   <td >{{ vo.contest_time  }}</td>
-                  <td>        
-                      {% if tf != vo.id %}
-                      {% if vo.contest_pt == 'p' %}         
+                  <td style="width: 20%;">        
+                      {% if df != vo.id %}
+
+                      {% if vo.contest_pt == 'p' %}    
+                         
                     <a  href="{% url 'sc_enroll' vo.id %}" class="btn btn-info btn-xs">
                         <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 报名
                     </a>
                     {%endif %}
-                    {% elif vo.id == tf %} -->
+
+                    {% elif vo.id == df %}
                      <a  href="" class="btn btn-info btn-xs">
                         <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 已报名
                     </a>       
-                    
+                    <a href="" class="btn btn-info btn-xs">
+                      <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 添加队员
+                    </a>
                     {% endif %}
                   </td>
+
                 </tr>
+
                 {% endfor %}
 
               </table>
