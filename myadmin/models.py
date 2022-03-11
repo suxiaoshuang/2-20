@@ -16,6 +16,8 @@ class Info(models.Model):   #新闻
     text = models.TextField()
     ctime = models.CharField(max_length=30)
     come_from = models.CharField(max_length=50,null=True,blank=True)
+    type = models.CharField(max_length=20)
+    img_path = models.CharField(max_length=200)
     class Meta:
         db_table = 'info'
 
@@ -47,6 +49,7 @@ class Registration(models.Model):
     type = models.CharField(max_length=20)
     status = models.CharField(max_length=10, default=0)
     teacher = models.CharField(max_length=30)
+    c_id = models.CharField(max_length=10)
 
     class Meta:
         db_table = 'registration'

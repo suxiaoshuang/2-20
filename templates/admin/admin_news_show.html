@@ -9,7 +9,7 @@
       <ol class="breadcrumb">
         <li><a href="{% url 'admin_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
         <li class="active">添加新闻资讯</li>
-        <link rel="stylesheet" type="text/css" href="{% static 'myadmin/css/news_add.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'myadmin/css/news_show.css' %}">
       </ol>
     </section>
 
@@ -22,25 +22,39 @@
               <div class="place">
                 <h2 class="f1">新闻资讯</h2>
                 <div class="fr">                 
-            	当前位置：   
-              <a href="/">首页</a>  ">"     
-              <a href="">新闻资讯</a>      
+                  当前位置：   
+                  <a href="/">首页</a> >
+                  <a href="">新闻资讯</a>      
                 </div>
               </div>
             </div>
 
             <div class="Art">
               <h1 class="art-title">{{info.title}}</h1>
-              <div></div>
+              <div class="art-note">来源：{{info.come_from}}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;时间：{{info.time| date:"Y-m-d H:i:s"}}</div>
               <div class="art-body">
                 {{info.text|safe}}
               </div>
             </div>
 
-            <div class=""
 
+
+
+            <div class="ComDetailBoxA"  >
+              {% for i in file %}
+                <div class="Downloadbox" >
+                  <span class="Download-fix" >
+                      <p >{{ i.file_name }}</p>  
+                                                                    
+                      <i >{{ i.file_size }}</i>
+                          
+                      <div class="download-btns" ><a href="">下载</a></div>                                       
+                  </span>
+                </div>
+               {% endfor %}
           </div>
-          </section>
+
+        </section>
 
 
 

@@ -281,5 +281,7 @@ def file(request,date_time):
                 for chunk in i.chunks():
                     f.write(chunk)
                 f.close()
+
+            file.file_size = str(size_format(os.path.getsize(os.path.join(settings.FILE_UPLOAD[0], file_name))))
             file.save()
 
