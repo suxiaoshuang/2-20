@@ -2,6 +2,46 @@ from django.db import models
 
 # Create your models here.
 from django_summernote.fields import SummernoteTextFormField
+class Contest(models.Model):
+    contest_name = models.CharField(max_length=200)
+    contest_type = models.CharField(max_length=30)
+    contest_info = models.TextField()
+    contest_status = models.CharField(max_length=10,default=1)
+    contest_organizer = models.CharField(max_length=100)
+    contest_time = models.CharField(max_length=50)
+    contest_stage = models.CharField(max_length=20)
+    contest_ctime = models.CharField(max_length=30)
+    contest_img_path = models.CharField(max_length=200)
+    contest_pt = models.CharField(max_length=10)
+
+    class Meta:
+        db_table = 'contest'
+
+
+class User(models.Model):
+    identifies = (('student','学生'),('teacher','教师'),('admin','管理员'),)
+    gender = (('male', '男'), ('female', '女'),)
+    name = models.CharField(max_length=20, unique=False)      #名字
+    user_id = models.CharField(max_length=20, unique=True)    #学工号
+    password = models.CharField(max_length=100,default='123456')
+    email = models.EmailField(unique=True)
+    sex = models.CharField(max_length=20, choices=gender, default='男')
+    identify = models.CharField(max_length=30, choices=identifies, default='学生')
+    academy = models.CharField(max_length=30, default='计算机')     #学院
+    specialty = models.CharField(max_length=40,default='软件工程')   #专业
+    grade = models.CharField(max_length=15,default='2018')  #年级
+    c_time = models.DateTimeField(auto_now_add=True)      #注册时间
+    has_confirmed = models.BooleanField(default=False)    #认证状态
+    permissions = models.CharField(max_length=5,default=0)  #权限
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["-c_time"]
+        verbose_name = '用户'
+        db_table = 'user'
+
 
 
 class Organizer(models.Model):
@@ -42,30 +82,32 @@ class Stage(models.Model):
     class Meta:
         db_table = 'stage'
 
+class Team(models.Model):
+    t_n = models.BigIntegerField(primary_key=True)
+    t_name = models.CharField(max_length=50)
+    u_name = models.CharField(max_length=50)
+    use = models.ForeignKey(User,on_delete=models.CASCADE)
+    head = models.BooleanField(default=False)
+    con = models.ForeignKey(Contest,on_delete=models.CASCADE)
+    c_name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'team'
+
+
 
 class Registration(models.Model):
-    t_id = models.CharField(max_length=50)
+    t = models.ForeignKey(Team,on_delete=models.CASCADE)
     t_name = models.CharField(max_length=50)
     c_name = models.CharField(max_length=50)
     type = models.CharField(max_length=20)
     status = models.CharField(max_length=10, default=0)
     teacher = models.CharField(max_length=30)
-    c_id = models.CharField(max_length=10)
+    con = models.ForeignKey(to=Contest,on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'registration'
 
-
-class Team(models.Model):
-    t_name = models.CharField(max_length=50)
-    u_name = models.CharField(max_length=50)
-    u_id = models.CharField(max_length=30)
-    head = models.BooleanField(default=False)
-    c_id = models.CharField(max_length=20)
-    c_name = models.CharField(max_length=50)
-
-    class Meta:
-        db_table = 'team'
 
 
 
@@ -74,30 +116,6 @@ class Academy(models.Model):
 
     class Meta:
         db_table = 'academy'
-
-class User(models.Model):
-    identifies = (('student','学生'),('teacher','教师'),('admin','管理员'),)
-    gender = (('male', '男'), ('female', '女'),)
-    name = models.CharField(max_length=20, unique=False)      #名字
-    user_id = models.CharField(max_length=20, unique=True)    #学工号
-    password = models.CharField(max_length=100,default='123456')
-    email = models.EmailField(unique=True)
-    sex = models.CharField(max_length=20, choices=gender, default='男')
-    identify = models.CharField(max_length=30, choices=identifies, default='学生')
-    academy = models.CharField(max_length=30, default='计算机')     #学院
-    specialty = models.CharField(max_length=40,default='软件工程')   #专业
-    grade = models.CharField(max_length=15,default='2018')  #年级
-    c_time = models.DateTimeField(auto_now_add=True)      #注册时间
-    has_confirmed = models.BooleanField(default=False)    #认证状态
-    permissions = models.CharField(max_length=5,default=0)  #权限
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ["-c_time"]
-        verbose_name = '用户'
-        db_table = 'user'
 
 
 class ConfirmString(models.Model):
@@ -116,19 +134,6 @@ class ConfirmString(models.Model):
 
 
 
-class Contest(models.Model):
-    contest_name = models.CharField(max_length=200)
-    contest_type = models.CharField(max_length=30)
-    contest_info = models.TextField()
-    contest_status = models.CharField(max_length=10,default=1)
-    contest_organizer = models.CharField(max_length=100)
-    contest_time = models.CharField(max_length=50)
-    contest_stage = models.CharField(max_length=20)
-    contest_ctime = models.CharField(max_length=30)
-    contest_img_path = models.CharField(max_length=200)
-
-    class Meta:
-        db_table = 'contest'
 
 
 class File(models.Model):

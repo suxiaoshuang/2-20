@@ -1,5 +1,5 @@
 from django.db import models
 
 # Create your models here.
-from django_summernote.fields import SummernoteTextFormField
+from myadmin.models import User, Contest
 

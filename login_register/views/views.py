@@ -135,9 +135,9 @@ def login(request):
         except:
             pass
 
-    print('python')
     if request.method == 'POST':
         # login_form = forms.UserForm(request.POST)
+
         message = '请检查填写的内容！'
 
         try:
@@ -151,12 +151,11 @@ def login(request):
             return render(request, 'login/re.html', locals())
 
         if user.password == hash_code(password):
-            request.session['is_login'] = True
-            request.session['user_id'] = user.user_id
-            request.session['user_name'] = user.name
-            request.session['identify'] = user.identify
-
             if data['identify'] == user.identify:
+                request.session['is_login'] = True
+                request.session['user_id'] = user.user_id
+                request.session['user_name'] = user.name
+                request.session['identify'] = user.identify
                 dic = {'学生': 'student', '教师': 'teacher', '管理员': 'admin'}
                 return redirect(reverse(dic.get(user.identify)+'_index'),locals())
             else:
@@ -241,7 +240,6 @@ def user_confirm(request):
     code = request.GET.get('code', None)
     message = ''
     try:
-
         confirm = ConfirmString.objects.get(code=code)
     except:
         message = '无效的确认请求！'
