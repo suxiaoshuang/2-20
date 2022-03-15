@@ -214,11 +214,8 @@ def con_info(request,id):
 
             f = File.objects.filter(file_ctime=f_time)
 
-
         except:
             print('error')
-
-
 
         return render(request,'admin/contest_info.html',locals())
 

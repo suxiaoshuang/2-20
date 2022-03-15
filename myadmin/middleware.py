@@ -17,7 +17,7 @@ class Middleware(object):
 
             url = re.match(r'[/admin|/student|/teacher]{5,10}.+',path)[0]
             str = re.findall(r'/(.{5,7})/',url)[0]
-            print(str)
+            # print(str)
             identify = request.session.get('identify')
             dic = {'学生':'student','教师':'teacher','管理员':'admin'}
             identify = dic.get(identify)

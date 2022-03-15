@@ -5,7 +5,8 @@
     <section class="content-header">
       <h1>
         竞赛信息管理
-
+        <link href="https://cdn.bootcss.com/toastr.js/2.1.4/toastr.min.css" rel="stylesheet">
+        <script src="https://cdn.bootcss.com/toastr.js/2.1.4/toastr.min.js"></script>
       </h1>
       <ol class="breadcrumb">
         <li><a href="{% url 'student_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
@@ -31,7 +32,7 @@
                   <th>时间</th>
                   <th>操作</th>
                 </tr>
-                {% for vo in conlist %}
+                {% for df,st,vo in conlist %}
                 <tr>
                   <td>{{ vo.id }}</td>
                   <td>{{ vo.contest_name }}</td>
@@ -40,31 +41,53 @@
                   <td style="width: 20%;">        
                       {% if df != vo.id %}
 
-                      {% if vo.contest_pt == 'p' %}    
+                      {% if vo.contest_pt  %}    
                          
-                    <a  href="{% url 'sc_enroll' vo.id %}" class="btn btn-info btn-xs">
-                        <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 报名
+                    <a href="{% url 'sc_enroll' %}?id={{vo.id}}" class="btn btn-info btn-xs" type="button" id="sc_enroll" style="color: green;" >
+                        <span class="glyphicon glyphicon-book" aria-hidden="true" ></span> 报名
                     </a>
+
+                    <span style="display: none;" id="sc_1">{{vo.id}}</span>
                     {%endif %}
 
                     {% elif vo.id == df %}
-                     <a  href="" class="btn btn-info btn-xs">
-                        <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 已报名
+                     <a  href="" class="btn btn-info btn-xs" style="cursor: no-drop">
+                        <span class="glyphicon" aria-hidden="true"></span> 已报名
                     </a>       
-                    <a href="" class="btn btn-info btn-xs">
-                      <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 添加队员
+
+                    {% if vo.contest_pt == 't' and st == False %}
+                    <a href="{% url 'sc_add_team' %}?con_id={{vo.id}}" class="btn btn-info btn-xs" id="add_team"  >
+                      <span class="glyphicon glyphicon-book" aria-hidden="true" id="sp" ></span> 添加队伍信息
                     </a>
+                    <!-- href="{% url 'sc_add_team'  %}?con_id={{vo.id}}" -->
                     {% endif %}
+
+                    {% if vo.contest_pt == 't' and st == True %}
+                    <a href="{% url 'sc_add_team' %}?con_id={{vo.id}}" class="btn btn-info btn-xs" id="add_team"  >
+                      <span class="glyphicon glyphicon-book" aria-hidden="true" id="sp" ></span> 查看队伍信息
+                    </a>
+                    <!-- href="{% url 'sc_add_team'  %}?con_id={{vo.id}}" -->
+                    {% endif %}
+
+
+
+                    {% endif %}
+
                   </td>
 
                 </tr>
-
                 {% endfor %}
 
               </table>
             </div>
-            <!-- /.box-body -->
+
+
             <div class="box-footer clearfix">
+              <a role="button" href="{% url 'sc_join_team' %}" class="btn btn-primary btn-xs">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true">
+
+                </span> 加入队伍
+        </a>
 
               <ul class="pagination pagination-sm no-margin pull-right">
                 <li><a href="{% url 'sc_list' pIndex|add:-1 %}?{{ mywhere |join:'&' }}">&laquo;</a></li>
@@ -75,10 +98,32 @@
               </ul>
             </div>
           </div>
-          <!-- /.box -->
+
         </div>
       </div>
 
     </section>
-    <!-- /.content -->
+
+
+
+    <script>
+      toastr.options = {
+              closeButton: true,
+              debug: true,
+              progressBar: true,
+              positionClass: "toast-top-center",
+              onclick: null,
+              showDuration: "300",
+              hideDuration: "1000",
+              timeOut: "2000",
+              extendedTimeOut: "1000",
+              showEasing: "swing",
+              hideEasing: "linear",
+              showMethod: "fadeIn",
+              hideMethod: "fadeOut"
+          };
+      toastr.success('success')
+          
+      </script>    
+
 {% endblock %}

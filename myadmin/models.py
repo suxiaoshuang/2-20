@@ -83,7 +83,7 @@ class Stage(models.Model):
         db_table = 'stage'
 
 class Team(models.Model):
-
+    h_c_id = models.CharField(max_length=20)
     t_name = models.CharField(max_length=50)
     u_name = models.CharField(max_length=50)
     use = models.ForeignKey(User,on_delete=models.CASCADE)

@@ -1,0 +1,44 @@
+{%extends 'student/base.html' %}
+{%  load static %}
+{% block main_body %}
+
+<link rel="stylesheet" href="{% static 'student/plugins/adminLTE/css/AdminLTE.css' %}">
+<link rel="stylesheet" href="{% static 'student/plugins/bootstrap/css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'student/plugins/datatables/dataTables.bootstrap.css' %}">
+<!-- <script src="{% static 'myadmin/index/index.js' %}"></script> -->
+
+<div class="box box-primary" style="padding: 25px 10px 10px;">
+    <div class="box-body">
+        <div class="table-box">
+            <table class="table table-bordered table-striped table-hover dataTable">
+                <thead>
+                    <tr>
+                        <th class>学号</th>
+                        <th class>姓名</th>
+                        <th class>队长</th>
+                        <th class>队伍id</th>
+                        <th class>竞赛名称</th>
+                        <th class>竞赛状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for name,user_id,head,h_c_id,c_name,c_status in conlist %}
+                    <tr>
+                        <td>{{user_id}}</td>
+                        <td>{{name}}</td>
+                        <td>{{head}}</td>
+                        <td>{{h_c_id}}</td>
+                        <td>{{c_name}}</td>
+                        <td>{{c_status}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

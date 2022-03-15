@@ -3,48 +3,54 @@
 <link href="https://cdn.bootcss.com/toastr.js/2.1.4/toastr.min.css" rel="stylesheet">
 <script src="https://cdn.bootcss.com/toastr.js/2.1.4/toastr.min.js"></script>
 
-<div class="row">
-    <div  >
-        <button  value="" ng-click="newFile()" style="width: 100px;height: 50px;">新增</button>
-    </div>
+
+
+<div id="sc" style="margin: 20px 250px 25px;padding:  25px 20px 30px; background-color: #fff;height: 400px;">
+    <form class="form-horizontal" id="form" name="forms" action="{% url 'sc_add_team' %}" method="post" >
+        {% csrf_token %}
+        <div class="box-body">
+
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label" >队伍id：</label>
+                <div class="col-sm-4">
+                  <input type="text" name="title" class="form-control" value="{{team_id}}" readonly="readonly"/>
+                </div>
+            </div>  
+            <input name="con_id" value="{{con_id}}" style="display: none;">
+
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label" >队伍名称：</label>
+                <div class="col-sm-4">
+                  <input type="text" name="team" class="form-control" id="inputText1" required/>
+                </div>
+            </div>        
+            
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label" >指导老师：</label>
+
+                <div class="col-sm-4">
+                    <select name="teacher" class="form-control">
+                        {% for i in teacher %}
+                            <option value="{{ i.name }}">{{ i.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>             
+
+        </div>
+
+                      <div class="box-footer">
+                <div class="col-sm-offset-2 col-sm-10">
+
+                  <button type="submit" class="btn btn-primary" id="upload" >提交</button> &nbsp;
+                  <button type="reset" class="btn btn-default">重置</button>
+              </div>
+              </div>
+
+      </form>
+
+
 </div>
-
-<div id="sc">
-    <form  class="form-horizontal" > {% csrf_token %}
-        <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">竞赛名称：</label>
-
-            <div class="col-sm-4">
-              <input type="text" name="contest_name" class="form-control" id="inputText1" placeholder="竞赛名称" />
-            </div>
-          </div>
-
-          <div class="box-footer">
-            <div class="col-sm-offset-2 col-sm-10">
-
-              <button type="submit" class="btn btn-primary">提交</button> &nbsp;
-              <button type="button" class="btn btn-default" ng-click="cancel()">取消</button>
-          </div>
-          </div>          
-    </form>
-</div>
-<script>
-    		/*新建文件*/
-            $scope.newFile =function(){
-    		 $scope.showdiv();
-    		
-    	};
-
-        $scope.showdiv=function(){
-		  $('#sc').dialog({
-			  modal:true,
-			  width:"400",
-	    	  height:"223"
-		  	});
-		  document.getElementById("sc").style.display="block";
-	  };
-
-</script>
 
 <script type="text/javascript">
 
@@ -65,8 +71,27 @@
         hideMethod: "fadeOut"
     };
 
-        // {#提交数据函数#}
-        
+    //     // {#提交数据函数#}
+    // $(document).ready(function(){
+    //     $("#upload").click(function(){
+    //         $.ajax({
+    //             url:"{% url 'sc_add_team' %}",
+    //             data:$("#form").serialize(),
+    //             type:"post",
+    //             async: true,
+    //             datatype: 'json',
+    //             success:function(data){
+    //                 toastr.success(data)
+
+    //             },
+    //             error:function(data){
+    //                 toastr.error(data)
+    //             }
+    //         })
+    //     })
+    // })
+  
+
     </script>
 
 
