@@ -1,6 +1,6 @@
-from django.urls import path
+from django.urls import path,re_path
 from login_register.views.views import index
-from .views.contest import con_open,contest_show,con_add,con_delete,img,con_info,con_close,con_off,con_on
+from .views.contest import con_open,contest_show,con_add,con_delete,img,con_info,con_close,con_off,con_on,admin_registration_audit,audit_clist,audit_con_pass,audit_con_fail
 from .views.student import stu_show,stu_add,stu_delete,stu_update
 from .views.teacher import tea_add,tea_show,tea_update,tea_delete
 from .views.admins import admin_show
@@ -44,7 +44,10 @@ urlpatterns = [
     path('admin_notice_delete/<int:id>', n_delete, name="notice_delete"),
     path('admin_notice_show/<int:id>', n_show, name="notice_show"),
 
-
+    re_path('admin_registration/(?P<con_id>[0-9].*)/(?P<pIndex>[0-9].*)',admin_registration_audit,name='admin_regristration_audit'),
+    path('admin_audit_contest_list/<int:pIndex>',audit_clist,name='audit_clist'),
+    path('admin_audit_contest/<int:con_id>/<int:pIndex>',audit_con_pass,name='audit_con_pass'),
+    path('admin_audit_contest_fail/<int:con_id>/<int:pIndex>',audit_con_fail,name='audit_con_fail'),
     path('img/',img,name="img"),
 
 ]

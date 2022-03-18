@@ -1,32 +1,65 @@
 from pathlib import Path
 
-from ..models import Contest, File, Stage, Tyep, Organizer
+from ..models import Contest, File, Stage, Tyep, Organizer,Registration,User
 from django.shortcuts import render,HttpResponse,redirect
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.core.paginator import Paginator
 from ..forms import PostForm
 import os,datetime
 from django.conf import settings
 from django.urls import reverse
 
+#审核竞赛申报
+def audit_clist(request,pIndex):
+    user_id = request.session.get('user_id')
+    if int(User.objects.get(user_id=user_id).permissions) == 2:
+        pIndex = int(pIndex)
+        conlist = Contest.objects.filter(audit=False)
+        page = Paginator(conlist, 15)
+        maxpages = page.num_pages
+        plist = page.page_range
+        if pIndex > maxpages:
+            pIndex = maxpages
+        elif pIndex < 1:
+            pIndex = 1
+        conlist = page.page(pIndex)
+        context = {'conlist':conlist,'maxpages':maxpages,'plist':plist,'pIndex':pIndex}
+        return render(request,'admin/audit_clist.html',context)
+
+    elif int(User.objects.get(user_id=user_id).permissions) < 2:
+        message = '权限不足！不支持访问！'
+        return render(request,'admin/info.html',locals())
+def audit_con_pass(request,con_id,pIndex):
+    con = Contest.objects.get(id=con_id)
+    con.audit = True
+    con.save()
+    return redirect(reverse('audit_clist',args=(pIndex,)))
 
 
+def audit_con_fail(request,con_id,pIndex):
+    Contest.objects.get(id=con_id).delete()
+    return redirect(reverse('audit_clist',args=(pIndex,)))
+
+
+#竞赛列表
 def contest_show(request,pIndex=1):
     con = Contest.objects
     mywhere = []
-    list = con.filter(contest_status__gte=1)
+    list = con.filter(Q(contest_status__gte=1) & Q(audit=True))
+
 
     kw = request.GET.get('keyword',None)
     status = request.GET.get('status', None)
 
 
+
     if  status:
-        list = con.filter(contest_status = 0)
+        list = con.filter(Q(contest_status = 0) & Q(audit=True))
         mywhere.append('status='+status)
         status = 'status='+status
 
     if kw:
-        list = list.filter(Q(contest_name__icontains=kw)|Q(contest_type__icontains=kw))
+        list = list.filter(Q(Q(contest_name__icontains=kw)|Q(contest_type__icontains=kw)) & Q(audit=True))
         mywhere.append("keyword="+kw)
 
     pIndex = int(pIndex)
@@ -41,20 +74,29 @@ def contest_show(request,pIndex=1):
         pIndex = maxpages
 
     list2 = page.page(pIndex)
+    conlist = []
+
+    for i in list2:
+        num = 0
+        for k in Registration.objects.filter(Q(con_id=i.id) & Q(status=True)):
+            if k !=  None:
+                num = num+1
+        conlist.append((i,num))
+        # print(conlist)
+
+
     plist = page.page_range
-
-
-    context = {'conlist':list2,'plist':plist,'pIndex':pIndex,'maxpages':maxpages,'mywhere':mywhere,'status':status}
+    context = {'conlist':conlist,'plist':plist,'pIndex':pIndex,'maxpages':maxpages,'mywhere':mywhere,'status':status}
 
     return render(request,'admin/contest_show.html',context)
 
-
+#竞赛报名列表
 def con_open(request,pIndex=1):
-    c = Contest.objects.filter(contest_status__gte=1)
+    c = Contest.objects.filter(Q(contest_status__gte=1) & Q(audit=True))
     mywhere = []
     keyword = request.GET.get('keyword',None)
     if keyword:
-        c = c.filter(Q(contest_name__icontains=keyword))
+        c = c.filter(Q(contest_name__icontains=keyword) & Q(audit=True))
         mywhere.append("keyword="+keyword)
 
     pIndex = int(pIndex)
@@ -105,6 +147,7 @@ def con_add(request):
     if request.session.get("is_login",None):
         user_name = request.session.get("user_name")
         user_id = request.session.get("user_id")
+
     if request.method == 'POST':
 
         form1 = PostForm(request.POST)
@@ -136,6 +179,9 @@ def con_add(request):
             con.contest_info = data.get('content')
             con.contest_img_path = os.path.join('upload_images/',img_name)    #相对路径
             con.contest_ctime = date_time
+            con.contest_pt = data.get('contest_pt')
+            if int(User.objects.get(user_id=request.session.get('user_id')).permissions) == 2:
+                con.audit = True
             con.save()
 
         #附件
@@ -196,10 +242,33 @@ def con_delete(request,id):
 
 
 def con_info(request,id):
-    if request.method == "GET":
+    # 在竞赛审核通过前，如果是超级管理员就可以查看，否则不予查看
+    if int(User.objects.get(user_id=request.session.get('user_id')).permissions) == 2:
+        con = Contest.objects.get(Q(id=id) )
         form1 = PostForm()
+        c_name = con.contest_name
+        c_type = con.contest_type
+        form1 = con.contest_info
+        c_organizer = con.contest_organizer
+        c_stage = con.contest_stage
+        c_time = con.contest_time
+        c_img = con.contest_img_path
+        c_id = id
+        c_status = con.contest_status
+        permissions = User.objects.get(user_id=request.session.get('user_id')).permissions
+        # print(permissions)
+        try:
+            f_time = con.contest_ctime
 
-        con = Contest.objects.get(id=id)
+            f = File.objects.filter(file_ctime=f_time)
+
+        except:
+            print('error')
+
+        return render(request,'admin/super_admin_con_info.html',locals())
+    else:
+        con = Contest.objects.get(Q(id=id) & Q(audit=True))
+        form1 = PostForm()
         c_name = con.contest_name
         c_type = con.contest_type
         form1 = con.contest_info
@@ -218,6 +287,8 @@ def con_info(request,id):
             print('error')
 
         return render(request,'admin/contest_info.html',locals())
+
+
 
 
 def size_format(size):
@@ -288,3 +359,19 @@ def file(request,date_time):
             file.file_size = str(size_format(os.path.getsize(os.path.join(settings.FILE_UPLOAD[0], file_name))))
             file.save()
 
+def admin_registration_audit(request,con_id,pIndex):
+    if request.method == 'GET':
+        conlist = Registration.objects.filter(Q(con_id=con_id) & Q(status=False))
+
+        page =Paginator(conlist,15)
+        pIndex  = int(pIndex)
+        plist = page.page_range
+        maxpages = page.num_pages
+        if pIndex > maxpages:
+            pIndex = maxpages
+        elif pIndex < 1:
+            pIndex = 1
+        conlist = page.page(pIndex)
+        context = {'conlist':conlist,'plist':plist,'maxpages':maxpages,'pIndex':pIndex}
+
+        return render(request,'',context)

@@ -150,16 +150,21 @@ def sc_join_team(request):
 
 def sc_team_memebers(request,h_c_id):
     conlist = []
+    h_uid = None
     team = Team.objects.filter(h_c_id=h_c_id)
     for members in team:
+        #队长用户名
+
         name = members.u_name
         user_id = User.objects.get(team__id=members.id).user_id
         head = members.head
         if head == True:
+            h_uid = user_id
             head = '是'
         elif head == False:
             head = '否'
         h_c_id = h_c_id
+
         c_name = members.c_name
         c_status = Contest.objects.get(team__id=members.id).contest_status
         if c_status == 0:
@@ -169,10 +174,11 @@ def sc_team_memebers(request,h_c_id):
         elif c_status == 2:
             c_status = '竞赛开启报名中'
 
-        lt = (name,user_id,head,h_c_id,c_name,c_status,)
+        lt = (name,user_id,head,h_c_id,c_name,c_status)
         conlist.append(lt)
-
-    return render(request,'student/team_members.html',{"conlist":conlist})
+    user = request.session.get('user_id')
+    # print(h_uid,user)
+    return render(request,'student/team_members.html',{"conlist":conlist,'user':user,'h_uid':h_uid,'h_c_id':h_c_id})
 
 
 def team_id_reg_id(request,con_id):

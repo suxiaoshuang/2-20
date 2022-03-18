@@ -42,12 +42,14 @@
                   <th>竞赛名称</th>
                   <th>类别</th>
                   <th>举办方</th>
-                  <th>时间</th>
+                  <th>起始-截至时间</th>
                   <th>赛段</th>
                   <th>状态</th>
+                  <th>赛制</th>
+                  <th>报名人数</th>
                   <th>操作</th>
                 </tr>
-                {% for vo in conlist %}
+                {% for vo,num in conlist %}
                 <tr>
                   <td>{{ vo.id }}</td>
                   <td>{{ vo.contest_name }}</td>
@@ -64,7 +66,15 @@
                        <span style="color:blue">报名中</span>
                     {% endif %}
                   </td>
-
+                  <td>
+                    {% if vo.contest_pt == 'p' %}
+                    个人赛
+                    {% endif %}
+                    {% if vo.contest_pt == 't' %}
+                    团队赛
+                    {% endif %}
+                  </td>
+                  <td >{{ num }}</td>
 
                   <td width="22%">
                       {% if vo.contest_status > 0 %}

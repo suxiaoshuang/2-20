@@ -30,6 +30,7 @@
                         <td>{{h_c_id}}</td>
                         <td>{{c_name}}</td>
                         <td>{{c_status}}</td>
+                        <!-- { % if head == '是' %} -->
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -37,8 +38,60 @@
         </div>
     </div>
 
+    <div class="box-footer clearfix">
+        {% if user != h_uid %}
+        <a role="button" onclick="return quit();" href="{% url 'sc_team_quit' h_c_id %}?status=f" class="btn btn-primary btn-xs">
+            <span class="glyphicon " aria-hidden="true">      
+            </span> 退出团队
+        </a>
+        {% endif %}
+
+        {% if user == h_uid %}
+        <a role="button" onclick="return jsan();" href="{% url 'sc_team_js' h_c_id %}?status=f" class="btn btn-primary btn-xs">
+            <span class="glyphicon " aria-hidden="true">      
+            </span> 解散团队   
+      </a>
+      {% endif %}   
+    </div>
+
 </div>
 
+<script>
+    function verify()
+		{
+		     if(confirm("确定要转让队长权限吗?"))
+		     {
+		         return true;
+		     }else{
+		         return false;
+			 }
+		}
 
 
+</script>
+
+
+<script>
+    function quit()
+    {
+        if(confirm("确定要退出团队嘛?此操作不可逆！！！"))
+		     {
+		         return true;
+		     }else{
+		         return false;
+			 }          
+    }
+</script>
+
+<script>
+    function jsan()
+    {
+        if(confirm("确定要解散团队嘛?此操作不可逆！！！"))
+		     {
+		         return true;
+		     }else{
+		         return false;
+			 }        
+    }
+</script>
 {% endblock %}

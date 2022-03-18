@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>订餐系统后台管理</title>
+  <title>高校学科竞赛组织管理系统</title>
   <!-- 支持响应式布局 -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{% static 'myadmin/bower_components/bootstrap/dist/css/bootstrap.min.css'%}">
@@ -45,7 +45,7 @@
       <!-- 侧栏迷你徽标 mini 50x50 pixels -->
       <span class="logo-mini"><b>餐</b></span>
       <!-- 常规状态标志和移动设备标志 -->
-      <span class="logo-lg"><b>订餐系统后台管理</b></span>
+      <span class="logo-lg"><b>学生</b></span>
     </a>
 
     <!-- Header Navbar 首部导航栏 -->
@@ -260,8 +260,8 @@
 
 
 
-        <li><a href="{% url 'sc_list' 1 %}"><i class="fa fa-shopping-cart"></i> <span>订单管理</span></a></li>
-        <li><a href="#"><i class="fa fa-user"></i> <span>账号管理</span></a></li>
+        <li><a href="{% url 'sc_list' 1 %}"><i class="fa fa-shopping-cart"></i> <span>竞赛报名</span></a></li>
+        <li><a href="{% url 'sc_team_list' 1 %}"><i class="fa fa-user"></i> <span>竞赛团队</span></a></li>
         <li><a href="#"><i class="fa fa-key"></i> <span>权限管理</span></a></li>
 
 

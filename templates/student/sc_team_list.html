@@ -1,0 +1,88 @@
+{%extends 'student/base.html' %}
+{%  load static %}
+{% block main_body %}
+
+<link rel="stylesheet" href="{% static 'student/plugins/adminLTE/css/AdminLTE.css' %}">
+<link rel="stylesheet" href="{% static 'student/plugins/bootstrap/css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'student/plugins/datatables/dataTables.bootstrap.css' %}">
+<!-- <script src="{% static 'myadmin/index/index.js' %}"></script> -->
+
+<div class="box box-primary" style="padding: 25px 10px 10px;">
+    <div class="box-body">
+        <div class="table-box">
+            <table class="table table-bordered table-striped table-hover dataTable">
+                <thead>
+                    <tr>
+                        <th class>队伍名称</th>
+                        <th class>竞赛名称</th>
+                        <th class>时间</th>
+                        <th class>队伍id</th>
+                        <th class>竞赛状态</th>
+                        <th class>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t_name,c_name,time,h_c_id,status in conlist %}
+                    <tr>
+
+                        <td>{{t_name}}</td>
+                        <td>{{c_name}}</td>
+                        <td>{{time| date:"Y-m-d H:i:s"}}</td>
+                        <td>{{h_c_id}}</td>
+                        <td>
+                            {% if status == 1 %}
+                            <span>开启报名中</span>
+                            {% endif %}
+
+                            {% if status == 2 %}
+                            <span>进行中</span>
+                            {%endif%}
+                        </td>
+
+                        <td>
+                            <!-- <a onclick="return verify();" href="">解散团队</a> -->
+                             <a href="{% url 'sc_team_members' h_c_id %}">查看</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="box-footer clearfix">
+        <a role="button" href="{% url 'sc_team_list' 1 %}?status=f" class="btn btn-primary btn-xs">
+          <span class="glyphicon " aria-hidden="true">
+    
+          </span> 已结束
+    </a>
+
+    <a role="button" href="{% url 'sc_team_list' 1 %}?status=t" class="btn btn-primary btn-xs">
+        <span class="glyphicon " aria-hidden="true">
+  
+        </span> 进行中
+  </a>    
+    
+        <ul class="pagination pagination-sm no-margin pull-right">
+          <li><a href="{% url 'sc_team_list' pIndex|add:-1 %}?{{ mywhere |join:'&' }}">&laquo;</a></li>
+          {% for p in plist %}
+            <li {% if p == pIndex %}class="active"{% endif %}><a href="{% url 'sc_team_list' p %}?{{ mywhere |join:'&' }}">{{p}}</a></li>
+          {% endfor %}
+          <li><a href="{% url 'sc_team_list' pIndex|add:1 %}?{{ mywhere |join:'&' }}">&raquo;</a></li>
+        </ul>
+      </div>
+</div>
+
+
+<script>
+    function verify()
+		{
+		     if(confirm("确定要解散团队吗?"))
+		     {
+		         return true;
+		     }else{
+		         return false;
+			 }
+		}
+ </script>
+
+{% endblock %}

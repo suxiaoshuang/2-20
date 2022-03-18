@@ -13,6 +13,8 @@ class Contest(models.Model):
     contest_ctime = models.CharField(max_length=30)
     contest_img_path = models.CharField(max_length=200)
     contest_pt = models.CharField(max_length=10)
+    audit = models.BooleanField(default=False)
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'contest'
@@ -90,6 +92,7 @@ class Team(models.Model):
     head = models.BooleanField(default=False)
     con = models.ForeignKey(Contest,on_delete=models.CASCADE)
     c_name = models.CharField(max_length=50)
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'team'
@@ -104,6 +107,7 @@ class Registration(models.Model):
     status = models.CharField(max_length=10, default=0)
     teacher = models.CharField(max_length=30)
     con = models.ForeignKey(to=Contest,on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'registration'

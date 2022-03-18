@@ -43,9 +43,9 @@
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- 侧栏迷你徽标 mini 50x50 pixels -->
-      <span class="logo-mini"><b>餐</b></span>
+      <span class="logo-mini"><b></b></span>
       <!-- 常规状态标志和移动设备标志 -->
-      <span class="logo-lg"><b>订餐系统后台管理</b></span>
+      <span class="logo-lg"><b>高校学科竞赛组织管理系统</b></span>
     </a>
 
     <!-- Header Navbar 首部导航栏 -->
@@ -222,6 +222,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
+            <li><a href="{% url 'audit_clist' 1%}  "> <i class="fa fa-circle-o"></i>竞赛申报审核</a></li>
             <li><a href="{% url 'admin_contest_show' 1%}  "> <i class="fa fa-circle-o"></i>竞赛信息</a></li>
             <li><a href="{% url 'admin_contest_registration' 1%}"> <i class="fa fa-circle-o"></i>竞赛报名</a></li>
           </ul>

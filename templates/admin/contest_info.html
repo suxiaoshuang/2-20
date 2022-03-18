@@ -6,8 +6,7 @@
       <h1>
         竞赛管理
       </h1>
-{#<script src="{% static 'summernote/summernote.min.css' %}"></script>#}
-{#        <script src="{% static 'myadmin/test.css' %}"></script>#}
+
       <ol class="breadcrumb">
         <li><a href="{% url 'admin_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
         <li class="active">更新竞赛信息</li>
@@ -40,22 +39,23 @@
                     </div>
 
                     <div class="dog-b" >比赛时间：{{ c_time }}</div>
-                    <a class="btn" style="background-color: #8d98a2;cursor: no-drop;display: inline;float: right;">已结束</a>
-               
+                    <!-- <a class="btn" style="background-color: #8d98a2;cursor: no-drop;display: inline;float: right;">已结束</a> -->
+                    {% if permissions != 2 %}
+                    {% if c_status < 1 %}
+                    <a class="btn" style="background-color: #8d98a2;cursor: no-drop;display: inline;float: right">已结束</a>
+                    {% elif c_status == 1 %}
+                    <a class="btn" style="cursor:no-drop;display: inline;float: right;background-color:forestgreen">进行中</a>
 
+                    {% elif c_status == 2 %}
+                        <a class="btn" style="background-color: #0b97c4;cursor: no-drop;display: inline;float: right">报名中</a>
+                    {% endif %}
+                    {% endif %}
                 </div>
 
             </div>
 
-{#            </span>#}
-{#                    {% if c_status < 1 %}#}
-{#                    <a class="btn" style="background-color: #8d98a2;cursor: no-drop">已结束</a>#}
-{#                    {% elif c_status == 1 %}#}
-{#                    <a class="btn" style="cursor:no-drop">进行中</a>#}
-{##}
-{#                    {% elif c_status == 2 %}#}
-{#                        <a class="btn" style="background-color: #0b97c4;cursor: no-drop;">报名中</a>#}
-{#                    {% endif %}#}
+
+
 
 
 

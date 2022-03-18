@@ -73,10 +73,23 @@
                   </div>
                 </div>
 
-                 <div class="form-group" >
+
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">赛制：</label>
+                  <div class="col-sm-4">
+                    <select name="contest_pt" class="form-control">
+                        
+                            <option value="t">团队赛</option>
+                            <option value="p">个人赛</option>p
+                        
+                    </select>
+                  </div>
+                </div>                
+
+                 <!-- <div class="form-group" >
                   <label for="inputEmail3" class="col-sm-2 control-label">封面图片：</label>
                     <input type="file" name="contest_img" accept="image/*" />
-                </div>
+                </div> -->
 
 
                 <div class="form-group">
@@ -89,14 +102,30 @@
                 </div>
 
 
-                 <div class="form-group" >
+                 <!-- <div class="form-group" >
                   <label for="inputEmail3" class="col-sm-2 control-label">上传附件：</label>
                     <input type="file" name="files"  multiple="multiple"/>
-                </div>
+                </div> -->
 
               </div>
 
+              <div class="form-group" >
+                <label for="inputEmail3" class="col-sm-2 control-label">上传附件：</label>
 
+                <input id="fileupload" type="file" name="files"  multiple="multiple" style="display:none;" />
+                <input type='text' class="form-control" name='textfield' id='textfield' autocomplete="off" readonly="readonly" style="width:500px;display: inline;"/>
+                <input id="excelImport" type="button" value="浏览" class="btn btn-primary" style="display: inline;"/>
+                  
+              </div>
+
+              <div class="form-group" >
+                <label for="inputEmail3" class="col-sm-2 control-label">封面图片：</label>
+
+                  <input id="upload" type="file" accept="image/*" name="contest_img"   style="display:none;" />
+                  <input type='text' class="form-control" name='textfield' id='text' autocomplete="off" readonly="readonly" style="width:500px;display: inline;"/>
+                  <input id="Import" type="button" value="浏览" class="btn btn-primary" style="display: inline;"/>
+
+              </div>    
 
 
               <!-- /.box-body -->
@@ -119,4 +148,39 @@
 
     </section>
     <!-- /.content -->
+
+
+    <script>
+      $(document).ready(function() {
+       
+       $("#Import").click(function() {
+           $('#upload').click();
+       });
+      
+      
+       $('#upload').change(function(){
+           document.getElementById("text").value = document.getElementById("upload").files[0].name;              
+           
+       })
+      });
+      
+      </script>
+
+
+
+<script>
+  $(document).ready(function() {
+   
+   $("#excelImport").click(function() {
+       $('#fileupload').click();
+   });
+  
+   
+  
+   $('#fileupload').change(function(){
+       document.getElementById("textfield").value = document.getElementById("fileupload").files[0].name;                    
+       
+   })
+  });
+  </script>
 {% endblock %}
