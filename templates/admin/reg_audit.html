@@ -1,0 +1,159 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block main_body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        <link rel="stylesheet" type="text/css" href="{% static 'student/ry-ui.css' %}">
+        <link rel="stylesheet" href="{% static 'myadmin/bower_components/bootstrap-table/bootstrap-table-develop/dist/bootstrap-table.min.css' %}">  
+        <script src="{% static 'myadmin/bower_components/bootstrap-table/bootstrap-table-develop/dist/bootstrap-table.min.js' %}"></script>
+        
+        
+
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="{% url 'admin_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
+
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="col-sm-12 select-table table-striped">
+              <div class="bootstrap-table bootstrap3">
+                <div class="fixed-table-toolbar">
+                  <div class="bs-bars pull-left"></div>
+                </div>
+                <div class="fixed-table-container" style="padding-bottom: 0px;">
+                  <div class="fixed-table-header" style="display: none;"></div>
+                  <div class="fixed-table-body">
+                    <div class="fixed-table-loading table table-bordered table-hover" style="top: 35.0625px;">
+                      <!-- <span class="loading-wrap">
+                        <span class="loading-text" style="font-size: 13px;">正在努力地加载数据中，请稍候</span>
+                        <span class="animation-wrap">
+                          <span class="animation-dot"></span>
+                        </span>
+                      </span> -->
+                    </div>
+                    <table id="bootstrap-table" class="table table-bordered table-hover">
+                      <thead class>
+                        {% if pt == 'p' %}
+                        <tr>
+                          <th class="bs-checkbox " style="width: 36px; " data-field="0"><div class="th-inner "><label><input id="btSelectAll" type="checkbox"><span></span></label></div></th>
+                          <th style data-field="userId"><div class="th-inner ">竞赛名称</div><div class="fht-cell"></div></th>
+                          <th style data-field="userId"><div class="th-inner ">竞赛类型</div><div class="fht-cell"></div></th>
+                          <th style data-field="userId"><div class="th-inner ">队伍ID</div><div class="fht-cell"></div></th>
+                          <th style data-field="userId"><div class="th-inner ">申请时间</div><div class="fht-cell"></div></th>
+                          <th style data-field="userId"><div class="th-inner ">操作</div><div class="fht-cell"></div></th>
+                        </tr>
+                        {% endif %}
+                        {% if pt == 't' %}
+                        <tr>
+                          <th class="bs-checkbox " style="width: 36px; " data-field="0"><div class="th-inner "><label><input id="btSelectAll" type="checkbox"><span></span></label></div></th>
+                          <th style data-field="userId"><div class="th-inner ">竞赛名称</div><div class="fht-cell"></div></th>
+                          <th style data-field="userId"><div class="th-inner ">竞赛类型</div><div class="fht-cell"></div></th>
+                          <th style data-field="userId"><div class="th-inner ">队伍名称</div><div class="fht-cell"></div></th>
+                          <th style data-field="userId"><div class="th-inner ">队伍ID</div><div class="fht-cell"></div></th>
+                          <th style data-field="userId"><div class="th-inner ">指导老师</div><div class="fht-cell"></div></th>
+                          <th style data-field="userId"><div class="th-inner ">申请时间</div><div class="fht-cell"></div></th>
+                          <th style data-field="userId"><div class="th-inner ">操作</div><div class="fht-cell"></div></th>
+                        </tr>
+                        {% endif %}
+                      </thead>
+                      <tbody>
+                      {% if pt == 'p' %}
+                      {% for vo in conlist %}
+                      <tr>
+                        <td class="bs-checkbox" style="width: 36px;"><label><input type="checkbox"></label></td>
+                        <td>{{vo.c_name}}</td>
+                        <td>{{vo.type}}</td>
+                        <td>{{vo.t_id}}</td>
+                        <td>{{vo.time | date:"Y-m-d H:i:s"}}</td>
+                        <td><a href="{% url 'reg_audit_pass'  vo.t_id %}?pIndex={{pIndex}}&con_id={{vo.con_id}}" class="btn btn-success btn-xs" style="margin-right: 2px;">同意<i></i></a><a href="{% url 'reg_audit_fail'  vo.t_id %}" style="margin-left: 2px;" class="btn btn-danger btn-xs">拒绝</a></td>
+                      </tr>
+                      {% endfor %}
+                      {% endif %}
+
+                      {% if pt == 't' %}
+                      {% for vo in conlist %}
+                      <tr>
+                        <td class="bs-checkbox" style="width: 36px;"><label><input type="checkbox"></label></td>
+                        <td>{{vo.c_name}}</td>
+                        <td>{{vo.type}}</td>
+                        <td>{{vo.t_name}}</td>
+                        <td>{{vo.t_id}}</td>
+                        <td>{{vo.teacher}}</td>
+                        <td>{{vo.time | date:"Y-m-d H:i:s"}}</td>
+                        <td><a href="{% url 'reg_audit_pass'  vo.t_id %}?pIndex={{pIndex}}&con_id={{vo.con_id}}" class="btn btn-success btn-xs" style="margin-right: 2px;">同意<i></i></a><a href="{% url 'reg_audit_fail'  vo.t_id %}" style="margin-left: 2px;" class="btn btn-danger btn-xs">拒绝</a></td>
+                      </tr>                     
+                      {% endfor %}
+                      {% endif %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+<script type="text/javascript" language="JavaScript">
+		function del()
+		{
+		     if(confirm("确定要删除吗?"))
+		     {
+		         return true;
+		     }else{
+		         return false;
+			 }
+		}
+
+
+    $(document).ready(function() {
+
+
+// 列表按钮 
+$("#bootstrap-table td input[type='checkbox']").iCheck({
+    checkboxClass: 'icheckbox_square-blue',
+    increaseArea: '20%'
+});
+// 全选操作 
+$("#btSelectAll").click(function() {
+    var clicks = $(this).is(':checked');
+    if (!clicks) {
+        $("#bootstrap-table td input[type='checkbox']").iCheck("uncheck");
+    } else {
+        $("#bootstrap-table td input[type='checkbox']").iCheck("check");
+    }
+    $(this).data("clicks", !clicks);
+});
+});
+</script> 
+
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+              <ul class="pagination pagination-sm no-margin pull-right" style="padding-top: 10px;">
+                <li><a href="{% url 'reg_audit' con_id  %}?pIndex={{pIndex|add:-1}}">&laquo;</a></li>
+               
+                {% for p in plist %}
+                {% if p < 10 %}
+                  <li {% if p == pIndex %}class="active"{% endif %}><a href="{% url 'reg_audit' con_id %}?pIndex={{p}}">{{p}}</a></li>
+                {% endif %}
+
+                {% endfor %}
+                
+                
+                <li><a href="{% url 'reg_audit' con_id %}?pIndex={{pIndex|add:1 }}">&raquo;</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+{% endblock %}

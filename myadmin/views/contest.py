@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from ..models import Contest, File, Stage, Tyep, Organizer,Registration,User
+from ..models import Contest, File, Stage, Tyep, Organizer, Registration, User, Match, Team
 from django.shortcuts import render,HttpResponse,redirect
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
@@ -118,22 +118,28 @@ def con_open(request,pIndex=1):
 
 def con_on(request,id):
     c = Contest.objects.get(id=id)
-    c.contest_status = 2
-    pIndex = request.GET.get('pIndex')
-    c.save()
+    if (User.objects.get(user_id=request.session.get('user_id')).academy in c.contest_organizer) or int(User.objects.get(user_id=request.session.get('user_id')).permissions) == 2:
+        c.contest_status = 2
+        pIndex = request.GET.get('pIndex')
+        c.save()
 
-    return redirect(reverse('admin_contest_registration',args=(pIndex)))
-
-
+        return redirect(reverse('admin_contest_registration',args=(pIndex,)))
+    else:
+        message = '权限不足，不支持该操作！'
+        return render(request, 'admin/info.html', locals())
 
 
 def con_off(request,id):
     c = Contest.objects.get(id=id)
-    c.contest_status = 1
-    pIndex = request.GET.get('pIndex')
-    c.save()
+    if (User.objects.get(user_id=request.session.get('user_id')).academy in c.contest_organizer) or int(User.objects.get(user_id=request.session.get('user_id')).permissions) == 2:
+        c.contest_status = 1
+        pIndex = request.GET.get('pIndex')
+        c.save()
 
-    return redirect(reverse('admin_contest_registration',args=(pIndex)))
+        return redirect(reverse('admin_contest_registration',args=(pIndex,)))
+    else:
+        message = '权限不足，不支持该操作！'
+        return render(request,'admin/info.html',locals())
 
 
 
@@ -189,7 +195,7 @@ def con_add(request):
             files = request.FILES.getlist('files')
             for i in files:
                 file = File()
-                file.file_name = os.path.splitext(i.name)[0]              #文件名
+                file.file_name = i.name              #文件名
                 print(file.file_name)
                 file_tail = os.path.splitext(i.name)[1]                   #文件后缀
                 file.file_ctime = date_time
@@ -223,20 +229,24 @@ def con_add(request):
 
 def con_delete(request,id):
     con = Contest.objects.get(id=id)
-    if con.contest_status == 2:
-        message = '报名进行中无法删除竞赛！'
+    if (User.objects.get(user_id=request.session.get('user_id')).academy in con.contest_organizer) or int(User.objects.get(user_id=request.session.get('user_id')).permissions) == 2:
+        if con.contest_status == 2:
+            message = '报名进行中无法删除竞赛！'
+            return render(request,'admin/info.html',locals())
+        con_time = con.contest_ctime
+        file = File.objects.filter(file_ctime=con_time)
+        pIndex = request.GET.get('pIndex')
+        if file:                #如果有附件,就把附件delete。
+            for i in file:
+                url = os.path.join(settings.FILE_UPLOAD[0],i.file_path.replace('upload_file/',''))
+                os.remove(url)
+                i.delete()
+        con.delete()
+        status = request.GET.get('mywhere')
+        return redirect(reverse('admin_contest_show',args=(pIndex,)),locals())
+    else:
+        message = '权限不足，不支持该操作！'
         return render(request,'admin/info.html',locals())
-    con_time = con.contest_ctime
-    file = File.objects.filter(file_ctime=con_time)
-    pIndex = request.GET.get('pIndex')
-    if file:                #如果有附件,就把附件delete。
-        for i in file:
-            url = os.path.join(settings.FILE_UPLOAD[0],i.file_path.replace('upload_file/',''))
-            os.remove(url)
-            i.delete()
-    con.delete()
-    status = request.GET.get('mywhere')
-    return redirect(reverse('admin_contest_show',args=(1,)),locals())
 
 
 
@@ -307,13 +317,17 @@ def size_format(size):
 
 def con_close(request,id):
     con = Contest.objects.get(id=id)
-    if con.contest_status == 2:
-        message = '报名进行中无法结束竞赛！'
-        return render(request,'admin/info.html',locals())
-    con.contest_status = 0
-    con.save()
     pIndex = request.GET.get('pIndex')
-    return redirect(reverse('admin_contest_show',args=(pIndex,)))
+    if (User.objects.get(user_id=request.session.get('user_id')).academy in con.contest_organizer) or int(User.objects.get(user_id=request.session.get('user_id')).permissions) == 2:
+        if con.contest_status == 2:
+            message = '报名进行中无法结束竞赛！'
+            return render(request,'admin/info.html',locals())
+        con.contest_status = 0
+        con.save()
+        return redirect(reverse('admin_contest_show',args=(pIndex,)))
+    else:
+        message = '权限不足，不支持该操作！'
+        return render(request,'admin/info.html',locals())
 
 def img(request):
     if request.FILES.get('img', None):
@@ -359,8 +373,11 @@ def file(request,date_time):
             file.file_size = str(size_format(os.path.getsize(os.path.join(settings.FILE_UPLOAD[0], file_name))))
             file.save()
 
-def admin_registration_audit(request,con_id,pIndex):
-    if request.method == 'GET':
+#竞赛报名审核页
+def admin_registration_audit(request,con_id):
+    if (Contest.objects.get(id=con_id).contest_organizer == User.objects.get(user_id=request.session.get('user_id')).academy) or int(User.objects.get(user_id=request.session.get('user_id')).permissions) == 2:
+        pIndex = request.GET.get('pIndex',1)
+        con_pt = Contest.objects.get(id=con_id).contest_pt
         conlist = Registration.objects.filter(Q(con_id=con_id) & Q(status=False))
 
         page =Paginator(conlist,15)
@@ -372,6 +389,38 @@ def admin_registration_audit(request,con_id,pIndex):
         elif pIndex < 1:
             pIndex = 1
         conlist = page.page(pIndex)
-        context = {'conlist':conlist,'plist':plist,'maxpages':maxpages,'pIndex':pIndex}
+        context = {'conlist':conlist,'plist':plist,'maxpages':maxpages,'pIndex':pIndex,'pt':con_pt,'con_id':con_id}
 
-        return render(request,'',context)
+        return render(request,'admin/reg_audit.html',context)
+    else:
+        message = '权限不足！'
+        return render(request,'admin/info.html',locals())
+
+#报名审核，竞赛列表页
+def audit_registration_list(request,pIndex):
+
+    conlist = Contest.objects.filter(Q(contest_status=2) & Q(audit=True))
+    con = []
+    for i in conlist:
+        n = 0
+        for k in Registration.objects.filter(Q(con_id=i.id) & Q(status=False)):
+            if k:
+                n = n+1
+        con.append((i,n,))
+    conlist = con
+    return render(request,'admin/audit_reg_list.html',locals())
+
+
+def reg_audit_pass(request,t_id):
+    pIndex = request.GET.get('pIndex')
+    con_id = request.GET.get('con_id')
+    reg = Registration.objects.get(t_id=t_id)
+    reg.status = True
+    team = Team.objects.get(id=t_id)
+    Match.objects.create(h_c_id=team.h_c_id,cname=team.c_name,tname=team.t_name,con_id=team.con_id)
+    reg.save()
+    return redirect(reverse('reg_audit',kwargs={'con_id':con_id}))
+
+
+def reg_audit_fail(request,t_id):
+    pass

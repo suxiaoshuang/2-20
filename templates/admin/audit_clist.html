@@ -90,7 +90,7 @@
               <ul class="pagination pagination-sm no-margin pull-right">
                 <li><a href="{% url 'audit_clist' pIndex|add:-1 %}?{{ mywhere |join:'&' }}">&laquo;</a></li>
                 {% for p in plist %}
-                  <li {% if p == pIndex %}class="active"{% endif %}><a href="{% url 'admin_news_list' p %}?{{ mywhere |join:'&' }}">{{p}}</a></li>
+                  <li {% if p == pIndex %}class="active"{% endif %}><a href="{% url 'audit_clist' p %}?{{ mywhere |join:'&' }}">{{p}}</a></li>
                 {% endfor %}
                 <li><a href="{% url 'audit_clist' pIndex|add:1 %}?{{ mywhere |join:'&' }}">&raquo;</a></li>
               </ul>

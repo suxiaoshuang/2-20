@@ -20,10 +20,10 @@ def n_add(request):
         info.ctime = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
         info.come_from = df.get('come_from')
         info.type = 'notice'
-        info.save()
-        from ..views.contest import file
+        from ..views.contest import file,img
         file(request,info.ctime)
-
+        info.img_path = img(request)
+        info.save()
         return redirect(reverse('notice_list',args=(1,)))
 
 

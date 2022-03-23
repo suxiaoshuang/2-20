@@ -30,7 +30,7 @@ urlpatterns = [
     path('admin/',include('myadmin.urls')),
     path('student/',include('student.urls')),
     path('teacher/',include('teacher.urls')),
-
+    path('public/',include('public.urls')),
 
 
 ]

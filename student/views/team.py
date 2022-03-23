@@ -64,7 +64,10 @@ def sc_team_list(request,pIndex):
 
 def sc_team_quit(request,h_c_id):
     user_id = request.session.get('user_id')
-    print(h_c_id,user_id)
+    if Contest.objects.get(id=Team.objects.filter(h_c_id=h_c_id)[0].con_id).contest_status == 0:
+        message = '竞赛已结束，无效操作！'
+        return render(request,'admin/info.html',locals())
+
     for i in Team.objects.filter(h_c_id=h_c_id):
         if User.objects.get(id=i.use_id).user_id in user_id:
             Team.objects.get(use_id=i.use_id).delete()
@@ -78,6 +81,10 @@ def sc_team_quit(request,h_c_id):
 
 def sc_team_js(request,h_c_id):
     user_id = request.session.get('user_id')
+    #竞赛结束后不能解散队伍，必须在报名中或竞赛进行时解散队伍
+    if Contest.objects.get(id=Team.objects.filter(h_c_id=h_c_id)[0].con_id).contest_status == 0:
+        message = '竞赛已结束，无效操作！'
+        return render(request,'admin/info.html',locals())
     try:
         for i in Team.objects.filter(h_c_id=h_c_id):
             #验证此人是否在该队伍里
@@ -97,5 +104,9 @@ def sc_team_js(request,h_c_id):
 
 
 
-
+def sc_upload_works(request,h_c_id):
+    if Contest.objects.get(id=Team.objects.filter(h_c_id=h_c_id)[0].con_id).contest_status == 0:
+        message = '竞赛已结束，无效操作！'
+        return render(request,'admin/info.html',locals())
+    pass
 

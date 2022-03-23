@@ -23,12 +23,21 @@
     <a href="javascript:;" class="right">&gt;</a>
     <!-- 滚动区 -->
     <ul>
-                      {% for i in con %}
+                      {% for i in info %}
       <li>
-                  <a href="{% url 'admin_contest_info' i.id %}" style="color: #fff" >
-
-                      <h1 style=" width: 1000px; height: 500px ;background-size:1000px 500px;background-image:url('{% static i.contest_img_path %}')">{{ i.contest_name }}</h1>
+                  {% if i.type == 'news' %}
+                  <a href="{% url 'admin_news_show' i.id %}" style="color: rgb(15, 15, 15)" >
+                      <h1 style=" width: 1000px; height: 500px ;background-size:1000px 500px;background-image:url('{% static i.img_path %}')">{{ i.title }}</h1>
                   </a>
+                  {% endif %}
+
+                  {% if i.type == 'notice' %}
+                  <a href="{% url 'notice_show' i.id %}" style="color: rgb(15, 15, 15)" >
+                      <h1 style=" width: 1000px; height: 500px ;background-size:1000px 500px;background-image:url('{% static i.img_path %}')">{{ i.title }}</h1>
+                  </a>
+                  {% endif %}
+
+
       </li>
 
                       {% endfor %}
@@ -45,19 +54,19 @@
   
   <div class="iBoxA" >
     <div class="box-title">
-      {% if sessions.identify == '管理员'%}
+      {% if identify == '管理员'%}
       <a href="{%url 'admin_news_list' 1%}" class="more">更多</a>
-      {%elif sessions.identify == '学生'%}
+      {%elif identify == '学生'%}
       <a href="" class="more">更多</a>
       {%endif%}
       <h2>新闻</h2>
     </div>
 
     <div class="box-body">
-      {%for i in con%}
+      {%for i in news %}
       <ul>
         <li>
-          <a href="{%url 'admin_contest_info' i.id %}">{{i.contest_name}}</a>
+          <a href="{%url 'admin_news_show' i.id %}">{{i.title}}</a>
         </li>
       </ul>
       {%endfor%}
@@ -65,13 +74,13 @@
   </div>
 
   <div class="iboxB" style="width: 47%; float:right;">
-        <div class="box-title"><strong><b>学科竞赛</b></strong><a href="" class="more">更多</a></div>
+        <div class="box-title"><strong><b>学科竞赛</b></strong><a href="{% url 'admin_contest_show' 1 %}" class="more">更多</a></div>
         <div class="box-body">
           <div class="list">
             <ul>
-              {%for i in con%}
+              {% for i in con %}
               <li >
-                <a href="">{{i.contest_name}}</a>
+                <a href="{% url 'admin_contest_info' i.id %}">{{i.contest_name}}</a>
               </li>
               {%endfor%}
             </ul>
@@ -98,9 +107,9 @@
       </div>
         <div class="list">
           <ul>
-            {%for i in con%}
+            {%for i in file%}
             <li >
-              <a href="">{{i.contest_name}}</a>
+              <a href="">{{i.file_name}}</a>
             </li>
             {%endfor%}
           </ul>
@@ -111,9 +120,9 @@
 
   <div class="iboxB" style="width: 47%; float:left;">
     <div class="box-title"><strong><b>通知</b></strong>
-      {% if sessions.identify == '管理员' %}
+      {% if identify == '管理员' %}
       <a href="{%url 'notice_list' 1 %}" class="more">更多</a>
-      {%elif sessions.identify == '学生'%}
+      {%elif identify == '学生'%}
       <a href="" class="more">更多</a>
       {%endif%}
     </div>
@@ -131,9 +140,9 @@
 
       <div class="list">
   <ul>
-    {%for i in con%}
+    {% for i in notice %}
     <li >
-      <a href="">{{i.contest_name}}</a>
+      <a href="{% url 'notice_show' i.id %}">{{i.title}}</a>
     </li>
     {%endfor%}
   </ul>

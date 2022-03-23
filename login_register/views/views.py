@@ -115,14 +115,7 @@ def hash_code(s, salt='mysite'):
 
 
 def index(request):
-    if not request.session.get('is_login', None):
-        return redirect(reverse('login'))
-
-    identify = request.session.get('identify')
-    dic = {'学生':'student','教师':'teacher','管理员':'admin'}
-    con = Contest.objects.filter().order_by('id')[:5]
-    sessions = request.session
-    return render(request, dic.get(identify)+'/index.html',locals())
+    return redirect(reverse('uindex'))
 
 
 def login(request):

@@ -1,0 +1,104 @@
+{% extends "student/base.html" %}
+{% load static %}
+{% block main_body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        竞赛信息
+      </h1>
+
+      <ol class="breadcrumb">
+        <li><a href="{% url 'student_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
+
+      </ol>
+    </section>
+<link rel="stylesheet" href="{% static 'myadmin/css/con_info.css' %}">
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+<div class="PageBox" style="margin-bottom: 50px;display: flex;background: #f9f9f9;">
+    <div class="ComDeBox" style=" margin:0px auto;padding-top: 10px; width: 1200px; font-family:'微软雅黑'">
+
+        <div class="ComDeLBox" style=" float:left; margin-left: 15%;">
+
+
+            <div class="Com_info" style="width: 845px;background: white;padding: 40px 0px;">
+
+
+                <div class="info_title clearfix" style="width: 744px;margin: 0px auto;padding-bottom: 15px;">
+
+                        <span class="title_word" style="margin:0px auto;width: 707px;font-size: 20px;color:#439ff6;">{{ c_name }}</span>
+                </div>
+
+
+                <div class="dog" >
+                   <div class="dog-a"  >
+                        <p class="dog-aa "  >
+                           {{ c_organizer }}
+                        </p>
+                    </div>
+
+                    <div class="dog-b" >比赛时间：{{ c_time }}</div>
+                    <!-- <a class="btn" style="background-color: #8d98a2;cursor: no-drop;display: inline;float: right;">已结束</a> -->
+                    {% if permissions != 2 %}
+                    {% if c_status < 1 %}
+                    <a class="btn" style="background-color: #8d98a2;cursor: no-drop;display: inline;float: right">已结束</a>
+                    {% elif c_status == 1 %}
+                    <a class="btn" style="cursor:no-drop;display: inline;float: right;background-color:forestgreen">进行中</a>
+
+                    {% elif c_status == 2 %}
+                        <a class="btn" style="background-color: #0b97c4;cursor: no-drop;display: inline;float: right">报名中</a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+            <div class="ComDetailBox" style="width: 845px; padding-top: 15px;">
+                <div class="ComDetailBoxA" id="Detail" style="overflow: hidden;width:845px; background:#fff;padding: 20px 0px;margin-top:10px;">
+
+                    <span class="picBox" style="display: block;width: 469px; margin: 0px auto;padding-bottom: 30px;">
+
+                        <img src="{% static c_img %}" style="width: 450px; height: 250px" ></span>
+
+                    <span class="wordBox" style="display:block;
+                                                width:745px;
+                                                margin:0px auto;
+                                                font-size:14px;
+                                                line-height: 24px;
+                                                color: #444444;">
+                        {{ form1 | safe }}
+                     </span>
+                </div>
+
+                <div class="ComDetailBoxA"  >
+                    {% for i in f %}
+                      <div class="Downloadbox" >
+                        <span class="Download-fix" >
+                            <p >{{ i.file_name }}</p>  
+                                                                          
+                            <i >{{ i.file_size }}</i>
+                                
+                            <div class="download-btns" ><a href="">下载</a></div>                                       
+                        </span>
+                      </div>
+                     {% endfor %}
+                  </div>
+
+
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+
+    </section>
+    <!-- /.content -->
+{% endblock %}

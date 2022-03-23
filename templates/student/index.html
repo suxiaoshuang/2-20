@@ -1,19 +1,150 @@
 {% extends "student/base.html" %}
-
+{% load static %}
 {% block main_body %}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        账号管理
-        <small>订餐系统后台管理</small>
+<link rel="stylesheet" type="text/css" href="{% static 'myadmin/index/index.css' %}"/>
+<script src="{% static 'myadmin/index/animate.js' %}"></script>
+<script src="{% static 'myadmin/index/index.js' %}"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'myadmin/index/index2.css' %}">    
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li class="active">员工账号信息管理</li>
-      </ol>
     </section>
 
     <!-- Main content -->
+    <div class="mainBody">
+
+      <div class="page">
+        <div class="ma">
+          <a href="javascript:;" class="left">&lt;</a>
+          <!-- 右按钮 -->
+          <a href="javascript:;" class="right">&gt;</a>
+          <!-- 滚动区 -->
+          <ul>
+                            {% for i in info %}
+            <li>
+                        {% if i.type == 'news' %}
+                        <a href="{% url 'n_show' i.id %}" style="color: rgb(15, 15, 15)" >
+                            <h1 style=" width: 1000px; height: 500px ;background-size:1000px 500px;background-image:url('{% static i.img_path %}')">{{ i.title }}</h1>
+                        </a>
+                        {% endif %}
+      
+                        {% if i.type == 'notice' %}
+                        <a href="{% url 'nt_show' i.id %}" style="color: rgb(15, 15, 15)" >
+                            <h1 style=" width: 1000px; height: 500px ;background-size:1000px 500px;background-image:url('{% static i.img_path %}')">{{ i.title }}</h1>
+                        </a>
+                        {% endif %}
+          
+            </li>      
+                            {% endfor %}
+          </ul>
+          <!-- 小圆 -->
+                <ol class="circle">
+      
+                </ol>
+      
+        </div>
+      </div>
+      
+          <div class="indexFloor">
+        
+        <div class="iBoxA" >
+          <div class="box-title">
+            <a href="{%url 'n_list' 1%}" class="more">更多</a>
+            <h2>新闻</h2>
+          </div>
+      
+          <div class="box-body">
+            {%for i in news %}
+            <ul>
+              <li>
+                <a href="{%url 'n_show' i.id %}">{{i.title}}</a>
+              </li>
+            </ul>
+            {%endfor%}
+          </div>
+        </div>
+      
+        <div class="iboxB" style="width: 47%; float:right;">
+              <div class="box-title"><strong><b>学科竞赛</b></strong><a href="" class="more">更多</a></div>
+              <div class="box-body">
+                <div class="list">
+                  <ul>
+                    {% for i in con %}
+                    <li >
+                      <a href="{% url 'c_show' i.id %}">{{i.contest_name}}</a>
+                    </li>
+                    {%endfor%}
+                  </ul>
+                </div>
+      
+              </div>
+        </div>
+      
+      </div>  
+      
+        <div class="indexFloor">
+      
+          <div class="iboxB" style="width: 47%; float:right;">
+            <div class="box-title"><strong><b>文件下载</b></strong><a href="" class="more">更多</a></div>
+            <div class="hot">
+              <a href="">
+                <div class="pic">
+                  <img style="    float: left;
+                  height: 94px;
+                  width: 142px;
+                  margin: 0px 18px 15px 0px;" src="{% static 'myadmin/index/20220303165610_5343.png' %}">
+                </div>
+              </a>
+            </div>
+              <div class="list">
+                <ul>
+                  {%for i in file%}
+                  <li >
+                    <a href="">{{i.file_name}}</a>
+                  </li>
+                  {%endfor%}
+                </ul>
+              </div>
+      
+      
+        </div>
+      
+        <div class="iboxB" style="width: 47%; float:left;">
+          <div class="box-title"><strong><b>通知</b></strong>
+   
+            <a href="{%url 'nt_list' 1 %}" class="more">更多</a>
+ 
+          </div>
+          <div class="hot">
+              <a href="">
+                <div class="pic">
+                  <img style="    float: left;
+                  height: 94px;
+                  width: 142px;
+                  margin: 0px 18px 15px 0px;" src="{% static 'myadmin/index/20220304130701_0933.png' %}" >
+                </div>
+                <div class="title"></div>
+              </a>
+          </div>
+      
+            <div class="list">
+        <ul>
+          {% for i in notice %}
+          <li >
+            <a href="{% url 'nt_show' i.id %}">{{i.title}}</a>
+          </li>
+          {%endfor%}
+        </ul>
+            </div>
+      
+        </div>
+      
+        </div>
+      
+      </div> 
+      
 
     <!-- /.content -->
 {% endblock %}

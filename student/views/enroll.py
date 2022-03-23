@@ -8,7 +8,7 @@ from myadmin.models import Info, Organizer, File, Team, Registration, Contest, U
 
 def sc_list(request,pIndex=1):
     if request.method == "GET":
-        con = Contest.objects.filter(contest_status=2)
+        con = Contest.objects.filter(Q(contest_status=2) & Q(audit=True))
         pIndex = int(pIndex)
         page = Paginator(con,10)
         maxpages = page.num_pages
@@ -147,7 +147,7 @@ def sc_join_team(request):
         # return render(request,'student/team_members.html',locals())
         return redirect(reverse('sc_team_members',args=(h_c_id,)))
 
-
+#团队
 def sc_team_memebers(request,h_c_id):
     conlist = []
     h_uid = None

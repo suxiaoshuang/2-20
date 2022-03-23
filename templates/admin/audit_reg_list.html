@@ -1,0 +1,79 @@
+{% extends "admin/base.html" %}
+
+{% block main_body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+
+
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="{% url 'admin_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
+
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h4 class="box-title"><i class="fa fa-calendar"></i> </h4>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tr>
+                  <th>ID</th>
+                  <th>竞赛名称</th>
+                  <th>举办方</th>
+                  <th>时间</th>
+                  <th>待审核</th>
+                  <th>操作</th>
+                </tr>
+                {% for vo,n in conlist %}
+                <tr>
+                  <td>{{ vo.id }}</td>
+                  <td>{{ vo.contest_name }}</td>
+                  <td>{{ vo.contest_organizer }}</td>
+                  <td >{{ vo.time | date:"Y-m-d H:i:s" }}</td>
+                  <th>{{n}}</th>
+                  <td width="22%">
+
+
+                    <a  href="{% url 'reg_audit' vo.id %}?pIndex={{pIndex}}" class="btn btn-info btn-xs">
+                      <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 查看
+                    </a>
+
+                  </td>
+                </tr>
+
+                {% endfor %}
+
+
+
+
+              </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+
+              <ul class="pagination pagination-sm no-margin pull-right">
+                <li><a href="{% url 'audit_reg_list' pIndex|add:-1 %}?{{ mywhere |join:'&' }}">&laquo;</a></li>
+                {% for p in plist %}
+                  <li {% if p == pIndex %}class="active"{% endif %}><a href="{% url 'audit_reg_list' p %}?{{ mywhere |join:'&' }}">{{p}}</a></li>
+                {% endfor %}
+                <li><a href="{% url 'audit_reg_list' pIndex|add:1 %}?{{ mywhere |join:'&' }}">&raquo;</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.urls import path,re_path
 from login_register.views.views import index
-from .views.contest import con_open,contest_show,con_add,con_delete,img,con_info,con_close,con_off,con_on,admin_registration_audit,audit_clist,audit_con_pass,audit_con_fail
+from .views.contest import con_open,contest_show,con_add,con_delete,img,con_info,con_close,con_off,con_on,admin_registration_audit,audit_clist,audit_con_pass,audit_con_fail,audit_registration_list,admin_registration_audit,reg_audit_fail,reg_audit_pass
 from .views.student import stu_show,stu_add,stu_delete,stu_update
 from .views.teacher import tea_add,tea_show,tea_update,tea_delete
 from .views.admins import admin_show
@@ -48,6 +48,12 @@ urlpatterns = [
     path('admin_audit_contest_list/<int:pIndex>',audit_clist,name='audit_clist'),
     path('admin_audit_contest/<int:con_id>/<int:pIndex>',audit_con_pass,name='audit_con_pass'),
     path('admin_audit_contest_fail/<int:con_id>/<int:pIndex>',audit_con_fail,name='audit_con_fail'),
+
+    path('admin_audit_reg_list/<int:pIndex>',audit_registration_list,name='audit_reg_list'),
+    path('admin_registration_audit/<int:con_id>',admin_registration_audit,name="reg_audit"),
+
+    path('reg_audit_pass/<int:t_id>',reg_audit_pass,name='reg_audit_pass'),
+    path('reg_audit_fail/<int:t_id>',reg_audit_fail,name='reg_audit_fail'),
     path('img/',img,name="img"),
 
 ]

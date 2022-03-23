@@ -18,6 +18,7 @@ class Contest(models.Model):
 
     class Meta:
         db_table = 'contest'
+        ordering = ['-time']
 
 
 class User(models.Model):
@@ -63,6 +64,7 @@ class Info(models.Model):   #新闻
     img_path = models.CharField(max_length=200)
     class Meta:
         db_table = 'info'
+        ordering = ['-time']
 
 class Specialty(models.Model):
     name = models.CharField(max_length=50)
@@ -96,6 +98,7 @@ class Team(models.Model):
 
     class Meta:
         db_table = 'team'
+        ordering = ['-time']
 
 
 
@@ -111,6 +114,7 @@ class Registration(models.Model):
 
     class Meta:
         db_table = 'registration'
+        ordering = ['-time']
 
 
 
@@ -150,5 +154,25 @@ class File(models.Model):
 
     class Meta:
         db_table = "file"
+        ordering = ['-id']
 
+class Match(models.Model):
+    h_c_id = models.CharField(max_length=50)
+    tname = models.CharField(max_length=50)
+    cname = models.CharField(max_length=50)
+    con = models.ForeignKey(Contest,on_delete=models.CASCADE)
+    status = models.BooleanField(default=True)
 
+    class Meta:
+        db_table = 'match'
+        ordering = ['-id']
+
+class W_Q(models.Model):
+    match = models.ForeignKey(Match,on_delete=models.CASCADE)
+    grade = models.CharField(max_length=30)
+    qualify = models.BooleanField(default=False)
+    medal = models.CharField(max_length=50)
+    stage = models.CharField(max_length=20)
+    class Meta:
+        db_table = 'wq'
+        verbose_name = '获奖、晋级表'

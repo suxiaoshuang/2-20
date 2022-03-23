@@ -19,10 +19,12 @@ def admin_news_add(request):
         info.text = df.get('content')
         info.ctime = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
         info.come_from = df.get('come_from')
-        print(info)
-        info.save()
-        from ..views.contest import file
+
+        from ..views.contest import file,img
         file(request,info.ctime)
+        info.img_path = img(request)
+        info.type = 'news'
+        info.save()
 
         return redirect(reverse('admin_news_list',args=(1,)))
 

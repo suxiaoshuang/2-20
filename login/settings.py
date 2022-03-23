@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'student',
     'teacher',
     'django_summernote',
+    'public',
 ]
 
 MIDDLEWARE = [
@@ -87,6 +88,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'testdata',
+        # 'NAME': 'yang',
         'USER': 'root',
         'PASSWORD': '123456',
         'PORT': '3306',
