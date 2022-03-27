@@ -6,7 +6,8 @@ from .views.teacher import tea_add,tea_show,tea_update,tea_delete
 from .views.admins import admin_show
 from .views.news import admin_news_add,admin_news_show,admin_news_list,admin_news_delete
 from .views.notice import n_list,n_show,n_add,n_delete
-
+from .views.match import match_con_show,match_team_list,match_wq,match_stu
+from .views.work import f_down,f_up,s_down,s_up,t_down,t_up
 urlpatterns = [
     path('index/',index,name='admin_index'),
     path('contest_show/<int:pIndex>',contest_show,name="admin_contest_show"),
@@ -54,6 +55,20 @@ urlpatterns = [
 
     path('reg_audit_pass/<int:t_id>',reg_audit_pass,name='reg_audit_pass'),
     path('reg_audit_fail/<int:t_id>',reg_audit_fail,name='reg_audit_fail'),
+
+    path('match_con_show/<int:pIndex>',match_con_show,name="match_con_show"),
+    path('match_team_list/<int:pIndex>/<int:con_id>',match_team_list,name="match_team_list"),
+    path('match_wq/<int:match>',match_wq,name='match_wq'),
+    path('match_stu/<int:match>',match_stu,name='match_stu_admin'),
+
+
+    #作品上传权限控制
+    path('work_f_up/<int:pIndex>/<int:con_id>',f_up,name='f_up'),
+    path('work_f_down/<int:pIndex>/<int:con_id>',f_down,name='f_down'),
+    path('work_s_up/<int:pIndex>/<int:con_id>',s_up,name='s_up'),
+    path('work_s_down/<int:pIndex>/<int:con_id>',s_down,name='s_down'),
+    path('work_t_up/<int:pIndex>/<int:con_id>',t_up,name='t_up'),
+    path('work_t_down/<int:pIndex>/<int:con_id>',t_down,name='t_down'),
     path('img/',img,name="img"),
 
 ]

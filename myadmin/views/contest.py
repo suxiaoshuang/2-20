@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from ..models import Contest, File, Stage, Tyep, Organizer, Registration, User, Match, Team
+from ..models import Contest, File, Stage, Tyep, Organizer, Registration, User, Match, Team,UWQ
 from django.shortcuts import render,HttpResponse,redirect
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
@@ -32,6 +32,7 @@ def audit_clist(request,pIndex):
 def audit_con_pass(request,con_id,pIndex):
     con = Contest.objects.get(id=con_id)
     con.audit = True
+    UWQ.objects.create(stage=1,status=True,con_id=con_id)
     con.save()
     return redirect(reverse('audit_clist',args=(pIndex,)))
 
@@ -186,9 +187,14 @@ def con_add(request):
             con.contest_img_path = os.path.join('upload_images/',img_name)    #相对路径
             con.contest_ctime = date_time
             con.contest_pt = data.get('contest_pt')
-            if int(User.objects.get(user_id=request.session.get('user_id')).permissions) == 2:
-                con.audit = True
             con.save()
+            if int(User.objects.get(user_id=request.session.get('user_id')).permissions) == 2:
+                c = Contest.objects.get(contest_ctime=date_time)
+                c.audit = True
+                UWQ.objects.create(con_id=c.id)
+                c.save()
+
+
 
         #附件
         if request.FILES.get('files',None):
@@ -323,6 +329,10 @@ def con_close(request,id):
             message = '报名进行中无法结束竞赛！'
             return render(request,'admin/info.html',locals())
         con.contest_status = 0
+        #竞赛结束，参赛表状态为False
+        match = Match.objects.get(con_id=id)
+        match.status = False
+        match.save()
         con.save()
         return redirect(reverse('admin_contest_show',args=(pIndex,)))
     else:
@@ -404,7 +414,7 @@ def audit_registration_list(request,pIndex):
     for i in conlist:
         n = 0
         for k in Registration.objects.filter(Q(con_id=i.id) & Q(status=False)):
-            if k:
+            if k:  #计算报名人数
                 n = n+1
         con.append((i,n,))
     conlist = con

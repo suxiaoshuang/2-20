@@ -5,6 +5,8 @@
 <link rel="stylesheet" href="{% static 'student/plugins/adminLTE/css/AdminLTE.css' %}">
 <link rel="stylesheet" href="{% static 'student/plugins/bootstrap/css/bootstrap.css' %}">
 <link rel="stylesheet" href="{% static 'student/plugins/datatables/dataTables.bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap-fileinput/css/fileinput.min.css' %}">
+<script src="{% static 'bootstrap-fileinput/js/fileinput.min.js' %}"></script>
 <!-- <script src="{% static 'myadmin/index/index.js' %}"></script> -->
 
 <div class="box box-primary" style="padding: 25px 10px 10px;">
@@ -18,7 +20,7 @@
                         <th class>队长</th>
                         <th class>队伍id</th>
                         <th class>竞赛名称</th>
-                        <th class>竞赛状态</th>
+                        <!-- <th class>竞赛状态</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -29,7 +31,7 @@
                         <td>{{head}}</td>
                         <td>{{h_c_id}}</td>
                         <td>{{c_name}}</td>
-                        <td>{{c_status}}</td>
+                        <!-- <td>{{c_status}}</td> -->
                         <!-- { % if head == '是' %} -->
                     </tr>
                     {% endfor %}
@@ -39,6 +41,9 @@
     </div>
 
     <div class="box-footer clearfix">
+<!-- 这些功能的前提是竞赛没有结束 -->
+        {% if con_status == True %}
+
         {% if user != h_uid %}
         <a role="button" onclick="return quit();" href="{% url 'sc_team_quit' h_c_id %}?status=f" class="btn btn-primary btn-xs">
             <span class="glyphicon " aria-hidden="true">      
@@ -46,35 +51,97 @@
         </a>
         {% endif %}
 
-        {% if user == h_uid %}
+        {% if user == h_uid and con_status == True %}
         <a role="button" onclick="return jsan();" href="{% url 'sc_team_js' h_c_id %}?status=f" class="btn btn-primary btn-xs">
             <span class="glyphicon " aria-hidden="true">      
             </span> 解散团队   
       </a>
 
-      <a role="button"  href="{% url 'sc_upload_works' h_c_id %}" class="btn btn-primary btn-xs">
+      <!-- <a role="button"  href="{% url 'sc_upload_works' h_c_id %}" class="btn btn-primary btn-xs">
         <span class="glyphicon " aria-hidden="true">      
         </span> 提交作品   
-  </a>
-      {% endif %}   
+  </a> -->
+  <button data-toggle="modal" data-target="#{{user}}">提交作品</button>
+      {% endif %}  
+      
+      {% endif %}
     </div>
 
 </div>
 
-<!-- <script>
-    function verify()
-		{
-		     if(confirm("确定要转让队长权限吗?"))
-		     {
-		         return true;
-		     }else{
-		         return false;
-			 }
-		}
+<script>
+    $('.modal').on("hidden.bs.modal",function(){$(".modal-body input").val("")});
+  </script>
 
 
-</script> -->
+<div id="{{user}}" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{% url 'sc_upload_works' h_c_id %}?match={{match}}"  method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提交参赛作品</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="InputCode">队伍</label>
+                        <input type="text" class="form-control" name="h_c_id" value="{{h_c_id}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputCode">参赛ID</label>
+                        <input type="text" class="form-control" name="match" value="{{match}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputCode">阶段</label>
+                        <input type="text" name="stage" value="{{stage}}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputCode">作品名字</label>
+                        <input type="text" class="form-control" name="work_name" >
+                    </div>
+                    <div class="form-group">
+                        <label for="InputCode" style="display: block;">作品</label>
+                        <!-- <input type="file" class="file" name="work" data-show-preview="false" data-allowed-file-extensions='["zip"]' >
+                         -->
+                         <input id="fileupload" type="file" name="work"  style="display:none;" />
+                         <input type='text' class="form-control" name='textfield' id='textfield' autocomplete="off" readonly="readonly" style="width:500px;display: inline;"/>
+                         <input id="excelImport" type="button" value="浏览" class="btn btn-primary" style="display: inline;"/>
+                            <!-- <input type="file" name="work" /> -->
+                        </div>
 
+
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+    <!-- /.modal -->
+</div>
+
+<script>
+    $(document).ready(function() {
+     
+     $("#excelImport").click(function() {
+         $('#fileupload').click();
+     });
+    
+     
+    
+     $('#fileupload').change(function(){
+         document.getElementById("textfield").value = document.getElementById("fileupload").files[0].name;                    
+         
+     })
+    });
+    </script>
 
 <script>
     function quit()

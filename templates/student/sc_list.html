@@ -54,6 +54,7 @@
                      <a  href="" class="btn btn-info btn-xs" style="cursor: no-drop">
                         <span class="glyphicon" aria-hidden="true"></span> 已报名
                     </a>       
+                    <a href="" class="btn btn-info btn-xs" id="add_team"  >队员</a>
 
                     {% if vo.contest_pt == 't' and st == False %}
                     <a href="{% url 'sc_add_team' %}?con_id={{vo.id}}" class="btn btn-info btn-xs" id="add_team"  >
@@ -64,7 +65,7 @@
 
                     {% if vo.contest_pt == 't' and st == True %}
                     <a href="{% url 'sc_add_team' %}?con_id={{vo.id}}" class="btn btn-info btn-xs" id="add_team"  >
-                      <span class="glyphicon glyphicon-book" aria-hidden="true" id="sp" ></span> 查看队伍信息
+                      <span class="glyphicon glyphicon-book" aria-hidden="true" id="sp" ></span> 队伍信息
                     </a>
                     <!-- href="{% url 'sc_add_team'  %}?con_id={{vo.id}}" -->
                     {% endif %}

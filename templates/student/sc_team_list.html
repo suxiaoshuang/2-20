@@ -22,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for t_name,c_name,time,h_c_id,status in conlist %}
+                    {% for t_name,c_name,time,h_c_id,status,match in conlist %}
                     <tr>
 
                         <td>{{t_name}}</td>
@@ -30,11 +30,11 @@
                         <td>{{time| date:"Y-m-d H:i:s"}}</td>
                         <td>{{h_c_id}}</td>
                         <td>
-                            {% if status == 1 %}
+                            {% if status == 2 %}
                             <span>开启报名中</span>
                             {% endif %}
 
-                            {% if status == 2 %}
+                            {% if status == 1 %}
                             <span>进行中</span>
                             {%endif%}
                         </td>

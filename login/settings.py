@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 IMG_UPLOAD = [os.path.join(BASE_DIR,'static','upload_images')]
 FILE_UPLOAD = [os.path.join(BASE_DIR,'static','upload_file')]
+WORK_UPLOAD = [os.path.join(BASE_DIR,'static','work')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

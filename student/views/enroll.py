@@ -2,8 +2,7 @@ from django.db.models import Q
 from django.urls import reverse
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.paginator import Paginator
-from myadmin.models import Info, Organizer, File, Team, Registration, Contest, User
-
+from myadmin.models import Info, Organizer, File, Team, Registration, Contest, User, Stage, Match,UWQ
 
 
 def sc_list(request,pIndex=1):
@@ -152,6 +151,15 @@ def sc_team_memebers(request,h_c_id):
     conlist = []
     h_uid = None
     team = Team.objects.filter(h_c_id=h_c_id)
+    match = Match.objects.get(h_c_id=h_c_id).id
+    # stage = Stage.objects.all()
+    con_status = True
+    #提交作品的相应阶段的权限
+    # st = None
+    uwq = UWQ.objects.filter(con_id=Team.objects.filter(h_c_id=h_c_id)[0].con_id)[0]
+    stage = uwq.stage
+    status = uwq.status
+
     for members in team:
         #队长用户名
 
@@ -169,6 +177,7 @@ def sc_team_memebers(request,h_c_id):
         c_status = Contest.objects.get(team__id=members.id).contest_status
         if c_status == 0:
             c_status = '竞赛已结束'
+            con_status = False
         elif c_status == 1:
             c_status = '竞赛进行中'
         elif c_status == 2:
@@ -178,7 +187,7 @@ def sc_team_memebers(request,h_c_id):
         conlist.append(lt)
     user = request.session.get('user_id')
     # print(h_uid,user)
-    return render(request,'student/team_members.html',{"conlist":conlist,'user':user,'h_uid':h_uid,'h_c_id':h_c_id})
+    return render(request,'student/team_members.html',{"conlist":conlist,'user':user,'h_uid':h_uid,'h_c_id':h_c_id,'stage':stage,'match':match,'con_status':con_status,'status':status})
 
 
 def team_id_reg_id(request,con_id):

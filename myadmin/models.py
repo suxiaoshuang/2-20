@@ -107,7 +107,7 @@ class Registration(models.Model):
     t_name = models.CharField(max_length=50)
     c_name = models.CharField(max_length=50)
     type = models.CharField(max_length=20)
-    status = models.CharField(max_length=10, default=0)
+    status = models.BooleanField(default=False)
     teacher = models.CharField(max_length=30)
     con = models.ForeignKey(to=Contest,on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
@@ -162,6 +162,7 @@ class Match(models.Model):
     cname = models.CharField(max_length=50)
     con = models.ForeignKey(Contest,on_delete=models.CASCADE)
     status = models.BooleanField(default=True)
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'match'
@@ -169,10 +170,32 @@ class Match(models.Model):
 
 class W_Q(models.Model):
     match = models.ForeignKey(Match,on_delete=models.CASCADE)
-    grade = models.CharField(max_length=30)
+    grade = models.CharField(max_length=30,default=0)
     qualify = models.BooleanField(default=False)
     medal = models.CharField(max_length=50)
-    stage = models.CharField(max_length=20)
+    stage = models.IntegerField()
     class Meta:
         db_table = 'wq'
         verbose_name = '获奖、晋级表'
+
+
+class Works(models.Model):
+    con = models.ForeignKey(Contest,on_delete=models.CASCADE)
+    team = models.ForeignKey(Team,on_delete=models.CASCADE)
+    stage = models.IntegerField()
+    match = models.ForeignKey(Match,on_delete=models.CASCADE)
+    file_path = models.CharField(max_length=100)
+    time = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = 'work'
+
+
+class UWQ(models.Model):
+    con = models.ForeignKey(Contest,on_delete=models.CASCADE)
+    stage = models.IntegerField(default=1)
+    status = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = 'uwq'
