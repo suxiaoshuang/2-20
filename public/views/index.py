@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render
 from myadmin.models import User,Contest,Info,File
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -12,8 +11,9 @@ def index(request):
     notice = Info.objects.filter(type='notice').order_by('-time')[:6]
     file = File.objects.all().order_by('-id')[:6]
     dic = {'学生': 'student', '教师': 'teacher', '管理员': 'admin'}
+    permissions = int(User.objects.get(user_id=request.session.get('user_id')).permissions)
 
-    print(info,con)
+    # print(info,con)
     return render(request, dic.get(identify)+'/index.html',locals())
 
 

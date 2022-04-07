@@ -44,11 +44,20 @@ def match_team_list(request,pIndex,con_id):
             data.append((i,''))
     mteam = data
     cname = Contest.objects.get(id=con_id).contest_name
-    stage = Stage.objects.all()
+
+    #前端便于管理员辨识比赛的各个阶段
+    st = int(Contest.objects.get(id=con_id).contest_stage)
+    if st == 1:
+        stage = {'决赛':1}
+    elif st == 2:
+        stage = {'预赛':1,'决赛':2}
+    elif st == 3:
+        stage = {'预赛':1,'复赛':2,'决赛':3}
+
     con_stage = Contest.objects.get(id=con_id).contest_stage
+
     mywhere = []
     cst = request.GET.get('stage',None)
-
     if cst:
         if int(cst) > 1:
             conlist, mteam = mteam,[]
@@ -79,8 +88,6 @@ def match_team_list(request,pIndex,con_id):
     context = {'conlist': pdata, 'plist': plist, 'pIndex': pIndex, 'maxpages': maxpages,'con_id':con_id,'cname':cname,'stage':stage,'con_stage':con_stage,'mywhere':mywhere}
     return render(request,'admin/match_tlist.html',context)
 
-    # return render(request,'admin/layui.html',context)
-    # return render(request,'admin/modal.html',context)
 
 def match_wq(request,match):
 
@@ -92,7 +99,8 @@ def match_wq(request,match):
     stage = request.GET.get('stage')
     con_id = request.GET.get('con_id')
     pIndex = request.GET.get('pIndex')
-    print(stage,con_id,pIndex)
+    # print(stage,con_id,pIndex)
+    #如果该队伍此阶段的成绩已存在，则进行修改
     try:
         wq = W_Q.objects.get(Q(match_id=match) & Q(stage=stag))
         if wq :
@@ -100,35 +108,49 @@ def match_wq(request,match):
             wq.qualify = qualify
             wq.medal = medal
             wq.save()
+    #否则新增一条成绩、晋级记录
     except:
         W_Q.objects.create(grade=grade, stage=stag, qualify=qualify, medal=medal, match_id=match)
-    # reverse('match_team_list' + '?stage=' + stage, args=(pIndex, con_id,))
+
     if stage:
         return redirect('/admin/match_team_list/'+pIndex+'/'+con_id+'?stage='+stage)
     else:
         return redirect(reverse('match_team_list' , args=(pIndex, con_id,)))
 
-
+#该视图函数用于展示此队伍的成绩，以及各阶段的作品
 def match_stu(request,match):
-    wq = W_Q.objects.filter(match_id=match).order_by('stage')
-    work = Works.objects.filter(match_id=match).order_by('stage')
     h_c_id = Match.objects.get(id=match).h_c_id
+    wq = W_Q.objects.filter(match_id=match).order_by('stage')
+    works = Works.objects.filter(match_id=match).order_by('stage')
+    # work = None
+    st = int(Contest.objects.get(id=Team.objects.filter(h_c_id=h_c_id)[0].con_id).contest_stage)
+    #前端显示作品时，辨识作品属于哪个阶段的产物
+    w = []
+    for i in works:
+        if st == 1:
 
-    # for i in wq:
-    #     if int(i.stage) == 1:
-    #         conlist[0] = i
-    #     elif int(i.stage) == 2:
-    #         conlist[1] = i
-    #     elif int(i.stage) == 3:
-    #         conlist[2] = i
-    # for k in work:
-    #     if int(k.stage) == 1:
-    #         data[0] = k
-    #     elif int(k.stage) ==2:
-    #         data[1] = k
-    #     elif int(k.stage) == 3:
-    #         data[2] = k
-    conlist = list(zip(wq,work))
-    context = {'conlist':conlist,'h_c_id':h_c_id,'work_data':work}
+            if i.stage == 1:
+                w.append((i,'决赛'))
+
+        elif st == 2:
+
+            if i.stage == 1:
+                w.append((i,'预赛'))
+            elif i.stage == 2:
+                w.append((i,'决赛'))
+
+        elif st == 3:
+
+            if i.stage == 1:
+                w.append((i, '预赛'))
+            elif i.stage == 2:
+                w.append((i,'复赛'))
+            elif i.stage == 3:
+                w.append((i, '决赛'))
+    works = w
+
+    conlist = list(zip(wq,works))
+    # print(conlist)
+    context = {'conlist':conlist,'h_c_id':h_c_id,'work_data':works}
 
     return render(request,'admin/match_stu.html',context)

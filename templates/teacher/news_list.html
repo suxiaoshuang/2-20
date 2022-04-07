@@ -1,0 +1,373 @@
+{% load static  %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- 支持响应式布局 -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="{% static 'myadmin/bower_components/bootstrap/dist/css/bootstrap.min.css'%}">
+  <!-- 象形字体 -->
+  <link rel="stylesheet" href="{% static 'myadmin/bower_components/font-awesome/css/font-awesome.min.css'%}">
+  <!-- 图标 -->
+  <link rel="stylesheet" href="{% static 'myadmin/bower_components/Ionicons/css/ionicons.min.css'%}">
+  <!-- 主题风格样式 -->
+  <link rel="stylesheet" href="{% static 'myadmin/dist/css/AdminLTE.min.css'%}">
+  <!-- AdminLTE 皮肤.这里选择的是skin-blue样式，我们还可以有其他皮肤可以选择. -->
+  <link rel="stylesheet" href="{% static 'myadmin/dist/css/skins/skin-blue.min.css'%}">
+
+  <!-- 兼容IE9以下浏览器 -->
+  <!--[if lt IE 9]>
+  <script src="{% static 'myadmin/local/js/html5shiv.min.js'%}"></script>
+  <script src="{% static 'myadmin/local/js/respond.min.js'%}"></script>
+  <![endif]-->
+  <!-- Google Font -->
+  <link rel="stylesheet" href="{% static 'myadmin/local/css/google_fonts.css'%}">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<script src="{% static 'myadmin/bower_components/jquery/dist/jquery.min.js'%}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'myadmin/bower_components/bootstrap/dist/js/bootstrap.min.js'%}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'myadmin/dist/js/adminlte.min.js'%}"></script>
+
+<script src="{% static 'myadmin/dist/js/edu-modal-alert-confirm.js'%}"></script>
+
+
+<div class="wrapper">
+
+  <!-- Main Header 主体页头 -->
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a href="index2.html" class="logo">
+      <!-- 侧栏迷你徽标 mini 50x50 pixels -->
+      <span class="logo-mini"><b></b></span>
+      <!-- 常规状态标志和移动设备标志 -->
+      <span class="logo-lg"><b>高校学科竞赛组织管理系统</b></span>
+    </a>
+
+    <!-- Header Navbar 首部导航栏 -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button 侧边栏切换按钮 -->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">切换导航</span>
+      </a>
+      <!-- 右栏菜单 -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- messages-menu 消息菜单: 样式可以在 dropdown.less 中找到 -->
+
+          <!-- User Account Menu -->
+          <li class="dropdown user user-menu">
+            <!-- Menu Toggle Button -->
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- The user image in the navbar-->
+              <img src="{% static '/myadmin/dist/img/user2-160x160.jpg'%}" class="user-image" alt="User Image">
+              <!-- hidden-xs hides the username on small devices so only the image appears. -->
+              <span class="hidden-xs">张无忌</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- The user image in the menu -->
+              <li class="user-header">
+                <img src="{% static 'myadmin/dist/img/user2-160x160.jpg'%}" class="img-circle" alt="User Image">
+
+                <p>
+                  张无忌 - 管理员
+                  <small>2020年07月16日加入</small>
+                </p>
+              </li>
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">个人信息</a>
+                </div>
+                <div class="pull-right">
+                  <a href="#" class="btn btn-default btn-flat">退 出</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 左侧柱。包含徽标和边栏 -->
+  <aside class="main-sidebar">
+
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="{% static 'myadmin/dist/img/user2-160x160.jpg'%}" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>张无忌 . 管理员</p>
+          <!-- Status -->
+          <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">主要导航</li>
+        <!-- 导航列表，你可以自行更改图标 -->
+        <li class="active"><a href="{% url 'teacher_index' %}"><i class="fa fa-home"></i> <span>首页</span></a></li>
+        {% if permissions == 1 %}
+        <li><a href="{% url 'match_con_show' 1%}"><i class="fa fa-users"></i> <span>晋级、获奖管理</span></a></li>
+
+        <li class="treeview">
+          <a href="category.html"><i class="fa fa-cutlery"></i> <span>赛事管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <!-- <li><a href="{% url 'audit_clist' 1%}  "> <i class="fa fa-circle-o"></i>竞赛申报审核</a></li> -->
+            <li><a href="{%  url 'admin_contest_add'%}  "> <i class="fa fa-circle-o"></i>竞赛申报</a></li>
+            <li><a href="{% url 'admin_contest_show' 1%}  "> <i class="fa fa-circle-o"></i>竞赛管理</a></li>
+            <li><a href="{% url 'admin_news_list' 1%}"><i class="fa fa-circle-o"></i>新闻</a></li>
+            <li><a href="{% url 'notice_list' 1%}"><i class="fa fa-circle-o"></i>公告</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="{% url 'admin_contest_show'  1%}  "><i class="fa fa-cutlery"></i> <span>报名管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'admin_contest_registration' 1%}"> <i class="fa fa-circle-o"></i>竞赛报名</a></li>
+            <li><a href="{% url 'audit_reg_list' 1%}"> <i class="fa fa-circle-o"></i>报名审核</a></li>
+          </ul>
+        </li>
+        {% endif %}
+
+        {% if permissions == 0 %}
+
+        <li><a href="{% url 'admin_news_list' 1%}"><i class="fa fa-circle-o"></i>新闻</a></li>
+        <li><a href="{% url 'notice_list' 1%}"><i class="fa fa-circle-o"></i>公告</a></li>
+
+
+        {% endif %}
+        <li><a href="{% url 'match_con_show' 1%}"><i class="fa fa-users"></i> <span>学生团队</span></a></li>
+        <li><a href="#"><i class="fa fa-user"></i> <span>个人信息</span></a></li>
+        <li><a href="{% url 'apply_list' %}"><i class="fa fa-key"></i> <span>权限申请</span></a></li>
+        <li><a href="{% url 'notice_list' 1%}">文件</a></li>
+
+
+
+
+        <!-- <li class="treeview">
+          <a href="category.html"><i class="fa fa-cutlery"></i> <span>人员组织管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'admin_stu_show' 1%}"> <i class="fa fa-circle-o"></i> 学生管理</a></li>
+            <li><a href="{% url 'admin_tea_show' 1%}"> <i class="fa fa-circle-o"></i> 教师管理</a></li>
+            <li><a href="{% url 'admin_admin_show' 1%}"> <i class="fa fa-circle-o"></i> 下级管理员</a></li>
+          </ul>
+        </li> -->
+
+
+        
+
+
+
+
+        <!-- <li><a href="orders.html"><i class="fa fa-shopping-cart"></i> <span>订单管理</span></a></li>
+        <li><a href="#"><i class="fa fa-user"></i> <span>账号管理</span></a></li>
+        <li><a href="#"><i class="fa fa-key"></i> <span>权限管理</span></a></li> -->
+
+
+
+        <li><a href="{% url 'logout' %}"><i class="fa fa-unlock-alt"></i> <span>登出</span></a></li>
+      </ul>
+      <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+
+
+
+
+    <section class="content-header">
+      <h1>
+<link rel="stylesheet" type="text/css" href="{% static 'myadmin/index/index.css' %}"/>
+<script src="{% static 'myadmin/index/animate.js' %}"></script>
+<script src="{% static 'myadmin/index/index.js' %}"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'myadmin/index/index2.css' %}">    
+      </h1>
+    </section>
+
+    <!-- Main content -->
+
+
+    <section class="content-header">
+        <h1>
+  
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="{% url 'teacher_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
+  
+        </ol>
+      </section>
+  
+      <!-- Main content -->
+      <section class="content container-fluid">
+  
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+              <div class="box-header">
+                <h4 class="box-title"><i class="fa fa-calendar"></i> 竞赛</h4>
+  
+                <div class="box-tools">
+                  <form action="{% url 'tn_list'  1%}" method="get">
+                  <div class="input-group input-group-sm" style="width:150px;">
+                    <input type="text" name="keyword" class="form-control pull-right" placeholder="标题/">
+  
+                    <div class="input-group-btn">
+                      <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                  </form>
+                </div>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                  <tr>
+                    <th>ID</th>
+                    <th>标题</th>
+                    <th>来源</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                  </tr>
+                  {% for vo in conlist %}
+                  <tr>
+                    <td>{{ vo.id }}</td>
+                    <td>{{ vo.title }}</td>
+                    <td>{{ vo.come_from }}</td>
+                    <td >{{ vo.time | date:"Y-m-d H:i:s" }}</td>
+  
+                    <td width="22%">
+  
+  
+                      <a  href="{% url 'tn_show' vo.id %}" class="btn btn-info btn-xs">
+                        <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 查看
+                      </a>
+  
+                    </td>
+                  </tr>
+  
+                  {% endfor %}
+  
+                </table>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="{% url 'tn_list' pIndex|add:-1 %}?{{ mywhere |join:'&' }}">&laquo;</a></li>
+                  {% for p in plist %}
+                    <li {% if p == pIndex %}class="active"{% endif %}><a href="{% url 'tn_list' p %}?{{ mywhere |join:'&' }}">{{p}}</a></li>
+                  {% endfor %}
+                  <li><a href="{% url 'tn_list' pIndex|add:1 %}?{{ mywhere |join:'&' }}">&raquo;</a></li>
+                </ul>
+              </div>
+            </div>
+            <!-- /.box -->
+          </div>
+        </div>
+  
+      </section>
+      <!-- /.content -->
+  
+
+
+
+    <!-- < end main content> -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="pull-right hidden-xs">
+      <!--餐饮管理平台-->
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2020 <a href="#">北京****有限公司</a>.</strong> 版权所有
+  </footer>
+
+  <!-- 添加侧栏的背景。必须放置此处紧接在控制侧边栏之后 -->
+  <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+<!-- edu-model提示框模板 -->
+<div id="edu-alert" class="modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h5 class="modal-title"><i class="fa fa-exclamation-circle"></i> [Title]</h5>
+      </div>
+      <div class="modal-body small">
+        <p>[Message]</p>
+      </div>
+      <div class="modal-footer" >
+        <button type="button" class="btn btn-primary ok" data-dismiss="modal">[BtnOk]</button>
+        <button type="button" class="btn btn-default cancel" data-dismiss="modal">[BtnCancel]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- edu-model-end -->
+
+<!-- REQUIRED JS SCRIPTS -->
+  
+<!-- jQuery 3 -->
+
+
+<!-- 此处可以添加SimLoopl和FastClick插件，用于增强用户体验。 -->
+
+<script type="text/javascript">
+	/*
+    Modal.confirm({
+        msg: "确定要删除吗？",
+        title: ' 信息提示',
+        btnok: '确定',
+        btncl:'取消'
+      }).on(function (e){
+        if(e){
+          Modal.alert({msg: "成功删除",title: ' 信息提示',btnok: '确定',btncl:'取消'});
+        }
+      });
+      */
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

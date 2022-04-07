@@ -1,0 +1,122 @@
+{% extends "student/base.html" %}
+{% load static %}
+{% block main_body %}
+<link rel="stylesheet" href="{% static 'student/plugins/adminLTE/css/AdminLTE.css' %}">
+<link rel="stylesheet" href="{% static 'student/plugins/bootstrap/css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'student/plugins/datatables/dataTables.bootstrap.css' %}">
+<!-- <script src="{% static 'myadmin/index/index.js' %}"></script> -->
+
+<div class="box box-primary" style="padding: 25px 10px 10px;">
+    <div style=""><span style="text-align:center;display:block;"><strong>参赛作品</strong></span></div>
+    <div class="box-body">
+        <div class="table-box">
+            <table class="table table-bordered table-striped table-hover dataTable">
+                <thead>
+                    <tr>
+                        <th class>阶段</th>
+                        <th class>作品名称</th>
+                        <th class>时间</th>
+                        <th class>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for work,stage in work_data %}
+                    <tr>
+
+                        <td>
+                            {{stage}}
+                            <!-- {% if work.stage == 1 %}
+                            预赛
+                            {% elif work.stage == 2 %}
+                            复赛
+                            {% elif work.stage == 3 %}
+                            决赛
+                            {% endif %} -->
+                        </td>
+                        <td>{{work.name}}</td>
+                        <!-- <td>
+                            {% if wq.qualify == 1 %}
+                            晋级
+                            {% else %}
+                            未晋级
+                            {% endif %}
+                        </td> -->
+                        <td>{{work.time| date:"Y-m-d H:i:s"}}</td>
+                        
+
+
+                        <td>
+                            <!-- <a onclick="return verify();" href="">解散团队</a> -->
+                             <a href="{% url 'dwork' work.file_path %}" download>下载</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="box-footer clearfix">
+    
+
+      </div>
+</div>
+
+
+<div style="padding: 25px 10px 10px;">
+    <div style=""><span style="text-align:center;display:block;"><strong>竞赛成绩</strong></span></div>
+    <div class="box-body">
+        <div class="table-box">
+            <table class="table table-bordered table-striped table-hover dataTable">
+                <thead>
+                    <tr>
+                        <th class>阶段</th>
+                        <th class>作品名称</th>
+                        <th class>成绩</th>
+                        <th class>状态</th>
+                        <th class>奖牌</th>
+                        <th class>时间</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for wq,work in conlist %}
+                    <tr>
+
+                        <td>
+                            {{work.1}}
+                            <!-- {% if wq.stage == 1 %}
+                            预赛
+                            {% elif wq.stage == 2 %}
+                            复赛
+                            {% elif wq.stage == 3 %}
+                            决赛
+                            {% endif %} -->
+                        </td>
+                        <td>{{work.0.name}}</td>
+                        <td>{{wq.grade}}</td>
+                        <td>
+                            {% if wq.qualify == 1 %}
+                            晋级
+                            {% else %}
+                            未晋级
+                            {% endif %}
+                        </td>
+                        <td>{{wq.medal}}</td>
+                        <td>{{work.0.time| date:"Y-m-d H:i:s"}}</td>
+                        
+
+
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="box-footer clearfix">
+    
+
+      </div>
+</div>
+{% endblock %}

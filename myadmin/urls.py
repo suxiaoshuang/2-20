@@ -8,6 +8,10 @@ from .views.news import admin_news_add,admin_news_show,admin_news_list,admin_new
 from .views.notice import n_list,n_show,n_add,n_delete
 from .views.match import match_con_show,match_team_list,match_wq,match_stu
 from .views.work import f_down,f_up,s_down,s_up,t_down,t_up
+from .views.teacher_qualify import tea_qualify_apply,tea_qualify_apply_list
+
+
+
 urlpatterns = [
     path('index/',index,name='admin_index'),
     path('contest_show/<int:pIndex>',contest_show,name="admin_contest_show"),
@@ -69,6 +73,12 @@ urlpatterns = [
     path('work_s_down/<int:pIndex>/<int:con_id>',s_down,name='s_down'),
     path('work_t_up/<int:pIndex>/<int:con_id>',t_up,name='t_up'),
     path('work_t_down/<int:pIndex>/<int:con_id>',t_down,name='t_down'),
+
+    #教师申请临时管理员权限
+    path('tea_qualify_apply_list/<int:pIndex>',tea_qualify_apply_list,name='tea_qualify_apply_list'),
+    path('tea_qualify_apply/<int:user_id>/<int:qualify>/<int:pIndex>',tea_qualify_apply,name='tea_qualify_apply'),
+
+
     path('img/',img,name="img"),
 
 ]

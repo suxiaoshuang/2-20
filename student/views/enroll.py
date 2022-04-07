@@ -146,6 +146,9 @@ def sc_join_team(request):
         # return render(request,'student/team_members.html',locals())
         return redirect(reverse('sc_team_members',args=(h_c_id,)))
 
+
+
+
 #团队
 def sc_team_memebers(request,h_c_id):
     conlist = []
@@ -159,6 +162,26 @@ def sc_team_memebers(request,h_c_id):
     uwq = UWQ.objects.filter(con_id=Team.objects.filter(h_c_id=h_c_id)[0].con_id)[0]
     stage = uwq.stage
     status = uwq.status
+
+    #判定提交的作品是预赛、复赛、还是决赛
+    work = None
+    st = int(Contest.objects.get(id=Team.objects.filter(h_c_id=h_c_id)[0].con_id).contest_stage)
+    if st == 1:
+        if stage == 1:
+            work = '比赛'
+    elif st == 2:
+        if stage == 1:
+            work = '预赛'
+        elif stage == 2:
+            work = '决赛'
+    elif st == 3:
+        if stage == 1:
+            work = '预赛'
+        elif stage == 2:
+            work = '复赛'
+        elif stage == 3:
+            work = '决赛'
+
 
     for members in team:
         #队长用户名
@@ -187,7 +210,7 @@ def sc_team_memebers(request,h_c_id):
         conlist.append(lt)
     user = request.session.get('user_id')
     # print(h_uid,user)
-    return render(request,'student/team_members.html',{"conlist":conlist,'user':user,'h_uid':h_uid,'h_c_id':h_c_id,'stage':stage,'match':match,'con_status':con_status,'status':status})
+    return render(request,'student/team_members.html',{"conlist":conlist,'user':user,'h_uid':h_uid,'h_c_id':h_c_id,'stage':stage,'match':match,'con_status':con_status,'status':status,'work':work})
 
 
 def team_id_reg_id(request,con_id):

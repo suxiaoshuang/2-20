@@ -22,7 +22,8 @@
               <h4 class="box-title"><i class="fa fa-calendar"></i> {{cname}}</h4>
 
               <div class="box-tools">
-                <form action="{% url 'notice_list'  1%}" method="get">
+                <form action="{% url 'match_team_list' pIndex con_id %}" method="post">
+                  {% csrf_token %}
                 <div class="input-group input-group-sm" style="width:150px;">
                   <input type="text" name="keyword" class="form-control pull-right" placeholder="/">
 
@@ -65,17 +66,17 @@
                                   <div class="modal-body">
                                       <div class="form-group">
                                           <label for="InputCode">队伍</label>
-                                          <input type="text" class="form-control" name="h_c_id" value="{{vo.h_c_id}}">
+                                          <input type="text" class="form-control" name="h_c_id" value="{{vo.h_c_id}}" readonly  unselectable="on">
                                       </div>
-                                      <div class="form-group">
+                                      <div class="form-group" style="display: none;">
                                           <label for="InputCode">参赛ID</label>
                                           <input type="text" class="form-control" name="match" value="{{vo.id}}">
                                       </div>
                                       <div class="form-group">
                                           <label for="InputCode">阶段</label>
                                           <select class="form-control" name="stag">
-                                            {% for i in stage %}
-                                            <option value="{{i.stage}}">{{i.stage}}</option>
+                                            {% for key,value in stage.items %}
+                                            <option value="{{value}}">{{key}}</option>
                                             {% endfor %}
                                           </select>
                                       </div>
@@ -86,8 +87,8 @@
                                       <div class="form-group">
                                         <label for="InputCode">晋级</label>
                                         <select class="form-control" name="qualify">
-                                          <option value="True" >晋级</option>
-                                          <option value="False">未晋级</option>
+                                          <option value="False" >未晋级</option>
+                                          <option value="True">晋级</option>
                                           </select>
                                     </div>
                                     <div class="form-group">
@@ -156,6 +157,9 @@
                 </span> 决赛
               </a>
               {% endif %}
+              <div style=" padding-top: 4px;padding-left: 2px;">
+                <span style="font-family: Microsoft YaHei ;font-size:5px">Tips:设置按钮为设置参赛队伍成绩、晋级、奖牌</span>
+              </div>
 
               <ul class="pagination pagination-sm no-margin pull-right">
                 <li><a href="{% url 'match_team_list' pIndex|add:-1 con_id%}?{{ mywhere |join:'&' }}">&laquo;</a></li>

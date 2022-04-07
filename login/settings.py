@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-yhai$w56)c!d#2+*2b7vc5jsj12z9(r0cu%0twe*rpn$wqf)l#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 IMG_UPLOAD = [os.path.join(BASE_DIR,'static','upload_images')]
 FILE_UPLOAD = [os.path.join(BASE_DIR,'static','upload_file')]
 WORK_UPLOAD = [os.path.join(BASE_DIR,'static','work')]
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'teacher',
     'django_summernote',
     'public',
+    'captcha',
 ]
 
 MIDDLEWARE = [

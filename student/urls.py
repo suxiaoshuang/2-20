@@ -1,7 +1,7 @@
 from django.urls import path,re_path
 from login_register.views.views import index
 from .views.enroll import sc_list,sc_enroll,sc_add_team,sc_team_nt,sc_join_team,sc_team_memebers
-from .views.team import sc_team_list,sc_team_js,sc_team_quit,sc_upload_works
+from .views.team import sc_team_list,sc_team_js,sc_team_quit,sc_upload_works,match_show
 urlpatterns = [
     path('index/', index,name='student_index'),
     path('stu_list/<int:pIndex>',sc_list,name="sc_list"),
@@ -15,4 +15,6 @@ urlpatterns = [
     path('stu_team_quit/<int:h_c_id>',sc_team_quit,name="sc_team_quit"),
     path('stu_team_js/<int:h_c_id>',sc_team_js,name="sc_team_js"),
     path('stu_upload_works/<int:h_c_id>',sc_upload_works,name='sc_upload_works'),
+
+    path('stu_match_show/<int:match>',match_show,name='stu_match_show'),
 ]

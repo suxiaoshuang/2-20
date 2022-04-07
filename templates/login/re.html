@@ -47,7 +47,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 					<div class="register">
 						<form action="{% url 'login' %}" method="post">
                             {% csrf_token %}
-                            <fieldset style= ''>
+                            <fieldset >
                                 <input type="radio" name="identify" value="学生" style="color: #0b97c4;width: 16px;height: 16px;"/>学生
                                 <input type="radio" name="identify" value="教师" style="color: #0b97c4;width: 16px;height: 16px;"/>教师
                                 <input type="radio" name="identify" value="管理员" style="color: #0b97c4;width: 16px;height: 16px;"/>管理员

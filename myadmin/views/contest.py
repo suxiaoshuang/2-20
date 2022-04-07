@@ -427,7 +427,7 @@ def reg_audit_pass(request,t_id):
     reg = Registration.objects.get(t_id=t_id)
     reg.status = True
     team = Team.objects.get(id=t_id)
-    Match.objects.create(h_c_id=team.h_c_id,cname=team.c_name,tname=team.t_name,con_id=team.con_id)
+    Match.objects.create(h_c_id=team.h_c_id,cname=team.c_name,tname=team.t_name,con_id=team.con_id,team_id=t_id)
     reg.save()
     return redirect(reverse('reg_audit',kwargs={'con_id':con_id}))
 

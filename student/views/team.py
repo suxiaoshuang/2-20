@@ -1,13 +1,13 @@
 import datetime
 import os
-
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.db.models import Q
 from django.urls import reverse
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.paginator import Paginator
 
 from login import settings
-from myadmin.models import Info, Organizer, File, Team, Registration, Contest, User, Match,Works
+from myadmin.models import Info, Organizer, File, Team, Registration, Contest, User, Match, Works, W_Q
 
 
 def sc_team_list(request,pIndex):
@@ -154,3 +154,39 @@ def sc_upload_works(request,h_c_id):
         Works.objects.create(stage=stage,file_path=file_path,match_id=match,con_id=Match.objects.get(h_c_id=h_c_id).con_id,team_id=Team.objects.get(Q(head=True)&Q(h_c_id=h_c_id)).id,name=name)
         return HttpResponse('提交成功！')
 
+@csrf_exempt
+def match_show(request,match):
+    h_c_id = Match.objects.get(id=match).h_c_id
+    wq = W_Q.objects.filter(match_id=match).order_by('stage')
+    works = Works.objects.filter(match_id=match).order_by('stage')
+    # work = None
+    st = int(Contest.objects.get(id=Team.objects.filter(h_c_id=h_c_id)[0].con_id).contest_stage)
+    # 前端显示作品时，辨识作品属于哪个阶段的产物
+    w = []
+    for i in works:
+        if st == 1:
+
+            if i.stage == 1:
+                w.append((i, '决赛'))
+
+        elif st == 2:
+
+            if i.stage == 1:
+                w.append((i, '预赛'))
+            elif i.stage == 2:
+                w.append((i, '决赛'))
+
+        elif st == 3:
+
+            if i.stage == 1:
+                w.append((i, '预赛'))
+            elif i.stage == 2:
+                w.append((i, '复赛'))
+            elif i.stage == 3:
+                w.append((i, '决赛'))
+    works = w
+
+    conlist = list(zip(wq, works))
+    # print(conlist)
+    context = {'conlist': conlist, 'h_c_id': h_c_id, 'work_data': works}
+    return render(request,'student/match_show.html',context)

@@ -26,16 +26,17 @@ class User(models.Model):
     gender = (('male', '男'), ('female', '女'),)
     name = models.CharField(max_length=20, unique=False)      #名字
     user_id = models.CharField(max_length=20, unique=True)    #学工号
-    password = models.CharField(max_length=100,default='123456')
+    password = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    sex = models.CharField(max_length=20, choices=gender, default='男')
+    # sex = models.CharField(max_length=20, choices=gender)
     identify = models.CharField(max_length=30, choices=identifies, default='学生')
-    academy = models.CharField(max_length=30, default='计算机')     #学院
-    specialty = models.CharField(max_length=40,default='软件工程')   #专业
-    grade = models.CharField(max_length=15,default='2018')  #年级
+    academy = models.CharField(max_length=30)     #学院
+    specialty = models.CharField(max_length=40)   #专业
+    grade = models.CharField(max_length=15)  #年级
     c_time = models.DateTimeField(auto_now_add=True)      #注册时间
     has_confirmed = models.BooleanField(default=False)    #认证状态
     permissions = models.CharField(max_length=5,default=0)  #权限
+    qualify_apply = models.IntegerField()
 
     def __str__(self):
         return self.name
@@ -163,6 +164,7 @@ class Match(models.Model):
     con = models.ForeignKey(Contest,on_delete=models.CASCADE)
     status = models.BooleanField(default=True)
     time = models.DateTimeField(auto_now_add=True)
+    team = models.ForeignKey(Team,on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'match'
@@ -199,3 +201,13 @@ class UWQ(models.Model):
 
     class Meta:
         db_table = 'uwq'
+
+
+class Apply(models.Model):
+    time = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    result = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'apply'
+        ordering = ['-time']

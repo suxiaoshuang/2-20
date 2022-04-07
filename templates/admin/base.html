@@ -213,17 +213,30 @@
         <!-- 导航列表，你可以自行更改图标 -->
         <li class="active"><a href="{% url 'admin_index' %}"><i class="fa fa-home"></i> <span>首页</span></a></li>
         
-        <li><a href="{% url 'match_con_show' 1%}"><i class="fa fa-users"></i> <span>参赛管理</span></a></li>
+        <li><a href="{% url 'match_con_show' 1%}"><i class="fa fa-users"></i> <span>晋级、获奖管理</span></a></li>
 
         <li class="treeview">
-          <a href="{% url 'admin_contest_show'  1%}  "><i class="fa fa-cutlery"></i> <span>竞赛管理</span>
+          <a href="category.html"><i class="fa fa-cutlery"></i> <span>赛事管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
             <li><a href="{% url 'audit_clist' 1%}  "> <i class="fa fa-circle-o"></i>竞赛申报审核</a></li>
-            <li><a href="{% url 'admin_contest_show' 1%}  "> <i class="fa fa-circle-o"></i>竞赛信息</a></li>
+            <li><a href="{%  url 'admin_contest_add'%}  "> <i class="fa fa-circle-o"></i>竞赛申报</a></li>
+            <li><a href="{% url 'admin_contest_show' 1%}  "> <i class="fa fa-circle-o"></i>竞赛管理</a></li>
+            <li><a href="{% url 'admin_news_list' 1%}"><i class="fa fa-circle-o"></i>新闻</a></li>
+            <li><a href="{% url 'notice_list' 1%}"><i class="fa fa-circle-o"></i>公告</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="{% url 'admin_contest_show'  1%}  "><i class="fa fa-cutlery"></i> <span>报名管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
             <li><a href="{% url 'admin_contest_registration' 1%}"> <i class="fa fa-circle-o"></i>竞赛报名</a></li>
             <li><a href="{% url 'audit_reg_list' 1%}"> <i class="fa fa-circle-o"></i>报名审核</a></li>
           </ul>
@@ -234,7 +247,7 @@
 
 
         <li class="treeview">
-          <a href="category.html"><i class="fa fa-cutlery"></i> <span>人员组织</span>
+          <a href="category.html"><i class="fa fa-cutlery"></i> <span>人员组织管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -246,17 +259,7 @@
           </ul>
         </li>
 
-        <li class="treeview">
-          <a href="category.html"><i class="fa fa-cutlery"></i> <span>信息管理</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'admin_news_list' 1%}">新闻</a></li>
-            <li><a href="{% url 'notice_list' 1%}">公告</a></li>
-          </ul>
-        </li>
+
         
 
 
@@ -264,7 +267,7 @@
 
         <li><a href="orders.html"><i class="fa fa-shopping-cart"></i> <span>订单管理</span></a></li>
         <li><a href="#"><i class="fa fa-user"></i> <span>账号管理</span></a></li>
-        <li><a href="#"><i class="fa fa-key"></i> <span>权限管理</span></a></li>
+        <li><a href="{% url 'tea_qualify_apply_list' 1 %}"><i class="fa fa-key"></i> <span>权限管理</span></a></li>
 
 
 

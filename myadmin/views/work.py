@@ -3,7 +3,8 @@ from django.shortcuts import render,redirect,reverse
 from ..models import UWQ
 
 
-#stage=1,status=1
+#作品提交权限控制
+
 def f_up(request,pIndex,con_id):
     uwq = UWQ.objects.get(con_id=con_id)
     uwq.status = True

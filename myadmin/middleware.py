@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 
 import re
-
+from myadmin.models import User
 
 class Middleware(object):
     def __init__(self,get_response):
@@ -25,7 +25,7 @@ class Middleware(object):
             if not request.session.get('is_login',None):
                 return redirect(reverse('login'))
             if str in list:
-                if str not in identify:
+                if str not in identify and int(User.objects.get(user_id=request.session.get('user_id')).permissions) < 1:
                     return redirect(reverse(identify+"_index"))
 
 

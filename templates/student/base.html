@@ -213,9 +213,9 @@
         <!-- 导航列表，你可以自行更改图标 -->
         <li class="active"><a href="{% url 'admin_index' %}"><i class="fa fa-home"></i> <span>首页</span></a></li>
         
-{#        <li><a href="{% url 'admin_con_index' 1%}"><i class="fa fa-users"></i> <span>员工信息管理</span></a></li>#}
 
-        <li class="treeview">
+
+        <!-- <li class="treeview">
           <a href="{% url 'admin_contest_show'  1%}  "><i class="fa fa-cutlery"></i> <span>竞赛管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -225,13 +225,13 @@
             <li><a href="{% url 'admin_contest_show' 1%}  "> <i class="fa fa-circle-o"></i>竞赛信息</a></li>
             <li><a href="{% url 'admin_contest_registration' 1%}"> <i class="fa fa-circle-o"></i>竞赛报名</a></li>
           </ul>
-        </li>
+        </li> -->
 
 
 
 
 
-        <li class="treeview">
+        <!-- <li class="treeview">
           <a href="category.html"><i class="fa fa-cutlery"></i> <span>人员组织</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -242,17 +242,17 @@
             <li><a href="{% url 'admin_tea_show' 1%}"> <i class="fa fa-circle-o"></i> 教师管理</a></li>
             <li><a href="{% url 'admin_admin_show' 1%}"> <i class="fa fa-circle-o"></i> 下级管理员</a></li>
           </ul>
-        </li>
+        </li> -->
 
         <li class="treeview">
-          <a href="category.html"><i class="fa fa-cutlery"></i> <span>信息管理</span>
+          <a href="category.html"><i class="fa fa-cutlery"></i> <span>消息通知</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{% url 'admin_news_list' 1%}">新闻</a></li>
-            <li><a href="{% url 'notice_list' 1%}">公告</a></li>
+            <li><a href="{% url 'n_list' 1%}">新闻</a></li>
+            <li><a href="{% url 'nt_list' 1%}">公告</a></li>
           </ul>
         </li>
         
@@ -287,7 +287,7 @@
       <!--餐饮管理平台-->
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2020 <a href="#">北京****有限公司</a>.</strong> 版权所有
+
   </footer>
 
   <!-- 添加侧栏的背景。必须放置此处紧接在控制侧边栏之后 -->

@@ -61,12 +61,35 @@
         <span class="glyphicon " aria-hidden="true">      
         </span> 提交作品   
   </a> -->
-  <button data-toggle="modal" data-target="#{{user}}">提交作品</button>
+
+
+  <!-- 判定管理员是否开启作品提交，以及用户是否晋级如果没有晋级则没有提交权限 -->
+  {% if status == True %}
+  <button data-toggle="modal" data-target="#{{user}}" class="btn btn-primary btn-xs">提交作品</button>
+  {% endif %}
+
+
       {% endif %}  
       
       {% endif %}
-    </div>
 
+      <button id="members" class="btn btn-primary btn-xs" onclick="return match_show();">竞赛成绩</button>
+
+    </div>
+    {% csrf_token %}
+<script>
+    function match_show(){
+
+       var csrftoken = '{% csrf_token %}'
+        var temp = document.createElement("form");
+        temp.method = 'post';
+        temp.style.display = 'none';
+        temp.action = '{% url "stu_match_show" match %}'
+        document.body.appendChild(temp);
+    //    temp.appendChild(csrftoken);
+        temp.submit();
+    }
+</script>
 </div>
 
 <script>
@@ -82,18 +105,18 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">提交参赛作品</h4>
+                    <h4 class="modal-title">提交{{work}}作品</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="InputCode">队伍</label>
-                        <input type="text" class="form-control" name="h_c_id" value="{{h_c_id}}">
+                        <input type="text" class="form-control" name="h_c_id" value="{{h_c_id}}" readonly  unselectable="on">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="display: none;">
                         <label for="InputCode">参赛ID</label>
                         <input type="text" class="form-control" name="match" value="{{match}}">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="display: none;">
                         <label for="InputCode">阶段</label>
                         <input type="text" name="stage" value="{{stage}}" class="form-control">
                     </div>
