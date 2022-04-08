@@ -39,9 +39,17 @@ def match_team_list(request,pIndex,con_id):
     data = []
     for i in mteam:
         try:
-            data.append((i, Works.objects.get(Q(match_id=i.id) & Q(stage=1)).name))
+            if W_Q.objects.get(Q(match_id=i.id) & Q(stage=1)).grade:
+                # print('yes')
+                data.append((i, Works.objects.get(Q(match_id=i.id) & Q(stage=1)).name,'已提交'))
+            else:
+                data.append((i, Works.objects.get(Q(match_id=i.id) & Q(stage=1)).name, '未提交'))
         except:
-            data.append((i,''))
+            # print('no')
+            # if W_Q.objects.get(match_id=i.id).grade:
+            #     data.append((i,'','已提交'))
+            # else:
+            data.append((i, '', '未提交'))
     mteam = data
     cname = Contest.objects.get(id=con_id).contest_name
 
@@ -65,14 +73,19 @@ def match_team_list(request,pIndex,con_id):
             mywhere.append('stage='+cst)
             cst = int(cst)-1
             # print(cst)
-            for i,k in conlist:
+            for i,k,j in conlist:
                 try:
                     if W_Q.objects.filter(Q(stage=cst) & Q(qualify=True) &Q(match_id=i.id)):
-
-                        mteam.append((i,Works.objects.get(Q(stage=cst+1) & Q(match_id=i.id)).name,))
+                        if W_Q.objects.get(Q(match_id=i.id) & Q(stage=cst)).grade:
+                            mteam.append((i,Works.objects.get(Q(stage=cst+1) & Q(match_id=i.id)).name,'已提交'))
+                        else:
+                            mteam.append((i, Works.objects.get(Q(stage=cst + 1) & Q(match_id=i.id)).name, '未提交'))
                 except:
                     if W_Q.objects.filter(Q(stage=cst) & Q(qualify=True) & Q(match_id=i.id)):
-                        mteam.append((i,'',))
+                        # if W_Q.objects.get(match_id=i.id).grade:
+                        #     mteam.append((i,'','已提交'))
+                        # else:
+                        mteam.append((i, '', '未提交'))
 
 
 
@@ -150,6 +163,7 @@ def match_stu(request,match):
     works = w
 
     conlist = list(zip(wq,works))
+
     # print(conlist)
     context = {'conlist':conlist,'h_c_id':h_c_id,'work_data':works}
 

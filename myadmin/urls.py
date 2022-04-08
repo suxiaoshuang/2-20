@@ -9,7 +9,7 @@ from .views.notice import n_list,n_show,n_add,n_delete
 from .views.match import match_con_show,match_team_list,match_wq,match_stu
 from .views.work import f_down,f_up,s_down,s_up,t_down,t_up
 from .views.teacher_qualify import tea_qualify_apply,tea_qualify_apply_list
-
+from .views.temp import te
 
 
 urlpatterns = [
@@ -78,6 +78,7 @@ urlpatterns = [
     path('tea_qualify_apply_list/<int:pIndex>',tea_qualify_apply_list,name='tea_qualify_apply_list'),
     path('tea_qualify_apply/<int:user_id>/<int:qualify>/<int:pIndex>',tea_qualify_apply,name='tea_qualify_apply'),
 
+    path('test/',te,name='test'),
 
     path('img/',img,name="img"),
 

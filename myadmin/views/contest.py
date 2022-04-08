@@ -433,4 +433,11 @@ def reg_audit_pass(request,t_id):
 
 
 def reg_audit_fail(request,t_id):
-    pass
+    team = Team.objects.get(id=t_id)
+    hcid = team.h_c_id
+    con_id = team.con_id
+    for i in Team.objects.filter(h_c_id=hcid):
+        i.delete()
+    team.delete()
+
+    return redirect(reverse('reg_audit',args=(con_id,)))

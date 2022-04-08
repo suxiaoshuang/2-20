@@ -42,15 +42,16 @@
                   <th>参赛作品</th>
                   <th>队伍</th>
                   <th>时间</th>
+                  <th>状态</th>
                   <th>操作</th>
                 </tr>
-                {% for vo,name in conlist %}
+                {% for vo,name,state in conlist %}
                 <tr>
                   <td>{{ vo.id }}</td>
                   <td>{{ name }}</td>
                   <td>{{ vo.h_c_id }}</td>
                   <td >{{ vo.time | date:"Y-m-d H:i:s" }}</td>
-
+                  <td>{{state}}</td>
                   <td width="22%">
                     <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#{{vo.h_c_id}}">设置</button>
                     <div id="{{vo.h_c_id}}" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">

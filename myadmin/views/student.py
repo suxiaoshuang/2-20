@@ -81,21 +81,23 @@ def stu_add(request):
                  f.write(chunk)
             f.close()
             ds = pd.read_excel(url,error_bad_lines=False)
-            try:
-                for index, row in ds.iterrows():
-                    user = User()
-                    user.name = row['name']
-                    user.user_id = row.user_id
-                    user.email = str(row.email)
-                    user.grade = row.grade
-                    user.academy = row.academy
-                    user.specialty = row.specialty
-                    user.identify = '学生'
-                    user.c_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    user.has_confirmed = True
-                    user.password = hash_code('123456')
-                    user.save()
-            except:
-                print('error')
+            # try:
+            for index, row in ds.iterrows():
+                # user = User()
+                # user.name = row['name']
+                # user.user_id = row.user_id
+                # user.email = str(row.email)
+                # user.grade = row.grade
+                # user.academy = row.academy
+                # user.specialty = row.specialty
+                # user.identify = '学生'
+                # user.c_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                # user.has_confirmed = True
+                # user.password = hash_code('123456')
+                # user.save()
+                User.objects.create(name=row['name'],user_id=row.user_id,email=str(row.email),grade=row.grade,academy=row.academy,
+                                    specialty=row.specialty,identify='学生',has_confirmed=True,password=hash_code('123456'))
+            # except:
+            #     print('error')
 
     return redirect(reverse('admin_stu_show',args=(1,)))

@@ -45,6 +45,7 @@ class User(models.Model):
         ordering = ["-c_time"]
         verbose_name = '用户'
         db_table = 'user'
+        ordering = ['-c_time']
 
 
 
