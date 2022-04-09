@@ -177,6 +177,7 @@ class W_Q(models.Model):
     qualify = models.BooleanField(default=False)
     medal = models.CharField(max_length=50)
     stage = models.IntegerField()
+    con = models.ForeignKey(Contest,on_delete=models.CASCADE)
     class Meta:
         db_table = 'wq'
         verbose_name = '获奖、晋级表'

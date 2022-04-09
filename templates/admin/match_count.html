@@ -1,0 +1,125 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block main_body %}
+<script src="{% static 'myadmin/echarts/package/dist/echarts.js' %}"></script>
+<section class="content-header">
+<h1>{{cname}}</h1>
+</section>
+<div style="height: 420px;width: 1300px;padding: 10px 3px;">
+    <div id="f1" style="width: 600px;height: 400px;float: left;"></div>
+    {% if con_stage > 1 %}
+    <div id="f2" style="width: 600px;height: 400px;float: right;"></div>
+    {% endif %}
+</div>
+{% if con_stage > 2 %}
+<div style="height: auto;width: 1300px;padding: 5px 3px;">
+    <div id="f3" style="width: 600px;height: 400px;"></div>
+</div>
+{% endif %}
+
+<script type="text/javascript">
+    var mychart = echarts.init(document.getElementById('f1'));
+    var f1x = {{f1x}};
+    var f1y = {{f1y}};
+    // var stage = {{stage}};
+
+
+
+    var option = {
+        title:{
+            // text:stage,
+            text:'{{stage}}'
+        },
+        tooltip:{},
+        legend:{
+            data:[]
+        },
+        xAxis:{
+            data:f1x,
+            name:'分数',
+            // data:[61, 64, 66, 71, 73, 74, 75, 79, 80, 84, 87, 89, 90, 92, 95, 98, 99]
+        },
+        yAxis:{
+            name:'数量'
+            
+        },
+        series:[{
+            
+            name:'位',
+            type:'bar',
+            data:f1y
+            // data: [1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 2, 1, 1, 1, 1, 1, 1]
+        }]
+
+    };
+    mychart.setOption(option);
+</script>
+
+<script>
+var mychart2 = echarts.init(document.getElementById('f2'));
+var f2x = {{f2x}};
+var f2y = {{f2y}};
+// var stage2 = {{stage2}};
+    var option2 = {
+        title:{
+            text:'{{stage2}}'+'成绩分布'
+        },
+        tooltip:{},
+        legend:{
+            
+        },
+        xAxis:{
+            data:f2x,
+            name:'分数',
+            
+        },
+        yAxis:{
+            name:'数量'
+            
+        },
+        series:[{
+            
+            name:'位',
+            type:'bar',
+            data:f2y
+            
+        }]
+
+    };
+    mychart2.setOption(option2);
+</script>
+
+<script>
+    var mychart3 = echarts.init(document.getElementById('f3'));
+    var f3x = {{f3x}};
+    var f3y = {{f3y}};
+    // var stage3 = {{stage3}};
+    var option3 = {
+        title:{
+            text:'{{stage3}}'+'成绩分布'
+        },
+        tooltip:{},
+        legend:{
+            data:[]
+        },
+        xAxis:{
+            data:f3x,
+            name:'分数',
+            // data:[61, 64, 66, 71, 73, 74, 75, 79, 80, 84, 87, 89, 90, 92, 95, 98, 99]
+        },
+        yAxis:{
+            name:'数量'
+            
+        },
+        series:[{
+            
+            name:'位',
+            type:'bar',
+            data:f3y
+            // data: [1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 2, 1, 1, 1, 1, 1, 1]
+        }]
+
+    };
+    mychart3.setOption(option3);
+</script>
+{% endblock %}

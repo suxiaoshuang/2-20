@@ -6,7 +6,7 @@ from .views.teacher import tea_add,tea_show,tea_update,tea_delete
 from .views.admins import admin_show
 from .views.news import admin_news_add,admin_news_show,admin_news_list,admin_news_delete
 from .views.notice import n_list,n_show,n_add,n_delete
-from .views.match import match_con_show,match_team_list,match_wq,match_stu
+from .views.match import match_con_show,match_team_list,match_wq,match_stu,count,match_con_count_list,match_con_team
 from .views.work import f_down,f_up,s_down,s_up,t_down,t_up
 from .views.teacher_qualify import tea_qualify_apply,tea_qualify_apply_list
 from .views.temp import te
@@ -59,11 +59,15 @@ urlpatterns = [
 
     path('reg_audit_pass/<int:t_id>',reg_audit_pass,name='reg_audit_pass'),
     path('reg_audit_fail/<int:t_id>',reg_audit_fail,name='reg_audit_fail'),
-
+#竞赛相关
     path('match_con_show/<int:pIndex>',match_con_show,name="match_con_show"),
     path('match_team_list/<int:pIndex>/<int:con_id>',match_team_list,name="match_team_list"),
     path('match_wq/<int:match>',match_wq,name='match_wq'),
     path('match_stu/<int:match>',match_stu,name='match_stu_admin'),
+    path('match_count/<int:con_id>',count,name='count'),
+    path('mcclist/<int:pIndex>',match_con_count_list,name='mcclist'),
+    path('match_con_tteam/<int:con_id>/<int:pIndex>',match_con_team,name='mteam'),
+    # path('match_con_team/<int:con_id>/<int:pIndex>',match_team_l,name='match_con_team'),
 
 
     #作品上传权限控制
