@@ -181,6 +181,7 @@ class W_Q(models.Model):
     class Meta:
         db_table = 'wq'
         verbose_name = '获奖、晋级表'
+        ordering = ['stage']
 
 
 class Works(models.Model):

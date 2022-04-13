@@ -1,5 +1,5 @@
 {% extends "student/base.html" %}
-
+{% load static %}
 {% block main_body %}
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -7,12 +7,26 @@
         竞赛信息管理
         <link href="https://cdn.bootcss.com/toastr.js/2.1.4/toastr.min.css" rel="stylesheet">
         <script src="https://cdn.bootcss.com/toastr.js/2.1.4/toastr.min.js"></script>
+        <link rel="stylesheet" href="{% static 'layui/layui.css' %}">
+<script src="{% static 'layui/layui.js' %}"></script>
       </h1>
       <ol class="breadcrumb">
         <li><a href="{% url 'student_index' %}"><i class="fa fa-dashboard"></i> 首页</a></li>
       </ol>
     </section>
 
+    {% if messages %}
+    {% for message in messages %}
+	<script>
+		var m = '{{ message }}';
+		layer.open({
+	  title: '提示'
+	  ,content: m
+	});     
+	</script>
+        
+    {% endfor %}
+    {% endif %}
     <!-- Main content -->
     <section class="content container-fluid">
 
@@ -107,24 +121,6 @@
 
 
 
-    <script>
-      toastr.options = {
-              closeButton: true,
-              debug: true,
-              progressBar: true,
-              positionClass: "toast-top-center",
-              onclick: null,
-              showDuration: "300",
-              hideDuration: "1000",
-              timeOut: "2000",
-              extendedTimeOut: "1000",
-              showEasing: "swing",
-              hideEasing: "linear",
-              showMethod: "fadeIn",
-              hideMethod: "fadeOut"
-          };
-      toastr.success('success')
-          
-      </script>    
+
 
 {% endblock %}

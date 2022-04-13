@@ -52,6 +52,7 @@
                     <a href="{% url 'mteam' con_.id  1 %}" class="btn btn-info btn-xs">
                         <span class="glyphicon glyphicon" aria-hidden="true"></span>参赛队伍
                     </a>
+                    <a href="{% url 'match_result_export' con_.id %}" id="{{con_.id}}" class="btn btn-primary btn-xs">导出成绩</a>
 
                   </td>
                 </tr>

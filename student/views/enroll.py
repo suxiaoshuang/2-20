@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.paginator import Paginator
 from myadmin.models import Info, Organizer, File, Team, Registration, Contest, User, Stage, Match,UWQ
-
+from django.contrib import messages
 
 def sc_list(request,pIndex=1):
     if request.method == "GET":
@@ -55,8 +55,10 @@ def sc_enroll(request):
             team = Team.objects.create(head=True,con_id=id,use_id=user.id,u_name=request.session.get('user_name'),c_name=name,h_c_id=user.user_id[:2]+user.user_id[4:]+id)
             Registration.objects.create(c_name=name,type=Contest.objects.get(id=id).contest_type,status=False,con_id=id,t_id=team.id)
         except:
-            return HttpResponse("出了点错误，请重试！")
-    return HttpResponse("报名成功！")
+            messages.success(request,'服务器错误，请稍后再试！')
+            return redirect(reverse('sc_list',args=(1,)))
+    messages.success(request,'报名成功！')
+    return redirect(reverse('sc_list',args=(1,)))
 
 
 def sc_add_team(request):

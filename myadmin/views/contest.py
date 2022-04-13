@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from ..models import Contest, File, Stage, Tyep, Organizer, Registration, User, Match, Team,UWQ
-from django.shortcuts import render,HttpResponse,redirect
+from django.shortcuts import render,redirect
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
 from ..forms import PostForm
@@ -50,14 +50,14 @@ def contest_show(request,pIndex=1):
 
 
     kw = request.GET.get('keyword',None)
-    status = request.GET.get('status', None)
+    status = request.GET.get('status', 2)
 
 
 
-    if  status:
+    if  status == '0':
         list = con.filter(Q(contest_status = 0) & Q(audit=True))
         mywhere.append('status='+status)
-        status = 'status='+status
+        # status = 'status='+status
 
     if kw:
         list = list.filter(Q(Q(contest_name__icontains=kw)|Q(contest_type__icontains=kw)) & Q(audit=True))
@@ -87,7 +87,7 @@ def contest_show(request,pIndex=1):
 
 
     plist = page.page_range
-    context = {'conlist':conlist,'plist':plist,'pIndex':pIndex,'maxpages':maxpages,'mywhere':mywhere,'status':status}
+    context = {'conlist':conlist,'plist':plist,'pIndex':pIndex,'maxpages':maxpages,'mywhere':mywhere}
 
     return render(request,'admin/contest_show.html',context)
 
@@ -247,9 +247,17 @@ def con_delete(request,id):
                 url = os.path.join(settings.FILE_UPLOAD[0],i.file_path.replace('upload_file/',''))
                 os.remove(url)
                 i.delete()
+        os.remove(os.path.join(settings.IMG_UPLOAD[0],con.contest_img_path.replace('upload_images/','')))
         con.delete()
-        status = request.GET.get('mywhere')
-        return redirect(reverse('admin_contest_show',args=(pIndex,)),locals())
+        try:
+            status = pIndex.split('?')[1]
+            pIndex = pIndex.split('?')[0]
+        except:
+            status = 'status=2'
+        # return redirect(reverse('admin_contest_show',args=(pIndex,)))
+        # print(pIndex,status)
+        return redirect('/admin/contest_show/'+pIndex+'?'+status)
+    # +'/' + '?status=' + status
     else:
         message = '权限不足，不支持该操作！'
         return render(request,'admin/info.html',locals())
@@ -330,9 +338,10 @@ def con_close(request,id):
             return render(request,'admin/info.html',locals())
         con.contest_status = 0
         #竞赛结束，参赛表状态为False
-        match = Match.objects.get(con_id=id)
-        match.status = False
-        match.save()
+        match = Match.objects.filter(con_id=id)
+        for m in match:
+            m.status = False
+            m.save()
         con.save()
         return redirect(reverse('admin_contest_show',args=(pIndex,)))
     else:

@@ -6,11 +6,12 @@ from .views.teacher import tea_add,tea_show,tea_update,tea_delete
 from .views.admins import admin_show
 from .views.news import admin_news_add,admin_news_show,admin_news_list,admin_news_delete
 from .views.notice import n_list,n_show,n_add,n_delete
-from .views.match import match_con_show,match_team_list,match_wq,match_stu,count,match_con_count_list,match_con_team
+from .views.match import match_con_show,match_team_list,match_wq,match_stu,count,match_con_count_list,match_con_team\
+,match_result_export
 from .views.work import f_down,f_up,s_down,s_up,t_down,t_up
 from .views.teacher_qualify import tea_qualify_apply,tea_qualify_apply_list
 from .views.temp import te
-
+from .views.person import update_user,user,delete_user
 
 urlpatterns = [
     path('index/',index,name='admin_index'),
@@ -67,7 +68,8 @@ urlpatterns = [
     path('match_count/<int:con_id>',count,name='count'),
     path('mcclist/<int:pIndex>',match_con_count_list,name='mcclist'),
     path('match_con_tteam/<int:con_id>/<int:pIndex>',match_con_team,name='mteam'),
-    # path('match_con_team/<int:con_id>/<int:pIndex>',match_team_l,name='match_con_team'),
+    path('match_result_export/<int:con_id>',match_result_export,name='match_result_export'),
+
 
 
     #作品上传权限控制
@@ -83,7 +85,11 @@ urlpatterns = [
     path('tea_qualify_apply/<int:user_id>/<int:qualify>/<int:pIndex>',tea_qualify_apply,name='tea_qualify_apply'),
 
     path('test/',te,name='test'),
-
     path('img/',img,name="img"),
+
+
+    path('user/',user,name='admin_user'),
+    path('update_user/',update_user,name='admin_update_user'),
+    path('delete)_user/',delete_user,name='admin_delete_user'),
 
 ]

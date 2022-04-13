@@ -22,7 +22,7 @@
             <div class="box-header">
               <h4 class="box-title"><i class="fa fa-calendar"></i> 参赛管理</h4>
 
-              <div class="box-tools">
+              <!-- <div class="box-tools">
                 <form action="{% url 'notice_list'  1%}" method="get">
                 <div class="input-group input-group-sm" style="width:150px;">
                   <input type="text" name="keyword" class="form-control pull-right" placeholder="/">
@@ -32,7 +32,7 @@
                   </div>
                 </div>
                 </form>
-              </div>
+              </div> -->
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
@@ -41,7 +41,7 @@
                   <th>ID</th>
                   <th>竞赛名称</th>
                   <th>举办方</th>
-                  <th>赛次</th>
+                  <th>赛段</th>
                   <th>时间</th>
                   <th>提交作品权限控制</th>
                 </tr>
@@ -151,18 +151,7 @@
 
                 {% endfor %}
 
-<script type="text/javascript" language="JavaScript">
-		function del()
-		{
-		     if(confirm("确定要删除吗?"))
-		     {
-		         return true;
-		     }else{
-		         return false;
-			 }
-		}
 
-</script>
 
 
               </table>

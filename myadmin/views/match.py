@@ -1,3 +1,6 @@
+from django.http import StreamingHttpResponse
+from django.utils.encoding import escape_uri_path
+
 from ..models import Contest, File, Stage, Tyep, Organizer, Registration, User, Match, Team,Match,W_Q,Works,UWQ
 from django.shortcuts import render,HttpResponse,redirect
 from django.db.models import Q, Count
@@ -247,11 +250,12 @@ def count(request,con_id):
 def match_con_count_list(request,pIndex=1):
     con = Contest.objects.filter(Q(contest_status=1) | Q(contest_status=0))
     conlist = []
-    rt,rnum,mj,my,mt = 0,0,0,0,0
+
     for con_ in con:
         #如果该项目进入比赛阶段
+        rt, rnum, mj, my, mt = 0, 0, 0, 0, 0
         if Match.objects.filter(con_id=con_.id):
-            for reg in Registration.objects.filter(con_id=con_.id):
+            for reg in Registration.objects.filter(Q(con_id=con_.id)&Q(status=True)):
                 #队伍数量
                 rt = rt+1
                 for t in Team.objects.filter(h_c_id=Team.objects.get(id=reg.t_id).h_c_id):
@@ -279,8 +283,9 @@ def match_con_count_list(request,pIndex=1):
     context = {'conlist':pdata,'pIndex':pIndex,'maxpages':maxpages,'plist':plist}
     return render(request,'admin/match_con_count_list.html',context)
 
+#比赛参赛队伍情况，归属于数据统计分析
 def match_con_team(request,con_id,pIndex=1):
-    team = Registration.objects.filter(con_id=con_id)
+    team = Registration.objects.filter(Q(con_id=con_id)&Q(status=True))
     head = None
     conlist = []
     for reg in team:
@@ -304,3 +309,169 @@ def match_con_team(request,con_id,pIndex=1):
     context = {'conlist':pdata,'maxpages':maxpages,'plist':plist,'pIndex':pIndex,'con_id':con_id}
     return render(request,'admin/match_team_l.html',context)
 
+
+def match_result_export(request,con_id):
+    for f in os.listdir(os.path.join(settings.EXPORT_GRADE[0])):
+        # print(f)
+        os.remove(os.path.join(settings.EXPORT_GRADE[0],f))
+    stage = int(Contest.objects.get(id=con_id).contest_stage)
+    data = []
+    data2 = []
+    data3 = []
+    cname = Contest.objects.get(id=con_id).contest_name
+    medal = '无'
+
+    #导入pandas，使用pandas的DataFrame框架写成绩数据到excel，首先创建一个excel文件
+    import pandas as pd
+    file = open(os.path.join(settings.EXPORT_GRADE[0],cname+'.xlsx'),'w')
+    file.close()
+
+    #准备写入成绩数据的excel文件的路径
+    file_path = os.path.join(settings.EXPORT_GRADE[0],cname+'.xlsx')
+
+
+    #engine这个引擎是为了避免pd每次写入的表都被后来的数据覆盖
+    writer = pd.ExcelWriter(os.path.join(settings.EXPORT_GRADE[0], cname + '.xlsx'),engine='openpyxl')
+
+    if stage == 1:
+        for match in Match.objects.filter(con_id=con_id):
+            team = match.team_id
+            wq = W_Q.objects.get(match_id=match.id)
+            teacher = Registration.objects.get(Q(status=True)&Q(t_id=team)).teacher
+            works = Works.objects.get(match_id=match.id).name
+            grade = wq.grade
+            thead = Team.objects.get(id=team).u_name
+            medal = W_Q.objects.get(match_id=match.id).medal
+            data.append((works,grade,thead,teacher,medal))
+        if data:
+            work_e, grade_e, tname_e, thead_e, teacher_e, medal_e = [], [], [], [], [], []
+            for w, g, th, te,me in data:
+                work_e.append(w)
+                grade_e.append(g)
+
+                thead_e.append(th)
+                teacher_e.append(te)
+                medal_e.append(me)
+            pd.DataFrame(
+                {'作品': work_e, '成绩': grade_e, '队长': thead_e, '指导老师': teacher_e,'获奖':medal_e}).to_excel(
+                writer, sheet_name='比赛')
+            writer.save()
+            writer.close()
+
+    if stage ==3:
+        for match in Match.objects.filter(con_id=con_id):
+            team = match.team_id
+            teacher = Registration.objects.get(Q(status=True)&Q(t_id=team)).teacher
+            thead = Team.objects.get(id=team).u_name
+            works = Works.objects.get(Q(stage=1)&Q(match_id=match.id)).name
+            grade = W_Q.objects.get(Q(stage=1)&Q(match_id=match.id)).grade
+            tname = Registration.objects.get(Q(con_id=con_id)&Q(t_id=team)).t_name
+            data.append((works,grade,tname,thead,teacher))
+
+            if W_Q.objects.filter(Q(stage=2)&Q(match_id=match.id)):
+                grade2 = W_Q.objects.filter(Q(stage=2)&Q(match_id=match.id))[0].grade
+                works2 = Works.objects.get(Q(stage=2)&Q(match_id=match.id)).name
+                data2.append((works2,grade2,tname,thead,teacher))
+
+            if W_Q.objects.filter(Q(stage=3)&Q(match_id=match.id)):
+                grade3 = W_Q.objects.get(Q(stage=3)&Q(match_id=match.id)).grade
+                works3 = Works.objects.get(Q(stage=3)&Q(match_id=match.id)).name
+                medal = W_Q.objects.get(Q(stage=3)&Q(match_id=match.id)).medal
+                data3.append((works3,grade3,tname,thead,teacher,medal))
+
+        if data:
+            work_e, grade_e, tname_e, thead_e, teacher_e, medal_e = [], [], [], [], [], []
+            for w,g,tn,th,te in data:
+                work_e.append(w)
+                grade_e.append(g)
+                tname_e.append(tn)
+                thead_e.append(th)
+                teacher_e.append(te)
+            pd.DataFrame(
+                {'作品': work_e, '成绩': grade_e, '队伍': tname_e, '队长': thead_e, '指导老师': teacher_e}).to_excel(
+                writer, sheet_name='初赛')
+
+        if data2:
+            work_e, grade_e, tname_e, thead_e, teacher_e, medal_e = [], [], [], [], [], []
+            for w,g,tn,th,te in data2:
+                work_e.append(w)
+                grade_e.append(g)
+                tname_e.append(tn)
+                thead_e.append(th)
+                teacher_e.append(te)
+            pd.DataFrame(
+                {'作品': work_e, '成绩': grade_e, '队伍': tname_e, '队长': thead_e, '指导老师': teacher_e}).to_excel(
+                writer, sheet_name='复赛')
+
+        if data3:
+            work_e, grade_e, tname_e, thead_e, teacher_e, medal_e = [], [], [], [], [], []
+            for w,g,tn,th,te,me in data3:
+                work_e.append(w)
+                grade_e.append(g)
+                tname_e.append(tn)
+                thead_e.append(th)
+                teacher_e.append(te)
+                medal_e.append(me)
+            # for df in [{'作品':work_e}, {'成绩':grade_e}, {'队伍':tname_e}, {'队长':thead_e}, {'指导老师':teacher_e}, {'获奖':medal_e}]:
+            #     pd.DataFrame(df).to_excel(writer,sheet_name='决赛')
+            pd.DataFrame({'作品':work_e,'成绩':grade_e,'队伍':tname_e,'队长':thead_e,'指导老师':teacher_e,'获奖':medal_e}).to_excel(writer,sheet_name='决赛')
+            writer.save()
+            writer.close()
+
+    if stage ==2:
+        for match in Match.objects.filter(con_id=con_id):
+            team = match.team_id
+            teacher = Registration.objects.get(Q(status=True)&Q(t_id=team)).teacher
+            thead = Team.objects.get(id=team).u_name
+            works = Works.objects.get(Q(stage=1)&Q(match_id=match.id)).name
+            grade = W_Q.objects.get(Q(stage=1)&Q(match_id=match.id)).grade
+            tname = Registration.objects.get(Q(con_id=con_id)&Q(t_id=team)).t_name
+            data.append((works,grade,tname,thead,teacher))
+
+            if W_Q.objects.filter(Q(stage=2)&Q(match_id=match.id)):
+                grade2 = W_Q.objects.filter(Q(stage=2)&Q(match_id=match.id))[0].grade
+                works2 = Works.objects.get(Q(stage=2)&Q(match_id=match.id)).name
+                medal = W_Q.objects.get(Q(stage=2) & Q(match_id=match.id)).medal
+                data2.append((works2,grade2,tname,thead,teacher,medal))
+
+        if data:
+            work_e, grade_e, tname_e, thead_e, teacher_e, medal_e = [], [], [], [], [], []
+            for w,g,tn,th,te in data:
+                work_e.append(w)
+                grade_e.append(g)
+                tname_e.append(tn)
+                thead_e.append(th)
+                teacher_e.append(te)
+            pd.DataFrame(
+                {'作品': work_e, '成绩': grade_e, '队伍': tname_e, '队长': thead_e, '指导老师': teacher_e}).to_excel(
+                writer, sheet_name='初赛')
+
+        if data2:
+            work_e, grade_e, tname_e, thead_e, teacher_e, medal_e = [], [], [], [], [], []
+            for w,g,tn,th,te,me in data2:
+                work_e.append(w)
+                grade_e.append(g)
+                tname_e.append(tn)
+                thead_e.append(th)
+                teacher_e.append(te)
+                medal_e.append(me)
+            pd.DataFrame(
+                {'作品': work_e, '成绩': grade_e, '队伍': tname_e, '队长': thead_e, '指导老师': teacher_e,'获奖':medal_e}).to_excel(
+                writer, sheet_name='决赛')
+            writer.save()
+            writer.close()
+
+    #返回excel文件流到客户端
+    from public.views.download import file_iterator
+    try:
+        # 设置响应头
+        # StreamingHttpResponse将文件内容进行流式传输，数据量大可以用这个方法
+        response = StreamingHttpResponse(file_iterator(file_path))
+        # 以流的形式下载文件,这样可以实现任意格式的文件下载
+        response['Content-Type'] = 'application/octet-stream'
+        # Content-Disposition就是当用户想把请求所得的内容存为一个文件的时候提供一个默认的文件名
+        response['Content-Disposition'] = "attachment; filename*=utf-8''{}".format(escape_uri_path(os.path.basename(file_path)))
+    except:
+        return HttpResponse("Sorry but Not Found the File")
+    # print(response['Content-Disposition'])
+    return response

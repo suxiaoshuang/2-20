@@ -10,7 +10,7 @@ import datetime
 import base64
 import socket
 import ssl
-
+from django.contrib import messages
 # Create your views here.
 from django.conf import settings
 
@@ -139,10 +139,13 @@ def login(request):
             user = User.objects.get(user_id=user_id)
 
         except:
-            message = '用户不存在！'
+            # message = '用户不存在！'
+            messages.success(request,'用户不存在！请检查所填账户是否正确！')
             return render(request, 'login/logi.html', locals())
-
-        if user.password == hash_code(password) and user.has_confirmed:
+        if user.has_confirmed !=True:
+            messages.success(request,'该账户未进行确认或已被禁用！')
+            return redirect(reverse('login'))
+        if user.password == hash_code(password)  :
             if data['identify'] == user.identify:
                 request.session['is_login'] = True
                 request.session['user_id'] = user.user_id
@@ -151,10 +154,12 @@ def login(request):
                 dic = {'学生': 'student', '教师': 'teacher', '管理员': 'admin'}
                 return redirect(reverse(dic.get(user.identify)+'_index'),locals())
             else:
-                message = '请选择正确的身份进行登录!'
+                # message = '请选择正确的身份进行登录!'
+                messages.success(request,'请选择正确的身份进行登录!')
                 return render(request,'login/logi.html',locals())
         else:
-            message = '密码不正确!'
+            # message = '密码不正确!'
+            messages.success(request, '密码不正确!')
             return render(request, 'login/logi.html',locals())
     else:
         login_form = Login_Form()
@@ -208,9 +213,9 @@ def register(request):
             new_user.grade = grade
             new_user.academy =academy
             new_user.specialty = specialty
-            # new_user.save()
+            new_user.save()
             code = make_confirmed_string(new_user)
-            # send_email(email, code)
+            send_email(email, code)
 
             message = '注册成功，请前往邮箱进行确认！'
 
@@ -237,8 +242,8 @@ def teacher_re(request):
         name = request.POST.get('name')
         identify = '教师'
         academy = request.POST.get('academy')
-        grade = request.POST.get('grade')
-        specialty = request.POST.get('specialty')
+        # grade = request.POST.get('grade')
+        # specialty = request.POST.get('specialty')
 
         if password1 != password2:
             message = '两次输入的密码不同！'

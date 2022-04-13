@@ -7,7 +7,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'myadmin/index/index.css' %}"/>
 <script src="{% static 'myadmin/index/animate.js' %}"></script>
 <script src="{% static 'myadmin/index/index.js' %}"></script>
-
+<link rel="stylesheet" href="{% static 'layui/layui.css' %}">
+<script src="{% static 'layui/layui.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'myadmin/index/index2.css' %}">    
       </h1>
     </section>
@@ -16,38 +17,57 @@
 
 <div class="mainBody">
 
-<div class="page">
-  <div class="ma">
-    <a href="javascript:;" class="left">&lt;</a>
-    <!-- 右按钮 -->
-    <a href="javascript:;" class="right">&gt;</a>
-    <!-- 滚动区 -->
-    <ul>
-                      {% for i in info %}
-      <li>
-                  {% if i.type == 'news' %}
-                  <a href="{% url 'admin_news_show' i.id %}" style="color: rgb(15, 15, 15)" >
-                      <h1 style=" width: 1000px; height: 500px ;background-size:1000px 500px;background-image:url('{% static i.img_path %}')">{{ i.title }}</h1>
-                  </a>
-                  {% endif %}
+<div class="page" >
 
-                  {% if i.type == 'notice' %}
-                  <a href="{% url 'notice_show' i.id %}" style="color: rgb(15, 15, 15)" >
-                      <h1 style=" width: 1000px; height: 500px ;background-size:1000px 500px;background-image:url('{% static i.img_path %}')">{{ i.title }}</h1>
-                  </a>
-                  {% endif %}
+
+  <div class="layui-carousel" style="padding: 5px 5px;" id="test1">
+    <div carousel-item>
+      {% for i in info %}
+      <li>
+        {% if i.type == 'news' %}
+        <a href="{% url 'admin_news_show' i.id %}" style="color: rgb(15, 15, 15)" >
+          <img style="width: 1040px; height: 500px" src="{% static i.img_path %}">
+        </a>
+        <div >
+          <span style="width: 1000px;height: 20px;">
+            {{ i.title }}
+          </span></div>
+        {% endif %}
+
+        {% if i.type == 'notice' %}
+        <a href="{% url 'notice_show' i.id %}" style="color: rgb(15, 15, 15)" >
+          <img style="width: 1040px; height: 500px" src="{% static i.img_path %}">
+            <!-- <h1 style=" width: 1000px; height: 500px ;background-size:1000px 500px;background-image:url('{% static i.img_path %}')">{{ i.title }}</h1> -->
+        </a>
+        <div >
+        <span style="width: 1000px;height: 20px;">
+          {{ i.title }}
+        </span></div>
+        {% endif %}
 
 
       </li>
 
-                      {% endfor %}
-    </ul>
-    <!-- 小圆 -->
-          <ol class="circle">
-
-          </ol>
-
+            {% endfor %}
+    </div>
   </div>
+  <script>
+    layui.use('carousel', function(){
+      var carousel = layui.carousel;
+      //建造实例
+      carousel.render({
+        elem: '#test1'
+        ,width: '1040px' //设置容器宽度
+        ,height:'500px'
+        
+        ,indicator:'inside'
+        ,arrow: 'always' //始终显示箭头
+        ,anim: 'fade' //切换动画方式
+      });
+    });
+    </script>
+
+
 </div>
 
     <div class="indexFloor">
