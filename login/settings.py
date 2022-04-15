@@ -23,13 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-yhai$w56)c!d#2+*2b7vc5jsj12z9(r0cu%0twe*rpn$wqf)l#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*',]
 IMG_UPLOAD = [os.path.join(BASE_DIR,'static','upload_images')]
 FILE_UPLOAD = [os.path.join(BASE_DIR,'static','upload_file')]
 WORK_UPLOAD = [os.path.join(BASE_DIR,'static','work')]
 EXPORT_GRADE = [os.path.join(BASE_DIR,'static','export_grade')]
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 X_FRAME_OPTIONS = 'SAMEORIGIN'
